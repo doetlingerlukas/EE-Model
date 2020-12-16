@@ -1,0 +1,51 @@
+buildscript {
+	repositories {
+		jcenter()
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+apply plugin: 'jacoco'
+// for compliance with higher Java versions
+jacoco {
+		toolVersion = "0.8.5"
+	}
+// to use GitHub repositories as dependencies
+
+group 'Apollo-Core-EE-Model'
+version '1.0-SNAPSHOT'
+
+
+repositories {
+	mavenCentral()
+	maven {
+		name "jitpack"
+		url 'https://jitpack.io' }
+}
+
+dependencies {
+	
+	// dependencies to other parts of the Apollo Core EE
+	implementation 'com.github.FedorSmirnov89:EE-Core:-SNAPSHOT'
+	
+	// as an example: dependency to Opt4J
+	implementation 'com.github.FedorSmirnov89:opt4j:-SNAPSHOT'
+	// dependency to opendse
+	implementation 'com.github.FedorSmirnov89:opendse:-SNAPSHOT'
+	
+	// gson to define the format of the exchanged messages
+	implementation 'com.google.code.gson:gson:2.8.6'
+	
+	// test dependencies	
+	testCompile group: 'junit', 		name: 'junit', 					version: '4.+'
+	testCompile group: 'org.mockito',     name: 'mockito-core',     version: '3.4.4'
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled true
+	}
+}
