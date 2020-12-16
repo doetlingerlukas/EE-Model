@@ -15,7 +15,7 @@ import net.sf.opendse.model.properties.TaskPropertyService;
  * @author Fedor Smirnov
  *
  */
-public class PropertyServiceData extends AbstractPropertyService {
+public final class PropertyServiceData extends AbstractPropertyService {
 
 	private PropertyServiceData() {
 	}
@@ -37,11 +37,11 @@ public class PropertyServiceData extends AbstractPropertyService {
 	 * @param task    the given data node
 	 * @param content the content to annotate
 	 */
-	public static void setContent(Task task, JsonObject content) {
+	public static void setContent(final Task task, final JsonObject content) {
 		checkTask(task);
-		String attrNameContent = Property.Content.name();
+		final String attrNameContent = Property.Content.name();
 		task.setAttribute(attrNameContent, content);
-		String attrNameAval = Property.DataAvailable.name();
+		final String attrNameAval = Property.DataAvailable.name();
 		task.setAttribute(attrNameAval, true);
 	}
 
@@ -52,9 +52,9 @@ public class PropertyServiceData extends AbstractPropertyService {
 	 * @param task the given task
 	 * @return the data content of the given data node
 	 */
-	public static JsonObject getContent(Task task) {
+	public static JsonObject getContent(final Task task) {
 		checkTask(task);
-		String attrName = Property.Content.name();
+		final String attrName = Property.Content.name();
 		checkAttribute(task, attrName);
 		return (JsonObject) getAttribute(task, attrName);
 	}
@@ -65,9 +65,9 @@ public class PropertyServiceData extends AbstractPropertyService {
 	 * @param task the data task to check
 	 * @return <code>true</code> if the data has been annotated as available
 	 */
-	public static boolean isDataAvailable(Task task) {
+	public static boolean isDataAvailable(final Task task) {
 		checkTask(task);
-		String attrName = Property.DataAvailable.name();
+		final String attrName = Property.DataAvailable.name();
 		if (!isAttributeSet(task, attrName)) {
 			return false;
 		}
@@ -80,7 +80,7 @@ public class PropertyServiceData extends AbstractPropertyService {
 	 * 
 	 * @param task the task to check
 	 */
-	protected static void checkTask(Task task) {
+	protected static void checkTask(final Task task) {
 		if (!TaskPropertyService.isCommunication(task)) {
 			throw new IllegalArgumentException("Task " + task.getId() + " does not model data.");
 		}
