@@ -28,7 +28,136 @@ public final class PropertyServiceData extends AbstractPropertyService {
 		/**
 		 * The data
 		 */
-		Content
+		Content,
+		/**
+		 * Is workflow input?
+		 */
+		Root,
+		/**
+		 * Is workflow output?
+		 */
+		Leaf,
+		/**
+		 * The key used in the input/output Json Object (only for leaf/root nodes)
+		 */
+		JsonKey,
+		/**
+		 * The data type
+		 */
+		DataType
+	}
+
+	public enum DataType {
+		Number, String, Object, Collection, Boolean
+	}
+
+	/**
+	 * Returns the data type of the given task.
+	 * 
+	 * @param task the given task
+	 * @return the data type of the given task
+	 */
+	public static DataType getDataType(Task task) {
+		checkTask(task);
+		String attrName = Property.DataType.name();
+		return DataType.valueOf((String) getAttribute(task, attrName));
+	}
+
+	/**
+	 * Annotates the given node with the given data type
+	 * 
+	 * @param task the given task node
+	 * @param type the type to annotate
+	 */
+	public static void setDataType(Task task, DataType type) {
+		checkTask(task);
+		String attrName = Property.DataType.name();
+		task.setAttribute(attrName, type.name());
+	}
+
+	/**
+	 * Sets the json key used to store/retrieve the data in/from the Json
+	 * output/input of the workflow.
+	 * 
+	 * @param task the task to annotate
+	 * @param the  key to use in the Json object
+	 */
+	public static void setJsonKey(Task task, String jsonKey) {
+		checkTask(task);
+		if (!isRoot(task) && !isLeaf(task)) {
+			throw new IllegalArgumentException("Only leaf/root nodes can be annotated with a Json key.");
+		}
+		String attrName = Property.JsonKey.name();
+		task.setAttribute(attrName, jsonKey);
+	}
+
+	/**
+	 * Returns the json key used to store/retrieve the data in/from the Json
+	 * output/input of the workflow.
+	 * 
+	 * @param task the leaf/root task
+	 * @return the json key used to store/retrieve the data in/from the Json
+	 *         output/input of the workflow
+	 */
+	public static String getJsonKey(Task task) {
+		checkTask(task);
+		if (!isRoot(task) && !isLeaf(task)) {
+			throw new IllegalArgumentException("Only leaf/root nodes can be annotated with a Json key.");
+		}
+		String attrName = Property.JsonKey.name();
+		return (String) getAttribute(task, attrName);
+	}
+
+	/**
+	 * Annotates the given task as leaf.
+	 * 
+	 * @param task the given task
+	 */
+	public static void makeLeaf(Task task) {
+		checkTask(task);
+		String attrName = Property.Leaf.name();
+		task.setAttribute(attrName, true);
+	}
+
+	/**
+	 * Checks whether the given task is a leaf (wf output).
+	 * 
+	 * @param task the task to check.
+	 * @return <code>true</code> if the task is a leaf.
+	 */
+	public static boolean isLeaf(Task task) {
+		checkTask(task);
+		String attrName = Property.Leaf.name();
+		if (!isAttributeSet(task, attrName)) {
+			return false;
+		}
+		return (boolean) getAttribute(task, attrName);
+	}
+
+	/**
+	 * Annotates the given task as a root.
+	 * 
+	 * @param task the given task
+	 */
+	public static void makeRoot(Task task) {
+		checkTask(task);
+		String attrName = Property.Root.name();
+		task.setAttribute(attrName, true);
+	}
+
+	/**
+	 * Checks whether the given task is a root (wf input).
+	 * 
+	 * @param task the given task
+	 * @return <code>true</code> iff the given task is a root.
+	 */
+	public static boolean isRoot(Task task) {
+		checkTask(task);
+		String attrName = Property.Root.name();
+		if (!isAttributeSet(task, attrName)) {
+			return false;
+		}
+		return (boolean) getAttribute(task, attrName);
 	}
 
 	/**
