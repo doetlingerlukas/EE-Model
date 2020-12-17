@@ -1,7 +1,7 @@
 package at.uibk.dps.ee.model.graph;
 
+import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Dependency;
-import net.sf.opendse.model.Graph;
 import net.sf.opendse.model.Task;
 
 /**
@@ -10,7 +10,7 @@ import net.sf.opendse.model.Task;
  * 
  * @author Fedor Smirnov
  */
-public class EnactmentGraph extends Graph<Task, Dependency> {
+public class EnactmentGraph extends Application<Task, Dependency> {
 
 	private static final long serialVersionUID = 1L;
 
