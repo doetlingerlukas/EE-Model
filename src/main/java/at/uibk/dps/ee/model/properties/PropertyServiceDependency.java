@@ -9,11 +9,17 @@ import net.sf.opendse.model.properties.AbstractPropertyService;
  * 
  * @author Fedor Smirnov
  */
-public class PropertyServiceDependency extends AbstractPropertyService {
+public final class PropertyServiceDependency extends AbstractPropertyService {
 
 	private PropertyServiceDependency() {
 	}
 
+	/**
+	 * The properties annotated on dependency edges.
+	 * 
+	 * @author Fedor Smirnov
+	 *
+	 */
 	public enum Property {
 		/**
 		 * General type of dependency
@@ -21,6 +27,12 @@ public class PropertyServiceDependency extends AbstractPropertyService {
 		Type
 	}
 
+	/**
+	 * Different types of dependencies.
+	 * 
+	 * @author Fedor Smirnov
+	 *
+	 */
 	public enum TypeDependency {
 		/**
 		 * Data flow
@@ -33,8 +45,8 @@ public class PropertyServiceDependency extends AbstractPropertyService {
 	 * 
 	 * @param dep the given dependency
 	 */
-	public static TypeDependency getType(Dependency dep) {
-		String attrName = Property.Type.name();
+	public static TypeDependency getType(final Dependency dep) {
+		final String attrName = Property.Type.name();
 		return TypeDependency.valueOf((String) getAttribute(dep, attrName));
 	}
 
@@ -44,8 +56,8 @@ public class PropertyServiceDependency extends AbstractPropertyService {
 	 * @param dep the given dependency
 	 * @param type the type to set
 	 */
-	public static void setType(Dependency dep, TypeDependency type) {
-		String attrName = Property.Type.name();
+	public static void setType(final Dependency dep, final TypeDependency type) {
+		final String attrName = Property.Type.name();
 		dep.setAttribute(attrName, type.name());
 	}
 }

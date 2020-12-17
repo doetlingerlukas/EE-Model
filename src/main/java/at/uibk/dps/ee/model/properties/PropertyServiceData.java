@@ -20,6 +20,12 @@ public final class PropertyServiceData extends AbstractPropertyService {
 	private PropertyServiceData() {
 	}
 
+	/**
+	 * Properties annotated for data nodes.
+	 * 
+	 * @author Fedor Smirnov
+	 *
+	 */
 	public enum Property {
 		/**
 		 * Was the data already produced?
@@ -57,9 +63,9 @@ public final class PropertyServiceData extends AbstractPropertyService {
 	 * @param task the given task
 	 * @return the data type of the given task
 	 */
-	public static DataType getDataType(Task task) {
+	public static DataType getDataType(final Task task) {
 		checkTask(task);
-		String attrName = Property.DataType.name();
+		final String attrName = Property.DataType.name();
 		return DataType.valueOf((String) getAttribute(task, attrName));
 	}
 
@@ -69,9 +75,9 @@ public final class PropertyServiceData extends AbstractPropertyService {
 	 * @param task the given task node
 	 * @param type the type to annotate
 	 */
-	public static void setDataType(Task task, DataType type) {
+	public static void setDataType(final Task task, final DataType type) {
 		checkTask(task);
-		String attrName = Property.DataType.name();
+		final String attrName = Property.DataType.name();
 		task.setAttribute(attrName, type.name());
 	}
 
@@ -82,12 +88,12 @@ public final class PropertyServiceData extends AbstractPropertyService {
 	 * @param task the task to annotate
 	 * @param the  key to use in the Json object
 	 */
-	public static void setJsonKey(Task task, String jsonKey) {
+	public static void setJsonKey(final Task task, final String jsonKey) {
 		checkTask(task);
 		if (!isRoot(task) && !isLeaf(task)) {
 			throw new IllegalArgumentException("Only leaf/root nodes can be annotated with a Json key.");
 		}
-		String attrName = Property.JsonKey.name();
+		final String attrName = Property.JsonKey.name();
 		task.setAttribute(attrName, jsonKey);
 	}
 
@@ -99,12 +105,12 @@ public final class PropertyServiceData extends AbstractPropertyService {
 	 * @return the json key used to store/retrieve the data in/from the Json
 	 *         output/input of the workflow
 	 */
-	public static String getJsonKey(Task task) {
+	public static String getJsonKey(final Task task) {
 		checkTask(task);
 		if (!isRoot(task) && !isLeaf(task)) {
 			throw new IllegalArgumentException("Only leaf/root nodes can be annotated with a Json key.");
 		}
-		String attrName = Property.JsonKey.name();
+		final String attrName = Property.JsonKey.name();
 		return (String) getAttribute(task, attrName);
 	}
 
@@ -113,9 +119,9 @@ public final class PropertyServiceData extends AbstractPropertyService {
 	 * 
 	 * @param task the given task
 	 */
-	public static void makeLeaf(Task task) {
+	public static void makeLeaf(final Task task) {
 		checkTask(task);
-		String attrName = Property.Leaf.name();
+		final String attrName = Property.Leaf.name();
 		task.setAttribute(attrName, true);
 	}
 
@@ -125,9 +131,9 @@ public final class PropertyServiceData extends AbstractPropertyService {
 	 * @param task the task to check.
 	 * @return <code>true</code> if the task is a leaf.
 	 */
-	public static boolean isLeaf(Task task) {
+	public static boolean isLeaf(final Task task) {
 		checkTask(task);
-		String attrName = Property.Leaf.name();
+		final String attrName = Property.Leaf.name();
 		if (!isAttributeSet(task, attrName)) {
 			return false;
 		}
@@ -139,9 +145,9 @@ public final class PropertyServiceData extends AbstractPropertyService {
 	 * 
 	 * @param task the given task
 	 */
-	public static void makeRoot(Task task) {
+	public static void makeRoot(final Task task) {
 		checkTask(task);
-		String attrName = Property.Root.name();
+		final String attrName = Property.Root.name();
 		task.setAttribute(attrName, true);
 	}
 
@@ -151,9 +157,9 @@ public final class PropertyServiceData extends AbstractPropertyService {
 	 * @param task the given task
 	 * @return <code>true</code> iff the given task is a root.
 	 */
-	public static boolean isRoot(Task task) {
+	public static boolean isRoot(final Task task) {
 		checkTask(task);
-		String attrName = Property.Root.name();
+		final String attrName = Property.Root.name();
 		if (!isAttributeSet(task, attrName)) {
 			return false;
 		}
