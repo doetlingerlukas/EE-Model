@@ -49,14 +49,14 @@ public class PropertyServiceDataTest {
 		Task task = new Communication("comm");
 		PropertyServiceData.getDataType(task);
 	}
-	
+
 	@Test
 	public void testGetSetDataType() {
 		Task task = new Communication("comm");
 		PropertyServiceData.setDataType(task, DataType.Number);
 		assertEquals(DataType.Number, PropertyServiceData.getDataType(task));
 	}
-	
+
 	@Test
 	public void testJsonKey() {
 		Task task = new Communication("comm");
@@ -76,7 +76,7 @@ public class PropertyServiceDataTest {
 		Task task = new Communication("comm");
 		PropertyServiceData.setJsonKey(task, "key");
 	}
-	
+
 	@Test
 	public void testGetSetLeaf() {
 		Task task = new Communication("comm");
