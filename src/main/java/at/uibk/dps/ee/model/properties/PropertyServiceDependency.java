@@ -24,7 +24,11 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
 		/**
 		 * General type of dependency
 		 */
-		Type
+		Type,
+		/**
+		 * The json key used by the Function endpoint of the edge
+		 */
+		JsonKey
 	}
 
 	/**
@@ -38,6 +42,28 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
 		 * Data flow
 		 */
 		Data
+	}
+	
+	/**
+	 * Returns the json key annotated at the given dependency.
+	 * 
+	 * @param dep the given dependency
+	 * @return the json key annotated at the given dependency
+	 */
+	public static String getJsonKey(final Dependency dep) {
+		final String attrName = Property.JsonKey.name();
+		return (String) getAttribute(dep, attrName);
+	}
+	
+	/**
+	 * Sets the json key of the provided dependency
+	 * 
+	 * @param dep the provided dependency
+	 * @param jsonKey the json key to set
+	 */
+	public static void setJsonKey(final Dependency dep, final String jsonKey) {
+		final String attrName = Property.JsonKey.name();
+		dep.setAttribute(attrName, jsonKey);
 	}
 
 	/**

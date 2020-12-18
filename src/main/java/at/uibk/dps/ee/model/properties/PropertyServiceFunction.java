@@ -19,6 +19,12 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 	private PropertyServiceFunction() {
 	}
 
+	/**
+	 * Properties of the function nodes.
+	 * 
+	 * @author Fedor Smirnov
+	 *
+	 */
 	public enum Property {
 		/**
 		 * A description of the resource
@@ -32,9 +38,9 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 	 * @param task the given task
 	 * @return the resource string
 	 */
-	public static String getResource(Task task) {
+	public static String getResource(final Task task) {
 		checkTask(task);
-		String attrName = Property.Resource.name();
+		final String attrName = Property.Resource.name();
 		return (String) getAttribute(task, attrName);
 	}
 
@@ -44,9 +50,9 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 	 * @param task     the given task
 	 * @param resource the resource to set
 	 */
-	public static void setResource(Task task, String resource) {
+	public static void setResource(final Task task, final String resource) {
 		checkTask(task);
-		String attrName = Property.Resource.name();
+		final String attrName = Property.Resource.name();
 		task.setAttribute(attrName, resource);
 	}
 
@@ -56,7 +62,7 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 	 * @param task the given task
 	 * @return true iff the resource has been set for the given task
 	 */
-	public static boolean isResourceSet(Task task) {
+	public static boolean isResourceSet(final Task task) {
 		checkTask(task);
 		return isAttributeSet(task, Property.Resource.name());
 	}
@@ -66,10 +72,9 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 	 * 
 	 * @param task the task to check
 	 */
-	protected static void checkTask(Task task) {
+	protected static void checkTask(final Task task) {
 		if (!TaskPropertyService.isProcess(task)) {
 			throw new IllegalArgumentException("Node " + task.getId() + " is not a function node.");
 		}
 	}
-
 }
