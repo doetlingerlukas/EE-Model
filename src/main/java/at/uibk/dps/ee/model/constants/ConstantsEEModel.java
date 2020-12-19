@@ -9,11 +9,11 @@ package at.uibk.dps.ee.model.constants;
  */
 public final class ConstantsEEModel {
 
+	public static final String DependencyAffix = "|--|";
+	
 	/**
 	 * No constructor
 	 */
 	private ConstantsEEModel() {
 	}
-	
-	public static final String DependencyAffix = "|--|";
 }

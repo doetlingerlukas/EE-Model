@@ -53,8 +53,8 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
 	 * @param dest the edge destination
 	 * @return a dependency with a unique ID made from the IDs of its endpoints
 	 */
-	public static Dependency createDependency(Task src, Task dest) {
-		String dependencyId = src.getId() + ConstantsEEModel.DependencyAffix + dest.getId();
+	public static Dependency createDependency(final Task src, final Task dest) {
+		final String dependencyId = src.getId() + ConstantsEEModel.DependencyAffix + dest.getId();
 		return new Dependency(dependencyId);
 	}
 
