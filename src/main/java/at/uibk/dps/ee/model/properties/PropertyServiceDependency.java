@@ -1,6 +1,8 @@
 package at.uibk.dps.ee.model.properties;
 
+import at.uibk.dps.ee.model.constants.ConstantsEEModel;
 import net.sf.opendse.model.Dependency;
+import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.AbstractPropertyService;
 
 /**
@@ -43,7 +45,19 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
 		 */
 		Data
 	}
-	
+
+	/**
+	 * Returns a dependency with a unique ID made from the IDs of its endpoints.
+	 * 
+	 * @param src  the edge source
+	 * @param dest the edge destination
+	 * @return a dependency with a unique ID made from the IDs of its endpoints
+	 */
+	public static Dependency createDependency(Task src, Task dest) {
+		String dependencyId = src.getId() + ConstantsEEModel.DependencyAffix + dest.getId();
+		return new Dependency(dependencyId);
+	}
+
 	/**
 	 * Returns the json key annotated at the given dependency.
 	 * 
@@ -54,11 +68,11 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
 		final String attrName = Property.JsonKey.name();
 		return (String) getAttribute(dep, attrName);
 	}
-	
+
 	/**
 	 * Sets the json key of the provided dependency
 	 * 
-	 * @param dep the provided dependency
+	 * @param dep     the provided dependency
 	 * @param jsonKey the json key to set
 	 */
 	public static void setJsonKey(final Dependency dep, final String jsonKey) {
@@ -79,7 +93,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
 	/**
 	 * Sets the type of the given dependency.
 	 * 
-	 * @param dep the given dependency
+	 * @param dep  the given dependency
 	 * @param type the type to set
 	 */
 	public static void setType(final Dependency dep, final TypeDependency type) {
