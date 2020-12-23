@@ -1,6 +1,6 @@
 package at.uibk.dps.ee.model.properties;
 
-import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 
 import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Task;
@@ -172,7 +172,7 @@ public final class PropertyServiceData extends AbstractPropertyService {
 	 * @param task    the given data node
 	 * @param content the content to annotate
 	 */
-	public static void setContent(final Task task, final JsonObject content) {
+	public static void setContent(final Task task, final JsonElement content) {
 		checkTask(task);
 		final String attrNameContent = Property.Content.name();
 		task.setAttribute(attrNameContent, content);
@@ -187,11 +187,11 @@ public final class PropertyServiceData extends AbstractPropertyService {
 	 * @param task the given task
 	 * @return the data content of the given data node
 	 */
-	public static JsonObject getContent(final Task task) {
+	public static JsonElement getContent(final Task task) {
 		checkTask(task);
 		final String attrName = Property.Content.name();
 		checkAttribute(task, attrName);
-		return (JsonObject) getAttribute(task, attrName);
+		return (JsonElement) getAttribute(task, attrName);
 	}
 
 	/**
