@@ -55,9 +55,9 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 	 * @param functionType the type to set
 	 * @param the          task to annotate
 	 */
-	public static void setType(FunctionType functionType, Task task) {
+	public static void setType(final FunctionType functionType, final Task task) {
 		checkTask(task);
-		String attrName = Property.FunctionType.name();
+		final String attrName = Property.FunctionType.name();
 		task.setAttribute(attrName, functionType.name());
 	}
 
@@ -67,9 +67,9 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 	 * @param task the given task
 	 * @return the function type of the given task
 	 */
-	public static FunctionType getType(Task task) {
+	public static FunctionType getType(final Task task) {
 		checkTask(task);
-		String attrName = Property.FunctionType.name();
+		final String attrName = Property.FunctionType.name();
 		return FunctionType.valueOf((String) getAttribute(task, attrName));
 	}
 

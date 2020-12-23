@@ -21,8 +21,15 @@ public class PropertyServiceFunctionServerlessTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void checkException() {
+	public void checkExceptionNoType() {
 		Task task = new Task("task");
+		PropertyServiceFunctionServerless.getResource(task);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void checkExceptionWrongType() {
+		Task task = new Task("task");
+		PropertyServiceFunction.setType(FunctionType.Local, task);
 		PropertyServiceFunctionServerless.getResource(task);
 	}
 }

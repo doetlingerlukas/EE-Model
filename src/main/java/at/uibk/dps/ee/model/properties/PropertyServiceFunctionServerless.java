@@ -5,31 +5,32 @@ import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.AbstractPropertyService;
 
 /**
- * Static method container for accessing the attributes of serverless function nodes.
+ * Static method container for accessing the attributes of serverless function
+ * nodes.
  * 
  * @author Fedor Smirnov
  *
  */
-public final class PropertyServiceFunctionServerless extends AbstractPropertyService{
+public final class PropertyServiceFunctionServerless extends AbstractPropertyService {
 
 	/**
 	 * No constructor
 	 */
 	private PropertyServiceFunctionServerless() {
 	}
-	
+
 	/**
 	 * Properties of serverless function nodes.
 	 * 
 	 * @author Fedor Smirnov
 	 */
-	protected enum Property{
+	protected enum Property {
 		/**
 		 * A description of the resource (only for serverless functions)
 		 */
 		Resource
 	}
-	
+
 	/**
 	 * Returns the resource string annotated with the given task.
 	 * 
@@ -64,13 +65,13 @@ public final class PropertyServiceFunctionServerless extends AbstractPropertySer
 		checkTask(task);
 		return isAttributeSet(task, Property.Resource.name());
 	}
-	
+
 	/**
 	 * Checks that the provided task is a serverless function.
-	 *  
+	 * 
 	 * @param task the provided task
 	 */
-	protected static void checkTask(Task task) {
+	protected static void checkTask(final Task task) {
 		if (!PropertyServiceFunction.getType(task).equals(FunctionType.Serverless)) {
 			throw new IllegalArgumentException("The task " + task.getId() + " is not a serverless function.");
 		}
