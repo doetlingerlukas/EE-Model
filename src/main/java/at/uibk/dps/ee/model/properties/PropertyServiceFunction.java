@@ -25,46 +25,52 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 	 * @author Fedor Smirnov
 	 *
 	 */
-	public enum Property {
+	protected enum Property {
 		/**
-		 * A description of the resource
+		 * The type of the modeled function
 		 */
-		Resource
+		FunctionType
 	}
 
 	/**
-	 * Returns the resource string annotated with the given task.
+	 * The types of the modeled function.
+	 * 
+	 * @author Fedor Smirnov
+	 *
+	 */
+	public enum FunctionType {
+		/**
+		 * Serverless functions, e.g., AWS Lambda
+		 */
+		Serverless,
+		/**
+		 * Functions executed on the same machine where the EE is running.
+		 */
+		Local
+	}
+
+	/**
+	 * Sets the function type for the provided function.
+	 * 
+	 * @param functionType the type to set
+	 * @param the          task to annotate
+	 */
+	public static void setType(FunctionType functionType, Task task) {
+		checkTask(task);
+		String attrName = Property.FunctionType.name();
+		task.setAttribute(attrName, functionType.name());
+	}
+
+	/**
+	 * Returns the function type of the given task.
 	 * 
 	 * @param task the given task
-	 * @return the resource string
+	 * @return the function type of the given task
 	 */
-	public static String getResource(final Task task) {
+	public static FunctionType getType(Task task) {
 		checkTask(task);
-		final String attrName = Property.Resource.name();
-		return (String) getAttribute(task, attrName);
-	}
-
-	/**
-	 * Sets the resource for the given task.
-	 * 
-	 * @param task     the given task
-	 * @param resource the resource to set
-	 */
-	public static void setResource(final Task task, final String resource) {
-		checkTask(task);
-		final String attrName = Property.Resource.name();
-		task.setAttribute(attrName, resource);
-	}
-
-	/**
-	 * Returns true iff the resource has been set for the given task.
-	 * 
-	 * @param task the given task
-	 * @return true iff the resource has been set for the given task
-	 */
-	public static boolean isResourceSet(final Task task) {
-		checkTask(task);
-		return isAttributeSet(task, Property.Resource.name());
+		String attrName = Property.FunctionType.name();
+		return FunctionType.valueOf((String) getAttribute(task, attrName));
 	}
 
 	/**

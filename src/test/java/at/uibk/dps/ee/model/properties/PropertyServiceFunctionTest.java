@@ -1,9 +1,10 @@
 package at.uibk.dps.ee.model.properties;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import at.uibk.dps.ee.model.properties.PropertyServiceFunction.FunctionType;
 import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Task;
 
@@ -16,12 +17,9 @@ public class PropertyServiceFunctionTest {
 	}
 
 	@Test
-	public void testGetSetResource() {
-		String resString = "resource";
+	public void testGetSetFunctionType() {
 		Task task = new Task("task");
-		assertFalse(PropertyServiceFunction.isResourceSet(task));
-		PropertyServiceFunction.setResource(task, resString);
-		assertTrue(PropertyServiceFunction.isResourceSet(task));
-		assertEquals(resString, PropertyServiceFunction.getResource(task));
+		PropertyServiceFunction.setType(FunctionType.Local, task);
+		assertEquals(FunctionType.Local, PropertyServiceFunction.getType(task));
 	}
 }
