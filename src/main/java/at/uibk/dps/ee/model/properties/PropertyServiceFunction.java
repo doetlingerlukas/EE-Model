@@ -75,6 +75,9 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 	public static State getEnactableState(Task task) {
 		checkTask(task);
 		final String attrName = Property.EnactableState.name();
+		if (!isAttributeSet(task, attrName)) {
+			return State.WAITING;
+		}
 		return State.valueOf((String) getAttribute(task, attrName));
 	}
 

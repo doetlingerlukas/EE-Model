@@ -23,11 +23,12 @@ public class PropertyServiceFunctionTest {
 		PropertyServiceFunction.setType(FunctionType.Local, task);
 		assertEquals(FunctionType.Local, PropertyServiceFunction.getType(task));
 	}
-	
+
 	@Test
 	public void testGetSetEnactableState() {
 		Task task = new Task("task");
-		PropertyServiceFunction.setEnactableState(task, State.WAITING);
 		assertEquals(State.WAITING, PropertyServiceFunction.getEnactableState(task));
+		PropertyServiceFunction.setEnactableState(task, State.RUNNING);
+		assertEquals(State.RUNNING, PropertyServiceFunction.getEnactableState(task));
 	}
 }
