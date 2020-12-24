@@ -1,5 +1,6 @@
 package at.uibk.dps.ee.model.properties;
 
+import at.uibk.dps.ee.core.enactable.Enactable.State;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.AbstractPropertyService;
 import net.sf.opendse.model.properties.TaskPropertyService;
@@ -29,7 +30,11 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 		/**
 		 * The type of the modeled function
 		 */
-		FunctionType
+		FunctionType,
+		/**
+		 * The state of the corresponding enactable
+		 */
+		EnactableState
 	}
 
 	/**
@@ -47,6 +52,30 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 		 * Functions executed on the same machine where the EE is running.
 		 */
 		Local
+	}
+	
+	/**
+	 * Annotates the provided task with the provided enactable state.
+	 * 
+	 * @param task the provided task
+	 * @param enactableState the state to annotate
+	 */
+	public static void setEnactableState(Task task, State enactableState) {
+		checkTask(task);
+		final String attrName = Property.EnactableState.name();
+		task.setAttribute(attrName, enactableState.name());
+	}
+	
+	/**
+	 * Returns the enactable state annotated at the provided function node.
+	 * 
+	 * @param task the provided function node
+	 * @return the enactable state annotated at the provided function node
+	 */
+	public static State getEnactableState(Task task) {
+		checkTask(task);
+		final String attrName = Property.EnactableState.name();
+		return State.valueOf((String) getAttribute(task, attrName));
 	}
 
 	/**
