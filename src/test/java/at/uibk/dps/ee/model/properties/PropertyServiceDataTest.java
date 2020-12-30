@@ -4,13 +4,34 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import at.uibk.dps.ee.model.properties.PropertyServiceData.DataType;
+import at.uibk.dps.ee.model.properties.PropertyServiceData.NodeType;
 import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Task;
 
 public class PropertyServiceDataTest {
+
+	@Test
+	public void testCreateConstantNode() {
+		String id = "id";
+		DataType type = DataType.String;
+		JsonElement content = new JsonObject();
+		Task result = PropertyServiceData.createConstantNode(id, type, content);
+		assertEquals(id, result.getId());
+		assertEquals(DataType.String, PropertyServiceData.getDataType(result));
+		assertEquals(NodeType.Constant, PropertyServiceData.getNodeType(result));
+		assertEquals(content, PropertyServiceData.getContent(result));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetContentConstant() {
+		Task task = new Communication("comm");
+		PropertyServiceData.setNodeType(task, NodeType.Constant);
+		PropertyServiceData.setContent(task, new JsonObject());
+	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetContentException() {

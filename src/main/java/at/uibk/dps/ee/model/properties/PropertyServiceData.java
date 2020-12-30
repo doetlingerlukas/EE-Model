@@ -50,11 +50,80 @@ public final class PropertyServiceData extends AbstractPropertyService {
 		/**
 		 * The data type
 		 */
-		DataType
+		DataType,
+		/**
+		 * The type of the data node
+		 */
+		NodeType
 	}
 
 	public enum DataType {
 		Number, String, Object, Collection, Boolean
+	}
+
+	/**
+	 * The type of data node.
+	 * 
+	 * @author Fedor Smirnov
+	 *
+	 */
+	public enum NodeType {
+		/**
+		 * The default type for data nodes: model data which is produced throughout the
+		 * enactment or provided as wf input.
+		 */
+		Default,
+		/**
+		 * Data nodes modeling constant data.
+		 */
+		Constant
+	}
+
+	/**
+	 * Returns the node type of the provided task
+	 * 
+	 * @param task the provided task
+	 * @return
+	 */
+	public static NodeType getNodeType(final Task task) {
+		checkTask(task);
+		final String attrName = Property.NodeType.name();
+		if (!isAttributeSet(task, attrName)) {
+			return NodeType.Default;
+		} else {
+			return NodeType.valueOf((String) getAttribute(task, attrName));
+		}
+	}
+
+	/**
+	 * Sets the provided node type for the provided task.
+	 * 
+	 * @param task     the provided task.
+	 * @param nodeType the node type to set
+	 */
+	public static void setNodeType(final Task task, final NodeType nodeType) {
+		checkTask(task);
+		final String attrName = Property.NodeType.name();
+		task.setAttribute(attrName, nodeType.name());
+	}
+
+	/**
+	 * Creates a constant data node with the given id, data type, and content.
+	 * 
+	 * @param id       the id of the created node
+	 * @param dataType the data type of the created node
+	 * @param content  the content of the created node
+	 * @return a constant data node with the given id, data type, and content
+	 */
+	public static Task createConstantNode(final String id, final DataType dataType, final JsonElement content) {
+		final Task result = new Communication(id);
+		setDataType(result, dataType);
+		setNodeType(result, NodeType.Constant);
+		final String attrNameContent = Property.Content.name();
+		result.setAttribute(attrNameContent, content);
+		final String dataAvalAttrName = Property.DataAvailable.name();
+		result.setAttribute(dataAvalAttrName, true);
+		return result;
 	}
 
 	/**
@@ -174,6 +243,9 @@ public final class PropertyServiceData extends AbstractPropertyService {
 	 */
 	public static void setContent(final Task task, final JsonElement content) {
 		checkTask(task);
+		if (getNodeType(task).equals(NodeType.Constant)) {
+			throw new IllegalArgumentException("The content of a constant data node must not be set.");
+		}
 		final String attrNameContent = Property.Content.name();
 		task.setAttribute(attrNameContent, content);
 		final String attrNameAval = Property.DataAvailable.name();
