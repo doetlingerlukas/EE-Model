@@ -60,7 +60,7 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 	 * @param task the provided task
 	 * @param enactableState the state to annotate
 	 */
-	public static void setEnactableState(Task task, State enactableState) {
+	public static void setEnactableState(final Task task, final State enactableState) {
 		checkTask(task);
 		final String attrName = Property.EnactableState.name();
 		task.setAttribute(attrName, enactableState.name());
@@ -72,7 +72,7 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 	 * @param task the provided function node
 	 * @return the enactable state annotated at the provided function node
 	 */
-	public static State getEnactableState(Task task) {
+	public static State getEnactableState(final Task task) {
 		checkTask(task);
 		final String attrName = Property.EnactableState.name();
 		if (!isAttributeSet(task, attrName)) {

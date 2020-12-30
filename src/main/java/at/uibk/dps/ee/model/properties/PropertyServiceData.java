@@ -88,10 +88,10 @@ public final class PropertyServiceData extends AbstractPropertyService {
 	public static NodeType getNodeType(final Task task) {
 		checkTask(task);
 		final String attrName = Property.NodeType.name();
-		if (!isAttributeSet(task, attrName)) {
-			return NodeType.Default;
-		} else {
+		if (isAttributeSet(task, attrName)) {
 			return NodeType.valueOf((String) getAttribute(task, attrName));
+		} else {
+			return NodeType.Default;
 		}
 	}
 
@@ -110,13 +110,13 @@ public final class PropertyServiceData extends AbstractPropertyService {
 	/**
 	 * Creates a constant data node with the given id, data type, and content.
 	 * 
-	 * @param id       the id of the created node
+	 * @param nodeId   the id of the created node
 	 * @param dataType the data type of the created node
 	 * @param content  the content of the created node
 	 * @return a constant data node with the given id, data type, and content
 	 */
-	public static Task createConstantNode(final String id, final DataType dataType, final JsonElement content) {
-		final Task result = new Communication(id);
+	public static Task createConstantNode(final String nodeId, final DataType dataType, final JsonElement content) {
+		final Task result = new Communication(nodeId);
 		setDataType(result, dataType);
 		setNodeType(result, NodeType.Constant);
 		final String attrNameContent = Property.Content.name();
