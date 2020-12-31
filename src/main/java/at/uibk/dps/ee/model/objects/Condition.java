@@ -23,10 +23,10 @@ public final class Condition implements Serializable {
 		EQUAL, LESS, GREATER, LESS_EQUAL, GREATER_EQUAL, UNEQUAL, STARTS_WITH, ENDS_WITH
 	}
 
-	final String firstInputId;
-	final String secondInputId;
-	final Operator operator;
-	final boolean negation;
+	private final String firstInputId;
+	private final String secondInputId;
+	private final Operator operator;
+	private final boolean negation;
 
 	/**
 	 * Standard constructor
@@ -63,7 +63,7 @@ public final class Condition implements Serializable {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append(firstInputId).append(" ").append(operator.name()).append(" ").append(secondInputId);
+		builder.append(firstInputId).append(' ').append(operator.name()).append(' ').append(secondInputId);
 		if (negation) {
 			builder.insert(0, ConstantsEEModel.NegationPrefix);
 			builder.append(ConstantsEEModel.NegationSuffix);
