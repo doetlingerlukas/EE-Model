@@ -18,13 +18,25 @@ public final class PropertyServiceFunctionUtility extends AbstractPropertyServic
 	private PropertyServiceFunctionUtility() {
 	}
 
-	protected enum Property{
+	/**
+	 * Properties defining attribute names
+	 * 
+	 * @author Fedor Smirnov
+	 *
+	 */
+	protected enum Property {
 		/**
 		 * The type of utility function
 		 */
 		UtilityType
 	}
-	
+
+	/**
+	 * Types of utility functions
+	 * 
+	 * @author Fedor Smirnov
+	 *
+	 */
 	public enum UtilityType {
 		/**
 		 * Evaluating boolean conditions.
@@ -35,19 +47,19 @@ public final class PropertyServiceFunctionUtility extends AbstractPropertyServic
 		 */
 		MultiPlex2
 	}
-	
+
 	/**
 	 * Annotates the given task with the given utility type.
 	 * 
 	 * @param task the task to annotate
 	 * @param type the type of the task
-	 */ 
+	 */
 	public static void setUtilityType(final Task task, final UtilityType type) {
 		checkTask(task);
 		final String attrName = Property.UtilityType.name();
 		task.setAttribute(attrName, type.name());
 	}
-	
+
 	/**
 	 * Returns the utility type of the given task.
 	 * 

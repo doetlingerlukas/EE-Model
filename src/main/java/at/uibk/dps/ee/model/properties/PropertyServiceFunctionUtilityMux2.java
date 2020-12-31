@@ -18,6 +18,11 @@ public final class PropertyServiceFunctionUtilityMux2 extends AbstractPropertySe
 	private PropertyServiceFunctionUtilityMux2() {
 	}
 
+	/**
+	 * Properties defining the attribute names
+	 * 
+	 * @author Fedor Smirnov
+	 */
 	protected enum Property {
 		/**
 		 * First input

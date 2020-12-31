@@ -23,10 +23,10 @@ public final class Condition implements Serializable {
 		EQUAL, LESS, GREATER, LESS_EQUAL, GREATER_EQUAL, UNEQUAL, STARTS_WITH, ENDS_WITH
 	}
 
-	protected final String firstInputId;
-	protected final String secondInputId;
-	protected final Operator operator;
-	protected final boolean negation;
+	final String firstInputId;
+	final String secondInputId;
+	final Operator operator;
+	final boolean negation;
 
 	/**
 	 * Standard constructor
@@ -63,11 +63,7 @@ public final class Condition implements Serializable {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append(firstInputId);
-		builder.append(" ");
-		builder.append(operator.name());
-		builder.append(" ");
-		builder.append(secondInputId);
+		builder.append(firstInputId).append(" ").append(operator.name()).append(" ").append(secondInputId);
 		if (negation) {
 			builder.insert(0, ConstantsEEModel.NegationPrefix);
 			builder.append(ConstantsEEModel.NegationSuffix);
@@ -87,28 +83,12 @@ public final class Condition implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
+	public boolean equals(final Object obj) {
+		if (!(obj instanceof Condition)) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Condition other = (Condition) obj;
-		if (firstInputId == null) {
-			if (other.firstInputId != null)
-				return false;
-		} else if (!firstInputId.equals(other.firstInputId))
-			return false;
-		if (negation != other.negation)
-			return false;
-		if (operator != other.operator)
-			return false;
-		if (secondInputId == null) {
-			if (other.secondInputId != null)
-				return false;
-		} else if (!secondInputId.equals(other.secondInputId))
-			return false;
-		return true;
+		}
+		final Condition otherCondi = (Condition) obj;
+		return firstInputId.equals(otherCondi.getFirstInputId()) && secondInputId.equals(otherCondi.getSecondInputId())
+				&& operator.equals(otherCondi.getOperator()) && negation == otherCondi.isNegation();
 	}
 }

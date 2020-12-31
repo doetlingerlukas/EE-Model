@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import at.uibk.dps.ee.model.constants.ConstantsEEModel;
 import at.uibk.dps.ee.model.objects.Condition.Operator;
-import nl.jqno.equalsverifier.EqualsVerifier;
 
 public class ConditionTest {
 
@@ -45,8 +44,6 @@ public class ConditionTest {
 		Condition tested2 = new Condition(first, second, operator, true);
 		
 		assertEquals(tested1, tested2);
-		
-		EqualsVerifier.forClass(Condition.class).verify();
 	}
 
 }

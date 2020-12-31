@@ -21,6 +21,12 @@ public final class PropertyServiceFunctionUtilityCondition extends AbstractPrope
 	private PropertyServiceFunctionUtilityCondition() {
 	}
 
+	/**
+	 * Properties defining attribute names
+	 * 
+	 * @author Fedor Smirnov
+	 *
+	 */
 	protected enum Property {
 		/**
 		 * The checked conditions
@@ -32,6 +38,11 @@ public final class PropertyServiceFunctionUtilityCondition extends AbstractPrope
 		Summary
 	}
 
+	/**
+	 * Ways of summarizing conditions
+	 * 
+	 * @author Fedor Smirnov
+	 */
 	public enum Summary {
 		AND, OR
 	}
@@ -42,9 +53,9 @@ public final class PropertyServiceFunctionUtilityCondition extends AbstractPrope
 	 * @param task the given task
 	 * @return the summary type annotated at the given task
 	 */
-	public static Summary getSummary(Task task) {
+	public static Summary getSummary(final Task task) {
 		checkTask(task);
-		String attrName = Property.Summary.name();
+		final String attrName = Property.Summary.name();
 		return Summary.valueOf((String) getAttribute(task, attrName));
 	}
 
@@ -54,9 +65,9 @@ public final class PropertyServiceFunctionUtilityCondition extends AbstractPrope
 	 * @param task    the provided task
 	 * @param summary the summary type to set
 	 */
-	public static void setSummary(Task task, Summary summary) {
+	public static void setSummary(final Task task, final Summary summary) {
 		checkTask(task);
-		String attrName = Property.Summary.name();
+		final String attrName = Property.Summary.name();
 		task.setAttribute(attrName, summary.name());
 	}
 
@@ -67,9 +78,9 @@ public final class PropertyServiceFunctionUtilityCondition extends AbstractPrope
 	 * @return the set of conditions annotated on the provided task
 	 */
 	@SuppressWarnings("unchecked")
-	public static Set<Condition> getConditions(Task task) {
+	public static Set<Condition> getConditions(final Task task) {
 		checkTask(task);
-		String attrName = Property.Conditions.name();
+		final String attrName = Property.Conditions.name();
 		return (Set<Condition>) getAttribute(task, attrName);
 	}
 
@@ -79,9 +90,9 @@ public final class PropertyServiceFunctionUtilityCondition extends AbstractPrope
 	 * @param task       the condition task
 	 * @param conditions the set of conditions to annotate
 	 */
-	public static void setConditions(Task task, Set<Condition> conditions) {
+	public static void setConditions(final Task task, final Set<Condition> conditions) {
 		checkTask(task);
-		String attrName = Property.Conditions.name();
+		final String attrName = Property.Conditions.name();
 		task.setAttribute(attrName, conditions);
 	}
 
@@ -90,10 +101,9 @@ public final class PropertyServiceFunctionUtilityCondition extends AbstractPrope
 	 * 
 	 * @param task the task to check.
 	 */
-	protected static void checkTask(Task task) {
+	protected static void checkTask(final Task task) {
 		if (!PropertyServiceFunctionUtility.getUtilityType(task).equals(UtilityType.Condition)) {
 			throw new IllegalArgumentException("Task " + task.getId() + " is not a condition node.");
 		}
 	}
-
 }
