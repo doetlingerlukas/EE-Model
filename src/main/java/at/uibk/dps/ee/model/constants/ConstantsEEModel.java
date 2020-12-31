@@ -10,6 +10,8 @@ package at.uibk.dps.ee.model.constants;
 public final class ConstantsEEModel {
 
 	public static final String DependencyAffix = "|--|";
+	public static final String NegationPrefix = "!(";
+	public static final String NegationSuffix = ")";
 	
 	/**
 	 * No constructor

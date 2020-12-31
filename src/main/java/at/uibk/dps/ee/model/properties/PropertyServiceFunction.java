@@ -51,13 +51,17 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 		/**
 		 * Functions executed on the same machine where the EE is running.
 		 */
-		Local
+		Local,
+		/**
+		 * Functions which realize the data and control flow defined by the WF designer
+		 */
+		Utility
 	}
-	
+
 	/**
 	 * Annotates the provided task with the provided enactable state.
 	 * 
-	 * @param task the provided task
+	 * @param task           the provided task
 	 * @param enactableState the state to annotate
 	 */
 	public static void setEnactableState(final Task task, final State enactableState) {
@@ -65,7 +69,7 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 		final String attrName = Property.EnactableState.name();
 		task.setAttribute(attrName, enactableState.name());
 	}
-	
+
 	/**
 	 * Returns the enactable state annotated at the provided function node.
 	 * 
