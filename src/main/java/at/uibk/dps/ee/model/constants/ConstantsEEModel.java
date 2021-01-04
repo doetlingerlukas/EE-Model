@@ -13,6 +13,8 @@ public final class ConstantsEEModel {
 	public static final String NegationPrefix = "!(";
 	public static final String NegationSuffix = ")";
 	
+	public static final String ConditionSuffix = "_condition";
+	
 	/**
 	 * No constructor
 	 */

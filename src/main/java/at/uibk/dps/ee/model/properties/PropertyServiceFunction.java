@@ -53,9 +53,14 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 		 */
 		Local,
 		/**
-		 * Functions which realize the data and control flow defined by the WF designer
+		 * Local functions which realize the data and control flow defined by the WF
+		 * designer with some degree of processing.
 		 */
-		Utility
+		Utility,
+		/**
+		 * Functions which do not result in computation, but only detail the data flow
+		 */
+		Syntax
 	}
 
 	/**

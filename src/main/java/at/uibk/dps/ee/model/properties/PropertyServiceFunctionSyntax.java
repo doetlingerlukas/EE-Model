@@ -1,0 +1,81 @@
+package at.uibk.dps.ee.model.properties;
+
+import at.uibk.dps.ee.model.properties.PropertyServiceFunction.FunctionType;
+import net.sf.opendse.model.Task;
+import net.sf.opendse.model.properties.AbstractPropertyService;
+
+/**
+ * Static method container to access properties of syntax function nodes.
+ * 
+ * @author Fedor Smirnov
+ */
+public final class PropertyServiceFunctionSyntax extends AbstractPropertyService {
+
+	/**
+	 * No constructor.
+	 */
+	private PropertyServiceFunctionSyntax() {
+	}
+
+	/**
+	 * Properties defining attribute names.
+	 * 
+	 * @author Fedor Smirnov
+	 *
+	 */
+	protected enum Property {
+		/**
+		 * The type of the syntax function
+		 */
+		SyntaxType
+	}
+
+	/**
+	 * Types of syntax functions.
+	 * 
+	 * @author Fedor Smirnov
+	 *
+	 */
+	public enum SyntaxType {
+		/**
+		 * Forwards the earliest available input to all outputs.
+		 */
+		EarliestInput
+	}
+
+	/**
+	 * Returns the syntax type for the given task.
+	 * 
+	 * @param task the given task
+	 * @return the syntax type for the given task
+	 */
+	public static SyntaxType getSyntaxType(Task task) {
+		checkTask(task);
+		String attrName = Property.SyntaxType.name();
+		return SyntaxType.valueOf((String) getAttribute(task, attrName));
+	}
+
+	/**
+	 * Sets the syntax type for the given task.
+	 * 
+	 * @param task the given task
+	 * @param type the type to set
+	 */
+	public static void setSyntaxType(Task task, SyntaxType type) {
+		checkTask(task);
+		String attrName = Property.SyntaxType.name();
+		task.setAttribute(attrName, type.name());
+	}
+
+	/**
+	 * Checks that the given task is a syntax task throws an exception otherwise.
+	 * 
+	 * @param task the task to check
+	 */
+	protected static void checkTask(Task task) {
+		PropertyServiceFunction.checkTask(task);
+		if (!PropertyServiceFunction.getType(task).equals(FunctionType.Syntax)) {
+			throw new IllegalArgumentException("Task " + task.getId() + " is not a syntax task");
+		}
+	}
+}

@@ -10,6 +10,7 @@ import org.junit.Test;
 import at.uibk.dps.ee.model.objects.Condition;
 import at.uibk.dps.ee.model.objects.Condition.Operator;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunction.FunctionType;
+import at.uibk.dps.ee.model.properties.PropertyServiceFunctionUtility.Property;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunctionUtility.UtilityType;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunctionUtilityCondition.Summary;
 import net.sf.opendse.model.Task;
@@ -20,7 +21,7 @@ public class PropertyServiceFunctionUtilityConditionTest {
 	public void testExc() {
 		Task task = new Task("t");
 		PropertyServiceFunction.setType(FunctionType.Utility, task);
-		PropertyServiceFunctionUtility.setUtilityType(task, UtilityType.MultiPlex2);
+		task.setAttribute(Property.UtilityType.name(), "unknown");
 		PropertyServiceFunctionUtilityCondition.getConditions(task);
 	}
 

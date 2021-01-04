@@ -42,10 +42,6 @@ public final class PropertyServiceFunctionUtility extends AbstractPropertyServic
 		 * Evaluating boolean conditions.
 		 */
 		Condition,
-		/**
-		 * Multiplexing 2 inputs
-		 */
-		MultiPlex2
 	}
 
 	/**

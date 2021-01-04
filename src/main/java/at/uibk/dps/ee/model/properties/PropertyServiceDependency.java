@@ -43,7 +43,11 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
 		/**
 		 * Data flow
 		 */
-		Data
+		Data,
+		/**
+		 * Control flow following from if compounds
+		 */
+		ControlIf
 	}
 
 	/**
