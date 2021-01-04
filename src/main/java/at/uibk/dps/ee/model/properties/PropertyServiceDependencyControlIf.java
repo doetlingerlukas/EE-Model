@@ -36,32 +36,32 @@ public final class PropertyServiceDependencyControlIf extends AbstractPropertySe
 	 * 
 	 * @param dependency the provided dependency.
 	 * @return the activation of the provided dependency
-	 */ 
-	public static boolean getActivation(Dependency dependency) {
+	 */
+	public static boolean getActivation(final Dependency dependency) {
 		checkDependency(dependency);
-		String attrName = Property.Activation.name();
+		final String attrName = Property.Activation.name();
 		return (boolean) getAttribute(dependency, attrName);
 	}
-	
+
 	/**
 	 * Sets the activation for the provided dependency.
 	 * 
 	 * @param dependency the provided dependency
 	 * @param activation the activation to set
 	 */
-	public static void setActivation(Dependency dependency, boolean activation) {
+	public static void setActivation(final Dependency dependency, final boolean activation) {
 		checkDependency(dependency);
-		String attrName = Property.Activation.name();
+		final String attrName = Property.Activation.name();
 		dependency.setAttribute(attrName, activation);
 	}
-	
+
 	/**
 	 * Checks the provided {@link Dependency}. Throws an exception if it does not
 	 * model an if control flow.
 	 * 
 	 * @param dependency the dependency to check.
 	 */
-	protected static void checkDependency(Dependency dependency) {
+	protected static void checkDependency(final Dependency dependency) {
 		if (!PropertyServiceDependency.getType(dependency).equals(TypeDependency.ControlIf)) {
 			throw new IllegalArgumentException(
 					"The dependency " + dependency.getId() + " does not model a control if implication.");

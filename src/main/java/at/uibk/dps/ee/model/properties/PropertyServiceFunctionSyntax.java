@@ -49,9 +49,9 @@ public final class PropertyServiceFunctionSyntax extends AbstractPropertyService
 	 * @param task the given task
 	 * @return the syntax type for the given task
 	 */
-	public static SyntaxType getSyntaxType(Task task) {
+	public static SyntaxType getSyntaxType(final Task task) {
 		checkTask(task);
-		String attrName = Property.SyntaxType.name();
+		final String attrName = Property.SyntaxType.name();
 		return SyntaxType.valueOf((String) getAttribute(task, attrName));
 	}
 
@@ -61,9 +61,9 @@ public final class PropertyServiceFunctionSyntax extends AbstractPropertyService
 	 * @param task the given task
 	 * @param type the type to set
 	 */
-	public static void setSyntaxType(Task task, SyntaxType type) {
+	public static void setSyntaxType(final Task task, final SyntaxType type) {
 		checkTask(task);
-		String attrName = Property.SyntaxType.name();
+		final String attrName = Property.SyntaxType.name();
 		task.setAttribute(attrName, type.name());
 	}
 
@@ -72,7 +72,7 @@ public final class PropertyServiceFunctionSyntax extends AbstractPropertyService
 	 * 
 	 * @param task the task to check
 	 */
-	protected static void checkTask(Task task) {
+	protected static void checkTask(final Task task) {
 		PropertyServiceFunction.checkTask(task);
 		if (!PropertyServiceFunction.getType(task).equals(FunctionType.Syntax)) {
 			throw new IllegalArgumentException("Task " + task.getId() + " is not a syntax task");
