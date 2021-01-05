@@ -10,9 +10,20 @@ import net.sf.opendse.model.Task;
 
 public class PropertyServiceFunctionSyntaxTest {
 
+	@Test
+	public void testCreateSyntaxFunction() {
+		String taskId = "id";
+		SyntaxType syntaxType = SyntaxType.EarliestInput;
+		Task result = PropertyServiceFunctionSyntax.createSyntaxFunction(taskId, syntaxType);
+		assertEquals(taskId, result.getId());
+		assertEquals(FunctionType.Syntax, PropertyServiceFunction.getType(result));
+		assertEquals(SyntaxType.EarliestInput, PropertyServiceFunctionSyntax.getSyntaxType(result));
+	}
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testCheckTask() {
 		Task task = new Task("task");
+		PropertyServiceFunction.setType(FunctionType.Local, task);
 		PropertyServiceFunctionSyntax.checkTask(task);
 	}
 

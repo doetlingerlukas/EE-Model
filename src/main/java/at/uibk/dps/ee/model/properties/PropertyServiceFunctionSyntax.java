@@ -44,6 +44,20 @@ public final class PropertyServiceFunctionSyntax extends AbstractPropertyService
 	}
 
 	/**
+	 * Creates a syntax function with the given ID and the given function type
+	 * 
+	 * @param taskId     the id of the task to create
+	 * @param syntaxType the syntax type
+	 * @return a syntax function with the given ID and the given function type
+	 */
+	public static Task createSyntaxFunction(final String taskId, final SyntaxType syntaxType) {
+		final Task result = new Task(taskId);
+		PropertyServiceFunction.setType(FunctionType.Syntax, result);
+		PropertyServiceFunctionSyntax.setSyntaxType(result, syntaxType);
+		return result;
+	}
+
+	/**
 	 * Returns the syntax type for the given task.
 	 * 
 	 * @param task the given task

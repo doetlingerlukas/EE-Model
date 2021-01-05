@@ -3,6 +3,7 @@ package at.uibk.dps.ee.model.objects;
 import java.io.Serializable;
 
 import at.uibk.dps.ee.model.constants.ConstantsEEModel;
+import at.uibk.dps.ee.model.properties.PropertyServiceData.DataType;
 
 /**
  * Models a boolean function which generates a boolean out of 2 inputs.
@@ -20,7 +21,19 @@ public final class Condition implements Serializable {
 	 * @author Fedor Smirnov
 	 */
 	public enum Operator {
-		EQUAL, LESS, GREATER, LESS_EQUAL, GREATER_EQUAL, UNEQUAL, STARTS_WITH, ENDS_WITH
+		EQUAL(DataType.Number), LESS(DataType.Number), GREATER(DataType.Number), LESS_EQUAL(DataType.Number),
+		GREATER_EQUAL(DataType.Number), UNEQUAL(DataType.Number), CONTAINS(DataType.String),
+		STARTS_WITH(DataType.String), ENDS_WITH(DataType.Number), AND(DataType.Boolean), OR(DataType.Boolean);
+
+		private final DataType dataType;
+
+		private Operator(DataType dataType) {
+			this.dataType = dataType;
+		}
+
+		public DataType getDataType() {
+			return this.dataType;
+		}
 	}
 
 	private final String firstInputId;

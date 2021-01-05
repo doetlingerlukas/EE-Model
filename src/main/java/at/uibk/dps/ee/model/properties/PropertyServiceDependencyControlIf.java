@@ -2,6 +2,7 @@ package at.uibk.dps.ee.model.properties;
 
 import at.uibk.dps.ee.model.properties.PropertyServiceDependency.TypeDependency;
 import net.sf.opendse.model.Dependency;
+import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.AbstractPropertyService;
 
 /**
@@ -29,6 +30,23 @@ public final class PropertyServiceDependencyControlIf extends AbstractPropertySe
 		 * => edge is active when condition variable is false.
 		 */
 		Activation
+	}
+
+	/**
+	 * Creates a control if dependency which will be used to connect the given src
+	 * to the given dest and annotates it with the given activation.
+	 * 
+	 * @param src        the src node
+	 * @param dest       the dest node
+	 * @param activation the activation bool
+	 * @return a control if dependency which will be used to connect the given src
+	 *         to the given dest and annotates it with the given activation
+	 */
+	public static Dependency createControlIfDependency(final Task src, final Task dest, final boolean activation) {
+		final Dependency result = PropertyServiceDependency.createDependency(src, dest);
+		PropertyServiceDependency.setType(result, TypeDependency.ControlIf);
+		PropertyServiceDependencyControlIf.setActivation(result, activation);
+		return result;
 	}
 
 	/**

@@ -12,8 +12,11 @@ public final class ConstantsEEModel {
 	public static final String DependencyAffix = "|--|";
 	public static final String NegationPrefix = "!(";
 	public static final String NegationSuffix = ")";
+	public static final String EarliestArrivalFuncAffix = "|or|";
 	
-	public static final String ConditionSuffix = "_condition";
+	public static final String DecisionVariableSuffix = "--decisionVariable";
+	public static final String DecisionVariableJsonKey = "decisionVariable";
+	public static final String EarliestArrivalJsonKey = "earliestArrival";
 	
 	/**
 	 * No constructor
