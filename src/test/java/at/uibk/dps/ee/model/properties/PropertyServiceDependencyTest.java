@@ -6,10 +6,43 @@ import org.junit.Test;
 
 import at.uibk.dps.ee.model.constants.ConstantsEEModel;
 import at.uibk.dps.ee.model.properties.PropertyServiceDependency.TypeDependency;
+import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Task;
 
 public class PropertyServiceDependencyTest {
+
+	@Test
+	public void testCreateDataDependency() {
+		Task proc = new Task("process");
+		Communication data = new Communication("data");
+		String jsonKey = "jsonKey";
+		Dependency result = PropertyServiceDependency.createDataDependency(proc, data, jsonKey);
+		assertEquals(jsonKey, PropertyServiceDependency.getJsonKey(result));
+		assertEquals(TypeDependency.Data, PropertyServiceDependency.getType(result));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testChecDataDepEndpointsTwoProc() {
+		Task proc1 = new Task("process1");
+		Task proc2 = new Task("process2");
+		PropertyServiceDependency.checkDataDependencyEndPoints(proc1, proc2);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testChecDataDepEndpointsTwoData() {
+		Communication data1 = new Communication("data1");
+		Communication data2 = new Communication("data2");
+		PropertyServiceDependency.checkDataDependencyEndPoints(data2, data1);
+	}
+
+	@Test
+	public void testChecDataDepEndpoints() {
+		Task proc = new Task("process");
+		Communication data = new Communication("data");
+		PropertyServiceDependency.checkDataDependencyEndPoints(proc, data);
+		PropertyServiceDependency.checkDataDependencyEndPoints(data, proc);
+	}
 
 	@Test
 	public void testCreateDependency() {

@@ -4,6 +4,7 @@ import at.uibk.dps.ee.model.constants.ConstantsEEModel;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.AbstractPropertyService;
+import net.sf.opendse.model.properties.TaskPropertyService;
 
 /**
  * Static method container to access the attributes of the enactment
@@ -60,6 +61,40 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
 	public static Dependency createDependency(final Task src, final Task dest) {
 		final String dependencyId = src.getId() + ConstantsEEModel.DependencyAffix + dest.getId();
 		return new Dependency(dependencyId);
+	}
+
+	/**
+	 * Creates and annotates a data dependency to connect the provided nodes.
+	 * 
+	 * @param src     the source node
+	 * @param dest    the destination node
+	 * @param jsonKey the key used (by the function node end point) to refer to the
+	 *                data content (of the data node end point) by the function node
+	 *                end point.
+	 * @return
+	 */
+	public static Dependency createDataDependency(final Task src, final Task dest, final String jsonKey) {
+		checkDataDependencyEndPoints(src, dest);
+		final Dependency result = createDependency(src, dest);
+		setType(result, TypeDependency.Data);
+		setJsonKey(result, jsonKey);
+		return result;
+	}
+
+	/**
+	 * Checks that we have a data AND a function node as end points, throws an
+	 * exception otherwise.
+	 * 
+	 * @param src  the src node
+	 * @param dest the dest node
+	 */
+	protected static void checkDataDependencyEndPoints(final Task src, final Task dest) {
+		final boolean functionPresent = TaskPropertyService.isProcess(src) || TaskPropertyService.isProcess(dest);
+		final boolean dataPresent = TaskPropertyService.isCommunication(src)
+				|| TaskPropertyService.isCommunication(dest);
+		if (!(functionPresent && dataPresent)) {
+			throw new IllegalArgumentException("Dependency end points are not a function AND a data node.");
+		}
 	}
 
 	/**

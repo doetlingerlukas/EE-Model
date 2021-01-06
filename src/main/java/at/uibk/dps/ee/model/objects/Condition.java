@@ -27,7 +27,7 @@ public final class Condition implements Serializable {
 
 		private final DataType dataType;
 
-		private Operator(DataType dataType) {
+		Operator(final DataType dataType) {
 			this.dataType = dataType;
 		}
 
