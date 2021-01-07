@@ -14,13 +14,16 @@ public class PropertyServiceDependencyControlIfTest {
 	public void testCreateDependency() {
 		Task src = new Task("src");
 		Task dest = new Task("dest");
+		String jsonKey = "jsonkey";
 		boolean activation = false;
-		
-		Dependency result = PropertyServiceDependencyControlIf.createControlIfDependency(src, dest, activation);
+
+		Dependency result = PropertyServiceDependencyControlIf.createControlIfDependency(src, dest, jsonKey,
+				activation);
+		assertEquals(jsonKey, PropertyServiceDependency.getJsonKey(result));
 		assertEquals(TypeDependency.ControlIf, PropertyServiceDependency.getType(result));
 		assertFalse(PropertyServiceDependencyControlIf.getActivation(result));
 	}
-	
+
 	@Test
 	public void testGetSetActivation() {
 		Dependency dep = new Dependency("dep");
