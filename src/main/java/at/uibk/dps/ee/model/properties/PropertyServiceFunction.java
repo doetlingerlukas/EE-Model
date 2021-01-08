@@ -60,7 +60,7 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 		/**
 		 * Functions which do not result in computation, but only detail the data flow
 		 */
-		Syntax
+		DataFlow
 	}
 
 	/**

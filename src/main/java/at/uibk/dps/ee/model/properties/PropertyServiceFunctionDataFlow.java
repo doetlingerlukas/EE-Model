@@ -9,12 +9,12 @@ import net.sf.opendse.model.properties.AbstractPropertyService;
  * 
  * @author Fedor Smirnov
  */
-public final class PropertyServiceFunctionSyntax extends AbstractPropertyService {
+public final class PropertyServiceFunctionDataFlow extends AbstractPropertyService {
 
 	/**
 	 * No constructor.
 	 */
-	private PropertyServiceFunctionSyntax() {
+	private PropertyServiceFunctionDataFlow() {
 	}
 
 	/**
@@ -27,7 +27,7 @@ public final class PropertyServiceFunctionSyntax extends AbstractPropertyService
 		/**
 		 * The type of the syntax function
 		 */
-		SyntaxType
+		DataFlowType
 	}
 
 	/**
@@ -52,8 +52,8 @@ public final class PropertyServiceFunctionSyntax extends AbstractPropertyService
 	 */
 	public static Task createSyntaxFunction(final String taskId, final SyntaxType syntaxType) {
 		final Task result = new Task(taskId);
-		PropertyServiceFunction.setType(FunctionType.Syntax, result);
-		PropertyServiceFunctionSyntax.setSyntaxType(result, syntaxType);
+		PropertyServiceFunction.setType(FunctionType.DataFlow, result);
+		PropertyServiceFunctionDataFlow.setSyntaxType(result, syntaxType);
 		return result;
 	}
 
@@ -65,7 +65,7 @@ public final class PropertyServiceFunctionSyntax extends AbstractPropertyService
 	 */
 	public static SyntaxType getSyntaxType(final Task task) {
 		checkTask(task);
-		final String attrName = Property.SyntaxType.name();
+		final String attrName = Property.DataFlowType.name();
 		return SyntaxType.valueOf((String) getAttribute(task, attrName));
 	}
 
@@ -77,7 +77,7 @@ public final class PropertyServiceFunctionSyntax extends AbstractPropertyService
 	 */
 	public static void setSyntaxType(final Task task, final SyntaxType type) {
 		checkTask(task);
-		final String attrName = Property.SyntaxType.name();
+		final String attrName = Property.DataFlowType.name();
 		task.setAttribute(attrName, type.name());
 	}
 
@@ -88,7 +88,7 @@ public final class PropertyServiceFunctionSyntax extends AbstractPropertyService
 	 */
 	protected static void checkTask(final Task task) {
 		PropertyServiceFunction.checkTask(task);
-		if (!PropertyServiceFunction.getType(task).equals(FunctionType.Syntax)) {
+		if (!PropertyServiceFunction.getType(task).equals(FunctionType.DataFlow)) {
 			throw new IllegalArgumentException("Task " + task.getId() + " is not a syntax task");
 		}
 	}

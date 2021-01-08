@@ -76,7 +76,11 @@ public final class PropertyServiceData extends AbstractPropertyService {
 		/**
 		 * Data nodes modeling constant data.
 		 */
-		Constant
+		Constant,
+		/**
+		 * Data nodes whose content is used for control flow decisions.
+		 */
+		Decision
 	}
 
 	/**
