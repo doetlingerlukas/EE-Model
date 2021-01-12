@@ -69,9 +69,9 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 	 * @param task the given task
 	 * @return the enactable of the given task
 	 */
-	public static Enactable getEnactable(Task task) {
+	public static Enactable getEnactable(final Task task) {
 		checkTask(task);
-		String attrName = Property.Enactable.name();
+		final String attrName = Property.Enactable.name();
 		return (Enactable) getAttribute(task, attrName);
 	}
 
