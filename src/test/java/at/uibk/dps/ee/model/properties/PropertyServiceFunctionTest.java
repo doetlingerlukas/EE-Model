@@ -4,10 +4,12 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import at.uibk.dps.ee.core.enactable.Enactable.State;
+import at.uibk.dps.ee.core.enactable.Enactable;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunction.FunctionType;
 import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Task;
+
+import static org.mockito.Mockito.mock;
 
 public class PropertyServiceFunctionTest {
 
@@ -25,10 +27,10 @@ public class PropertyServiceFunctionTest {
 	}
 
 	@Test
-	public void testGetSetEnactableState() {
+	public void testGetSetEnactable() {
 		Task task = new Task("task");
-		assertEquals(State.WAITING, PropertyServiceFunction.getEnactableState(task));
-		PropertyServiceFunction.setEnactableState(task, State.RUNNING);
-		assertEquals(State.RUNNING, PropertyServiceFunction.getEnactableState(task));
+		Enactable mockEnactable = mock(Enactable.class);
+		PropertyServiceFunction.setEnactable(task, mockEnactable);
+		assertEquals(mockEnactable, PropertyServiceFunction.getEnactable(task));
 	}
 }

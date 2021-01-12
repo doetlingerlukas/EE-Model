@@ -1,6 +1,6 @@
 package at.uibk.dps.ee.model.properties;
 
-import at.uibk.dps.ee.core.enactable.Enactable.State;
+import at.uibk.dps.ee.core.enactable.Enactable;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.AbstractPropertyService;
 import net.sf.opendse.model.properties.TaskPropertyService;
@@ -32,9 +32,9 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 		 */
 		FunctionType,
 		/**
-		 * The state of the corresponding enactable
+		 * The enactable associated with the task
 		 */
-		EnactableState
+		Enactable
 	}
 
 	/**
@@ -64,30 +64,27 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 	}
 
 	/**
-	 * Annotates the provided task with the provided enactable state.
+	 * Returns the enactable of the given task.
 	 * 
-	 * @param task           the provided task
-	 * @param enactableState the state to annotate
+	 * @param task the given task
+	 * @return the enactable of the given task
 	 */
-	public static void setEnactableState(final Task task, final State enactableState) {
+	public static Enactable getEnactable(Task task) {
 		checkTask(task);
-		final String attrName = Property.EnactableState.name();
-		task.setAttribute(attrName, enactableState.name());
+		String attrName = Property.Enactable.name();
+		return (Enactable) getAttribute(task, attrName);
 	}
 
 	/**
-	 * Returns the enactable state annotated at the provided function node.
+	 * Sets the enactable for the given task-
 	 * 
-	 * @param task the provided function node
-	 * @return the enactable state annotated at the provided function node
+	 * @param task      the given task
+	 * @param enactable the enactable to set
 	 */
-	public static State getEnactableState(final Task task) {
+	public static void setEnactable(final Task task, final Enactable enactable) {
 		checkTask(task);
-		final String attrName = Property.EnactableState.name();
-		if (!isAttributeSet(task, attrName)) {
-			return State.WAITING;
-		}
-		return State.valueOf((String) getAttribute(task, attrName));
+		String attrName = Property.Enactable.name();
+		task.setAttribute(attrName, enactable);
 	}
 
 	/**
