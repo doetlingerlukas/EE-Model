@@ -18,6 +18,8 @@ public final class ConstantsEEModel {
 	public static final String DecisionVariableJsonKey = "decisionVariable";
 	public static final String EarliestArrivalJsonKey = "earliestArrival";
 	
+	public static final String ElementIndexName = "element-index";
+	
 	/**
 	 * No constructor
 	 */

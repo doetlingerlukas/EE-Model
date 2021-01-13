@@ -41,7 +41,7 @@ public final class PropertyServiceFunctionUtility extends AbstractPropertyServic
 		/**
 		 * Evaluating boolean conditions.
 		 */
-		Condition,
+		Condition, ElementIndex
 	}
 
 	/**
