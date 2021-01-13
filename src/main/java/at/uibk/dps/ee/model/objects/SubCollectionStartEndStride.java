@@ -3,6 +3,8 @@ package at.uibk.dps.ee.model.objects;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
+import at.uibk.dps.ee.model.constants.ConstantsEEModel;
+
 /**
  * The {@link SubCollectionStartEndStride} reads a sub collection from the
  * original collection.
@@ -50,7 +52,8 @@ public class SubCollectionStartEndStride implements SubCollection {
 		String startString = start == -1 ? "" : String.valueOf(start);
 		String endString = end == -1 ? "" : String.valueOf(end);
 		String strideString = stride == -1 ? "" : String.valueOf(stride);
-		buffer.append(startString).append(':').append(endString).append(':').append(strideString);
+		buffer.append(startString).append(ConstantsEEModel.ElementIndexValueSeparatorInternal).append(endString)
+				.append(ConstantsEEModel.ElementIndexValueSeparatorInternal).append(strideString);
 		return buffer.toString();
 	}
 }
