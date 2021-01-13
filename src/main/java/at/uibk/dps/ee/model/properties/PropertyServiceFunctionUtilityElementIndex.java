@@ -39,10 +39,10 @@ public final class PropertyServiceFunctionUtilityElementIndex extends AbstractPr
 	 * @return a function node modeling the element index operation (described by
 	 *         the given subcollection) applied to the data node with the given id.
 	 */
-	public static Task createElementIndexTask(String dataId, SubCollections subCollections) {
-		String taskId = dataId + ConstantsEEModel.DependencyAffix + ConstantsEEModel.ElementIndexName
+	public static Task createElementIndexTask(final String dataId, final SubCollections subCollections) {
+		final String taskId = dataId + ConstantsEEModel.DependencyAffix + ConstantsEEModel.EIdxName
 				+ ConstantsEEModel.DependencyAffix + subCollections.toString();
-		Task result = new Task(taskId);
+		final Task result = new Task(taskId);
 		PropertyServiceFunction.setType(FunctionType.Utility, result);
 		PropertyServiceFunctionUtility.setUtilityType(result, UtilityType.ElementIndex);
 		setSubCollections(result, subCollections);
@@ -55,9 +55,9 @@ public final class PropertyServiceFunctionUtilityElementIndex extends AbstractPr
 	 * @param task           the given task
 	 * @param subCollections the subcollections to annotate
 	 */
-	protected static void setSubCollections(Task task, SubCollections subCollections) {
+	protected static void setSubCollections(final Task task, final SubCollections subCollections) {
 		checkTask(task);
-		String attrName = Property.SubCollections.name();
+		final String attrName = Property.SubCollections.name();
 		task.setAttribute(attrName, subCollections);
 	}
 
@@ -67,9 +67,9 @@ public final class PropertyServiceFunctionUtilityElementIndex extends AbstractPr
 	 * @param task the given node
 	 * @return the subCollections annotated on the given node
 	 */
-	public static SubCollections getSubCollections(Task task) {
+	public static SubCollections getSubCollections(final Task task) {
 		checkTask(task);
-		String attrName = Property.SubCollections.name();
+		final String attrName = Property.SubCollections.name();
 		return (SubCollections) getAttribute(task, attrName);
 	}
 
@@ -78,7 +78,7 @@ public final class PropertyServiceFunctionUtilityElementIndex extends AbstractPr
 	 * 
 	 * @param task the given task
 	 */
-	protected static void checkTask(Task task) {
+	protected static void checkTask(final Task task) {
 		PropertyServiceFunctionUtility.checkTask(task);
 		if (!PropertyServiceFunctionUtility.getUtilityType(task).equals(UtilityType.ElementIndex)) {
 			throw new IllegalArgumentException("The task " + task.getId() + " is not an element index task.");

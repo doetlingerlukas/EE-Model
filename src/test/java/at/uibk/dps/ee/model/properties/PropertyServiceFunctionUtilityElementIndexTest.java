@@ -23,7 +23,7 @@ public class PropertyServiceFunctionUtilityElementIndexTest {
 		String collId = "subcollection";
 		when(mock.toString()).thenReturn(collId);
 
-		String expectedId = dataId + ConstantsEEModel.DependencyAffix + ConstantsEEModel.ElementIndexName
+		String expectedId = dataId + ConstantsEEModel.DependencyAffix + ConstantsEEModel.EIdxName
 				+ ConstantsEEModel.DependencyAffix + collId;
 
 		Task result = PropertyServiceFunctionUtilityElementIndex.createElementIndexTask(dataId, mock);

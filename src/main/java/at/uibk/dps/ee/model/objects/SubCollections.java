@@ -24,16 +24,16 @@ public class SubCollections extends ArrayList<SubCollection> {
 	 * @param input the input json array
 	 * @return
 	 */
-	public JsonElement processJsonArray(JsonArray input) {
+	public JsonElement processJsonArray(final JsonArray input) {
 		if (size() == 1) {
-			SubCollection subCol = this.get(0);
+			final SubCollection subCol = this.get(0);
 			return subCol.getSubCollection(input);
 		} else {
-			JsonArray result = new JsonArray();
-			for (SubCollection subCollection : this) {
-				JsonElement subResult = subCollection.getSubCollection(input);
+			final JsonArray result = new JsonArray();
+			for (final SubCollection subCollection : this) {
+				final JsonElement subResult = subCollection.getSubCollection(input);
 				if (subResult.isJsonArray()) {
-					for (JsonElement jsonElement : subResult.getAsJsonArray()) {
+					for (final JsonElement jsonElement : subResult.getAsJsonArray()) {
 						result.add(jsonElement);
 					}
 				} else {
@@ -46,10 +46,10 @@ public class SubCollections extends ArrayList<SubCollection> {
 
 	@Override
 	public String toString() {
-		StringBuffer result = new StringBuffer();
+		final StringBuffer result = new StringBuffer();
 		for (int i = 0; i < this.size(); i++) {
 			if (i != 0) {
-				result.append(ConstantsEEModel.ElementIndexValueSeparatorExternal);
+				result.append(ConstantsEEModel.EIdxSeparatorExternal);
 			}
 			result.append(this.get(i).toString());
 		}

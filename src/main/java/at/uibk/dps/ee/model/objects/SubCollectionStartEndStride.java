@@ -26,21 +26,21 @@ public class SubCollectionStartEndStride implements SubCollection {
 	 * @param end    end (defaults to the size of the collection)
 	 * @param stride (defaults to 1)
 	 */
-	public SubCollectionStartEndStride(int start, int end, int stride) {
+	public SubCollectionStartEndStride(final int start, final int end, final int stride) {
 		this.start = start;
 		this.end = end;
 		this.stride = stride;
 	}
 
 	@Override
-	public JsonElement getSubCollection(JsonArray originalCollection) {
-		JsonArray result = new JsonArray();
-		int actualStart = start == -1 ? 0 : start;
-		int actualEnd = end == -1 ? originalCollection.size() - 1 : end;
-		int actualStride = stride == -1 ? 1 : stride;
+	public JsonElement getSubCollection(final JsonArray originalCollection) {
+		final JsonArray result = new JsonArray();
+		final int actualStart = start == -1 ? 0 : start;
+		final int actualEnd = end == -1 ? originalCollection.size() - 1 : end;
+		final int actualStride = stride == -1 ? 1 : stride;
 
 		for (int i = actualStart; i <= actualEnd; i += actualStride) {
-			JsonElement entry = originalCollection.get(i);
+			final JsonElement entry = originalCollection.get(i);
 			result.add(entry);
 		}
 		return result;
@@ -48,12 +48,12 @@ public class SubCollectionStartEndStride implements SubCollection {
 
 	@Override
 	public String toString() {
-		StringBuffer buffer = new StringBuffer();
-		String startString = start == -1 ? "" : String.valueOf(start);
-		String endString = end == -1 ? "" : String.valueOf(end);
-		String strideString = stride == -1 ? "" : String.valueOf(stride);
-		buffer.append(startString).append(ConstantsEEModel.ElementIndexValueSeparatorInternal).append(endString)
-				.append(ConstantsEEModel.ElementIndexValueSeparatorInternal).append(strideString);
+		final StringBuffer buffer = new StringBuffer();
+		final String startString = start == -1 ? "" : String.valueOf(start);
+		final String endString = end == -1 ? "" : String.valueOf(end);
+		final String strideString = stride == -1 ? "" : String.valueOf(stride);
+		buffer.append(startString).append(ConstantsEEModel.EIdxSeparatorInternal).append(endString)
+				.append(ConstantsEEModel.EIdxSeparatorInternal).append(strideString);
 		return buffer.toString();
 	}
 }

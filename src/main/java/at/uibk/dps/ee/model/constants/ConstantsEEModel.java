@@ -18,9 +18,10 @@ public final class ConstantsEEModel {
 	public static final String DecisionVariableJsonKey = "decisionVariable";
 	public static final String EarliestArrivalJsonKey = "earliestArrival";
 	
-	public static final String ElementIndexName = "element-index";
-	public static final String ElementIndexValueSeparatorInternal = ":";
-	public static final String ElementIndexValueSeparatorExternal = ",";
+	// Element index properties
+	public static final String EIdxName = "element-index";
+	public static final String EIdxSeparatorInternal = ":";
+	public static final String EIdxSeparatorExternal = ",";
 	
 	/**
 	 * No constructor

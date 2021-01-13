@@ -83,7 +83,7 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 	 */
 	public static void setEnactable(final Task task, final Enactable enactable) {
 		checkTask(task);
-		String attrName = Property.Enactable.name();
+		final String attrName = Property.Enactable.name();
 		task.setAttribute(attrName, enactable);
 	}
 
