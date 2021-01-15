@@ -25,6 +25,13 @@ public final class ConstantsEEModel {
 	public static final String EIdxEdgeIdxSeparator = "!";
 	public static final String EIdxDataKeyWord = "data";
 
+	/**
+	 * Enum for the parameters of an EIdx operation which can be determined by a
+	 * src.
+	 * 
+	 * @author Fedor Smirnov
+	 *
+	 */
 	public enum EIdxParameters {
 		Index, Start, End, Stride;
 	}
