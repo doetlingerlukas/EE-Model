@@ -13,16 +13,22 @@ public final class ConstantsEEModel {
 	public static final String NegationPrefix = "!(";
 	public static final String NegationSuffix = ")";
 	public static final String EarliestArrivalFuncAffix = "|or|";
-	
+
 	public static final String DecisionVariableSuffix = "--decisionVariable";
 	public static final String DecisionVariableJsonKey = "decisionVariable";
 	public static final String EarliestArrivalJsonKey = "earliestArrival";
-	
+
 	// Element index properties
 	public static final String EIdxName = "element-index";
 	public static final String EIdxSeparatorInternal = ":";
 	public static final String EIdxSeparatorExternal = ",";
-	
+	public static final String EIdxEdgeIdxSeparator = "!";
+	public static final String EIdxDataKeyWord = "data";
+
+	public enum EIdxParameters {
+		Index, Start, End, Stride;
+	}
+
 	/**
 	 * No constructor
 	 */

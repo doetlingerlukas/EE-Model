@@ -1,7 +1,6 @@
 package at.uibk.dps.ee.model.properties;
 
 import at.uibk.dps.ee.model.constants.ConstantsEEModel;
-import at.uibk.dps.ee.model.objects.SubCollections;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunction.FunctionType;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunctionUtility.UtilityType;
 import net.sf.opendse.model.Task;
@@ -27,7 +26,10 @@ public final class PropertyServiceFunctionUtilityElementIndex extends AbstractPr
 	 * @author Fedor Smirnov
 	 */
 	protected enum Property {
-		SubCollections
+		/**
+		 * String describing the subcollection operation done by this node
+		 */
+		SubCollectionString
 	}
 
 	/**
@@ -39,13 +41,13 @@ public final class PropertyServiceFunctionUtilityElementIndex extends AbstractPr
 	 * @return a function node modeling the element index operation (described by
 	 *         the given subcollection) applied to the data node with the given id.
 	 */
-	public static Task createElementIndexTask(final String dataId, final SubCollections subCollections) {
+	public static Task createElementIndexTask(final String dataId, final String subCollectionsString) {
 		final String taskId = dataId + ConstantsEEModel.DependencyAffix + ConstantsEEModel.EIdxName
-				+ ConstantsEEModel.DependencyAffix + subCollections.toString();
+				+ ConstantsEEModel.DependencyAffix + subCollectionsString;
 		final Task result = new Task(taskId);
 		PropertyServiceFunction.setType(FunctionType.Utility, result);
 		PropertyServiceFunctionUtility.setUtilityType(result, UtilityType.ElementIndex);
-		setSubCollections(result, subCollections);
+		setSubCollectionsString(result, subCollectionsString);
 		return result;
 	}
 
@@ -55,10 +57,10 @@ public final class PropertyServiceFunctionUtilityElementIndex extends AbstractPr
 	 * @param task           the given task
 	 * @param subCollections the subcollections to annotate
 	 */
-	protected static void setSubCollections(final Task task, final SubCollections subCollections) {
+	protected static void setSubCollectionsString(final Task task, final String subCollectionsString) {
 		checkTask(task);
-		final String attrName = Property.SubCollections.name();
-		task.setAttribute(attrName, subCollections);
+		final String attrName = Property.SubCollectionString.name();
+		task.setAttribute(attrName, subCollectionsString);
 	}
 
 	/**
@@ -67,10 +69,10 @@ public final class PropertyServiceFunctionUtilityElementIndex extends AbstractPr
 	 * @param task the given node
 	 * @return the subCollections annotated on the given node
 	 */
-	public static SubCollections getSubCollections(final Task task) {
+	public static String getSubCollectionsString(final Task task) {
 		checkTask(task);
-		final String attrName = Property.SubCollections.name();
-		return (SubCollections) getAttribute(task, attrName);
+		final String attrName = Property.SubCollectionString.name();
+		return (String) getAttribute(task, attrName);
 	}
 
 	/**
