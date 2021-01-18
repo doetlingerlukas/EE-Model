@@ -53,7 +53,7 @@ public class PropertyServiceDependencyTest {
 		String dstString = "dest";
 		Task src = new Task(srcString);
 		Task dst = new Task(dstString);
-		String expected = srcString + ConstantsEEModel.DependencyAffix + dstString;
+		String expected = srcString + ConstantsEEModel.KeywordSeparator1 + dstString;
 		Dependency result = PropertyServiceDependency.createDependency(src, dst);
 		assertEquals(expected, result.getId());
 	}

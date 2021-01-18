@@ -19,7 +19,7 @@ public class PropertyServiceFunctionUtilityElementIndexTest {
 
 		CollectionOperation operation = CollectionOperation.ElementIndex;
 
-		String expectedId = dataId + ConstantsEEModel.DependencyAffix + operation + ConstantsEEModel.DependencyAffix
+		String expectedId = dataId + ConstantsEEModel.KeywordSeparator1 + operation + ConstantsEEModel.KeywordSeparator1
 				+ collId;
 
 		Task result = PropertyServiceFunctionUtilityCollections.createCollectionOperation(dataId, collId, operation);

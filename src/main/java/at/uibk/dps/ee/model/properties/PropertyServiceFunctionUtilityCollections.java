@@ -56,8 +56,8 @@ public final class PropertyServiceFunctionUtilityCollections extends AbstractPro
 	 */
 	public static Task createCollectionOperation(final String dataId, final String subCollectionsString,
 			final CollectionOperation collectionOperation) {
-		final String taskId = dataId + ConstantsEEModel.DependencyAffix + collectionOperation.name()
-				+ ConstantsEEModel.DependencyAffix + subCollectionsString;
+		final String taskId = dataId + ConstantsEEModel.KeywordSeparator1 + collectionOperation.name()
+				+ ConstantsEEModel.KeywordSeparator1 + subCollectionsString;
 		final Task result = new Task(taskId);
 		PropertyServiceFunction.setType(FunctionType.Utility, result);
 		PropertyServiceFunctionUtility.setUtilityType(result, UtilityType.CollectionOperation);
