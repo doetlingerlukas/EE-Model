@@ -7,6 +7,7 @@ import org.junit.Test;
 import at.uibk.dps.ee.model.constants.ConstantsEEModel;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunction.FunctionType;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunctionUtility.UtilityType;
+import at.uibk.dps.ee.model.properties.PropertyServiceFunctionUtilityCollections.CollectionOperation;
 import net.sf.opendse.model.Task;
 
 public class PropertyServiceFunctionUtilityElementIndexTest {
@@ -16,23 +17,26 @@ public class PropertyServiceFunctionUtilityElementIndexTest {
 		String dataId = "data";
 		String collId = "subcollection";
 
-		String expectedId = dataId + ConstantsEEModel.DependencyAffix + ConstantsEEModel.EIdxName
-				+ ConstantsEEModel.DependencyAffix + collId;
+		CollectionOperation operation = CollectionOperation.ElementIndex;
 
-		Task result = PropertyServiceFunctionUtilityElementIndex.createElementIndexTask(dataId, collId);
-		assertEquals(UtilityType.ElementIndex, PropertyServiceFunctionUtility.getUtilityType(result));
-		assertEquals(collId, PropertyServiceFunctionUtilityElementIndex.getSubCollectionsString(result));
+		String expectedId = dataId + ConstantsEEModel.DependencyAffix + operation + ConstantsEEModel.DependencyAffix
+				+ collId;
+
+		Task result = PropertyServiceFunctionUtilityCollections.createCollectionOperation(dataId, collId, operation);
+		assertEquals(UtilityType.CollectionOperation, PropertyServiceFunctionUtility.getUtilityType(result));
+		assertEquals(collId, PropertyServiceFunctionUtilityCollections.getSubCollectionsString(result));
 		assertEquals(expectedId, result.getId());
+		assertEquals(operation, PropertyServiceFunctionUtilityCollections.getCollectionOperation(result));
 	}
 
 	@Test
 	public void testGetSetSubCollections() {
 		Task task = new Task("task");
 		PropertyServiceFunction.setType(FunctionType.Utility, task);
-		PropertyServiceFunctionUtility.setUtilityType(task, UtilityType.ElementIndex);
+		PropertyServiceFunctionUtility.setUtilityType(task, UtilityType.CollectionOperation);
 		String string = "bla";
-		PropertyServiceFunctionUtilityElementIndex.setSubCollectionsString(task, string);
-		assertEquals(string, PropertyServiceFunctionUtilityElementIndex.getSubCollectionsString(task));
+		PropertyServiceFunctionUtilityCollections.setSubCollectionsString(task, string);
+		assertEquals(string, PropertyServiceFunctionUtilityCollections.getSubCollectionsString(task));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -40,7 +44,7 @@ public class PropertyServiceFunctionUtilityElementIndexTest {
 		Task task = new Task("task");
 		PropertyServiceFunction.setType(FunctionType.Utility, task);
 		PropertyServiceFunctionUtility.setUtilityType(task, UtilityType.Condition);
-		PropertyServiceFunctionUtilityElementIndex.checkTask(task);
+		PropertyServiceFunctionUtilityCollections.checkTask(task);
 	}
 
 	@Test

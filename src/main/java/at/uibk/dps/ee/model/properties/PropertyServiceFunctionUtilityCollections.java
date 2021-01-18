@@ -8,16 +8,25 @@ import net.sf.opendse.model.properties.AbstractPropertyService;
 
 /**
  * Static method container managing the properties of the function nodes
- * modeling element index operations.
+ * modeling collection operations.
  * 
  * @author Fedor Smirnov
  */
-public final class PropertyServiceFunctionUtilityElementIndex extends AbstractPropertyService {
+public final class PropertyServiceFunctionUtilityCollections extends AbstractPropertyService {
 
 	/**
 	 * No constructor.
 	 */
-	private PropertyServiceFunctionUtilityElementIndex() {
+	private PropertyServiceFunctionUtilityCollections() {
+	}
+
+	/**
+	 * Different types of collection operations.
+	 * 
+	 * @author Fedor Smirnov
+	 */
+	public enum CollectionOperation {
+		ElementIndex, Block, Split, Replicate
 	}
 
 	/**
@@ -29,7 +38,11 @@ public final class PropertyServiceFunctionUtilityElementIndex extends AbstractPr
 		/**
 		 * String describing the subcollection operation done by this node
 		 */
-		SubCollectionString
+		SubCollectionString,
+		/**
+		 * Type of collection operation
+		 */
+		CollectionOperation
 	}
 
 	/**
@@ -41,14 +54,40 @@ public final class PropertyServiceFunctionUtilityElementIndex extends AbstractPr
 	 * @return a function node modeling the element index operation (described by
 	 *         the given subcollection) applied to the data node with the given id.
 	 */
-	public static Task createElementIndexTask(final String dataId, final String subCollectionsString) {
-		final String taskId = dataId + ConstantsEEModel.DependencyAffix + ConstantsEEModel.EIdxName
+	public static Task createCollectionOperation(final String dataId, final String subCollectionsString,
+			final CollectionOperation collectionOperation) {
+		final String taskId = dataId + ConstantsEEModel.DependencyAffix + collectionOperation.name()
 				+ ConstantsEEModel.DependencyAffix + subCollectionsString;
 		final Task result = new Task(taskId);
 		PropertyServiceFunction.setType(FunctionType.Utility, result);
-		PropertyServiceFunctionUtility.setUtilityType(result, UtilityType.ElementIndex);
+		PropertyServiceFunctionUtility.setUtilityType(result, UtilityType.CollectionOperation);
 		setSubCollectionsString(result, subCollectionsString);
+		setCollectionOperation(result, collectionOperation);
 		return result;
+	}
+
+	/**
+	 * Returns the collection operation of the provided task.
+	 * 
+	 * @param task the provided task
+	 * @return the collection operation of the provided task
+	 */
+	public static CollectionOperation getCollectionOperation(Task task) {
+		checkTask(task);
+		String attrName = Property.CollectionOperation.name();
+		return CollectionOperation.valueOf((String) getAttribute(task, attrName));
+	}
+
+	/**
+	 * Sets the collection operation for the given task.
+	 * 
+	 * @param task      the given task
+	 * @param operation the operation to set
+	 */
+	protected static void setCollectionOperation(Task task, CollectionOperation operation) {
+		checkTask(task);
+		String attrName = Property.CollectionOperation.name();
+		task.setAttribute(attrName, operation.name());
 	}
 
 	/**
@@ -82,7 +121,7 @@ public final class PropertyServiceFunctionUtilityElementIndex extends AbstractPr
 	 */
 	protected static void checkTask(final Task task) {
 		PropertyServiceFunctionUtility.checkTask(task);
-		if (!PropertyServiceFunctionUtility.getUtilityType(task).equals(UtilityType.ElementIndex)) {
+		if (!PropertyServiceFunctionUtility.getUtilityType(task).equals(UtilityType.CollectionOperation)) {
 			throw new IllegalArgumentException("The task " + task.getId() + " is not an element index task.");
 		}
 	}

@@ -1,6 +1,8 @@
 package at.uibk.dps.ee.model.properties;
 
 import at.uibk.dps.ee.model.constants.ConstantsEEModel;
+import at.uibk.dps.ee.model.graph.EnactmentGraph;
+import edu.uci.ics.jung.graph.util.EdgeType;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.AbstractPropertyService;
@@ -58,27 +60,28 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
 	 * @param dest the edge destination
 	 * @return a dependency with a unique ID made from the IDs of its endpoints
 	 */
-	public static Dependency createDependency(final Task src, final Task dest) {
+	protected static Dependency createDependency(final Task src, final Task dest) {
 		final String dependencyId = src.getId() + ConstantsEEModel.DependencyAffix + dest.getId();
 		return new Dependency(dependencyId);
 	}
 
 	/**
-	 * Creates and annotates a data dependency to connect the provided nodes.
+	 * Creates and adds a data dependency to connect the provided nodes.
 	 * 
 	 * @param src     the source node
 	 * @param dest    the destination node
 	 * @param jsonKey the key used (by the function node end point) to refer to the
 	 *                data content (of the data node end point) by the function node
 	 *                end point.
+	 * @param graph   the enactment graph
 	 * @return
 	 */
-	public static Dependency createDataDependency(final Task src, final Task dest, final String jsonKey) {
+	public static void addDataDependency(final Task src, final Task dest, final String jsonKey, EnactmentGraph graph) {
 		checkDataDependencyEndPoints(src, dest);
-		final Dependency result = createDependency(src, dest);
-		setType(result, TypeDependency.Data);
-		setJsonKey(result, jsonKey);
-		return result;
+		final Dependency dependency = createDependency(src, dest);
+		setType(dependency, TypeDependency.Data);
+		setJsonKey(dependency, jsonKey);
+		graph.addEdge(dependency, src, dest, EdgeType.DIRECTED);
 	}
 
 	/**

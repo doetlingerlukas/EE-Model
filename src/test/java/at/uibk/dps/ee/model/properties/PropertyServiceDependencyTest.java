@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import at.uibk.dps.ee.model.constants.ConstantsEEModel;
+import at.uibk.dps.ee.model.graph.EnactmentGraph;
 import at.uibk.dps.ee.model.properties.PropertyServiceDependency.TypeDependency;
 import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Dependency;
@@ -13,11 +14,13 @@ import net.sf.opendse.model.Task;
 public class PropertyServiceDependencyTest {
 
 	@Test
-	public void testCreateDataDependency() {
+	public void testAddDataDependency() {
 		Task proc = new Task("process");
 		Communication data = new Communication("data");
 		String jsonKey = "jsonKey";
-		Dependency result = PropertyServiceDependency.createDataDependency(proc, data, jsonKey);
+		EnactmentGraph graph = new EnactmentGraph();
+		PropertyServiceDependency.addDataDependency(proc, data, jsonKey, graph);
+		Dependency result = graph.getOutEdges(proc).iterator().next();
 		assertEquals(jsonKey, PropertyServiceDependency.getJsonKey(result));
 		assertEquals(TypeDependency.Data, PropertyServiceDependency.getType(result));
 	}
