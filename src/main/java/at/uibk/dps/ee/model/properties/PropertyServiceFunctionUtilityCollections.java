@@ -72,9 +72,9 @@ public final class PropertyServiceFunctionUtilityCollections extends AbstractPro
 	 * @param task the provided task
 	 * @return the collection operation of the provided task
 	 */
-	public static CollectionOperation getCollectionOperation(Task task) {
+	public static CollectionOperation getCollectionOperation(final Task task) {
 		checkTask(task);
-		String attrName = Property.CollectionOperation.name();
+		final String attrName = Property.CollectionOperation.name();
 		return CollectionOperation.valueOf((String) getAttribute(task, attrName));
 	}
 
@@ -84,9 +84,9 @@ public final class PropertyServiceFunctionUtilityCollections extends AbstractPro
 	 * @param task      the given task
 	 * @param operation the operation to set
 	 */
-	protected static void setCollectionOperation(Task task, CollectionOperation operation) {
+	protected static void setCollectionOperation(final Task task, final CollectionOperation operation) {
 		checkTask(task);
-		String attrName = Property.CollectionOperation.name();
+		final String attrName = Property.CollectionOperation.name();
 		task.setAttribute(attrName, operation.name());
 	}
 
