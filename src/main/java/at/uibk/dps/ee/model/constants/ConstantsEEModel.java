@@ -22,6 +22,7 @@ public final class ConstantsEEModel {
 	// Element index properties
 	public static final String EIdxSeparatorInternal = ":";
 	public static final String EIdxSeparatorExternal = ",";
+	public static final String BlockSeparator = ",";
 
 	/**
 	 * No constructor
