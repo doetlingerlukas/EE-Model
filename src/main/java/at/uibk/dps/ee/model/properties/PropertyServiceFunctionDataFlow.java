@@ -42,13 +42,9 @@ public final class PropertyServiceFunctionDataFlow extends AbstractPropertyServi
 		 */
 		EarliestInput,
 		/**
-		 * Distributes collection elements across multiple consumers
+		 * Operations for collection distribution and aggregation
 		 */
-		Distribution,
-		/**
-		 * Aggregates elements from multiple producers into a single collection
-		 */
-		Aggregation
+		Collections,
 	}
 
 	/**
