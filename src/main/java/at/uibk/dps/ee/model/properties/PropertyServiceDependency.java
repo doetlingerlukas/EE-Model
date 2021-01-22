@@ -76,7 +76,8 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
 	 * @param graph   the enactment graph
 	 * @return
 	 */
-	public static void addDataDependency(final Task src, final Task dest, final String jsonKey, EnactmentGraph graph) {
+	public static void addDataDependency(final Task src, final Task dest, final String jsonKey,
+			final EnactmentGraph graph) {
 		checkDataDependencyEndPoints(src, dest);
 		final Dependency dependency = createDependency(src, dest);
 		setType(dependency, TypeDependency.Data);
