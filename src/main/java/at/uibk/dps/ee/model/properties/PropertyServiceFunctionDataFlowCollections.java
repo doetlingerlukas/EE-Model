@@ -59,6 +59,36 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
 		setScope(result, scope);
 		return result;
 	}
+	
+	/**
+	 * Returns true iff the given node is an aggregation node.
+	 * 
+	 * @param task the given task
+	 * @return true iff the given node is an aggregation node
+	 */
+	public static boolean isAggregationNode(Task task) {
+		try {
+			checkTask(task);
+			return getOperationType(task).equals(OperationType.Aggregation);
+		}catch(IllegalArgumentException exc) {
+			return false;
+		}
+	}
+	
+	/**
+	 * Returns true iff the given node is an distribution node.
+	 * 
+	 * @param task the given task
+	 * @return true iff the given node is an distribution node
+	 */
+	public static boolean isDistributionNode(Task task) {
+		try {
+			checkTask(task);
+			return getOperationType(task).equals(OperationType.Distribution);
+		}catch(IllegalArgumentException exc) {
+			return false;
+		}
+	}
 
 	/**
 	 * Sets the given operation type for the givent task.
