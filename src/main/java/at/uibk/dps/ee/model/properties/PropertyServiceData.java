@@ -54,7 +54,7 @@ public final class PropertyServiceData extends AbstractPropertyService {
 		/**
 		 * The type of the data node
 		 */
-		NodeType
+		NodeType,
 	}
 
 	public enum DataType {

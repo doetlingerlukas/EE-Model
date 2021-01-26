@@ -13,6 +13,8 @@ public final class ConstantsEEModel {
 	public static final String KeyWordSeparator2 = "__";
 	public static final String NegationPrefix = "!(";
 	public static final String NegationSuffix = ")";
+	public static final String CollectionIndexPrefix = "[";
+	public static final String CollectionIndexSuffix = "]";
 	public static final String EarliestArrivalFuncAffix = "|or|";
 
 	public static final String DecisionVariableSuffix = "--decisionVariable";
@@ -35,5 +37,38 @@ public final class ConstantsEEModel {
 	 * No constructor
 	 */
 	private ConstantsEEModel() {
+	}
+
+	/**
+	 * Returns the key used to access the element of a collection on an index.
+	 * 
+	 * @param collName the name of the collection
+	 * @param idx      the index
+	 * @return the element of a collection on an index
+	 */
+	public static String getCollectionElementKey(String collName, int idx) {
+		return collName + ConstantsEEModel.CollectionIndexPrefix + idx + ConstantsEEModel.CollectionIndexSuffix;
+	}
+
+	/**
+	 * Returns the collection name
+	 * 
+	 * @param elementKey the string used as the json key of a single element
+	 * @return the collection name
+	 */
+	public static String getCollectionName(String elementKey) {
+		return elementKey.split("\\" + CollectionIndexPrefix)[0];
+	}
+
+	/**
+	 * Returns the element index
+	 * 
+	 * @param elementKey the string used as the json key of a single element
+	 * @return the element index name
+	 */
+	public static int getElementIndex(String elementKey) {
+		String intString = elementKey.split("\\" + CollectionIndexPrefix)[1];
+		intString = intString.split("\\" + CollectionIndexSuffix)[0];
+		return Integer.parseInt(intString);
 	}
 }

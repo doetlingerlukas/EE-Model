@@ -66,7 +66,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
 	}
 
 	/**
-	 * Creates and adds a data dependency to connect the provided nodes.
+	 * Creates and adds a data dependency to connect the provided nodes. Returns the created dependency.
 	 * 
 	 * @param src     the source node
 	 * @param dest    the destination node
@@ -74,15 +74,16 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
 	 *                data content (of the data node end point) by the function node
 	 *                end point.
 	 * @param graph   the enactment graph
-	 * @return
+	 * @return the created dependency
 	 */
-	public static void addDataDependency(final Task src, final Task dest, final String jsonKey,
+	public static Dependency addDataDependency(final Task src, final Task dest, final String jsonKey,
 			final EnactmentGraph graph) {
 		checkDataDependencyEndPoints(src, dest);
 		final Dependency dependency = createDependency(src, dest);
 		setType(dependency, TypeDependency.Data);
 		setJsonKey(dependency, jsonKey);
 		graph.addEdge(dependency, src, dest, EdgeType.DIRECTED);
+		return dependency;
 	}
 
 	/**

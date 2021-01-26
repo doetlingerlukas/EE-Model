@@ -31,7 +31,11 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
 		/**
 		 * The compound defining the scope between the distribution and the aggregation.
 		 */
-		Scope
+		Scope,
+		/**
+		 * The number of iterations.
+		 */
+		IterationNumber
 	}
 
 	/**
@@ -59,7 +63,35 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
 		setScope(result, scope);
 		return result;
 	}
-	
+
+	/**
+	 * Sets the iteration number for the provided task.
+	 * 
+	 * @param task            the provided task
+	 * @param iterationNumber the iteration number
+	 */
+	public static void setIterationNumber(Task task, int iterationNumber) {
+		if (!isDistributionNode(task)) {
+			throw new IllegalArgumentException("Task " + task.getId() + " is not a distribution node.");
+		}
+		String attrName = Property.IterationNumber.name();
+		task.setAttribute(attrName, iterationNumber);
+	}
+
+	/**
+	 * Returns the iteration number annotated at the given task.
+	 * 
+	 * @param task the given task
+	 * @return the iteration number annotated at the given task
+	 */
+	public static int getIterationNumber(Task task) {
+		if (!isDistributionNode(task)) {
+			throw new IllegalArgumentException("Task " + task.getId() + " is not a distribution node.");
+		}
+		String attrName = Property.IterationNumber.name();
+		return (int) getAttribute(task, attrName);
+	}
+
 	/**
 	 * Returns true iff the given node is an aggregation node.
 	 * 
@@ -70,11 +102,11 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
 		try {
 			checkTask(task);
 			return getOperationType(task).equals(OperationType.Aggregation);
-		}catch(IllegalArgumentException exc) {
+		} catch (IllegalArgumentException exc) {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Returns true iff the given node is an distribution node.
 	 * 
@@ -85,7 +117,7 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
 		try {
 			checkTask(task);
 			return getOperationType(task).equals(OperationType.Distribution);
-		}catch(IllegalArgumentException exc) {
+		} catch (IllegalArgumentException exc) {
 			return false;
 		}
 	}

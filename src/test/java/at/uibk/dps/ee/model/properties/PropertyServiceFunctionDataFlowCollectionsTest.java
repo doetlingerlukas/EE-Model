@@ -17,6 +17,24 @@ public class PropertyServiceFunctionDataFlowCollectionsTest {
 				OperationType.Distribution, scope);
 		assertEquals(scope, PropertyServiceFunctionDataFlowCollections.getScope(task));
 		assertEquals(OperationType.Distribution, PropertyServiceFunctionDataFlowCollections.getOperationType(task));
+		PropertyServiceFunctionDataFlowCollections.setIterationNumber(task, 3);
+		assertEquals(3, PropertyServiceFunctionDataFlowCollections.getIterationNumber(task));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testExc3() {
+		String scope = "here";
+		Task task = PropertyServiceFunctionDataFlowCollections.createCollectionDataFlowTask("t",
+				OperationType.Aggregation, scope);
+		PropertyServiceFunctionDataFlowCollections.getIterationNumber(task);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testExc2() {
+		String scope = "here";
+		Task task = PropertyServiceFunctionDataFlowCollections.createCollectionDataFlowTask("t",
+				OperationType.Aggregation, scope);
+		PropertyServiceFunctionDataFlowCollections.setIterationNumber(task, 3);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
