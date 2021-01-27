@@ -66,7 +66,8 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
 	}
 
 	/**
-	 * Creates and adds a data dependency to connect the provided nodes. Returns the created dependency.
+	 * Creates and adds a data dependency to connect the provided nodes. Returns the
+	 * created dependency.
 	 * 
 	 * @param src     the source node
 	 * @param dest    the destination node

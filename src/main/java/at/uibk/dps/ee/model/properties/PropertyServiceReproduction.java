@@ -52,8 +52,8 @@ public final class PropertyServiceReproduction extends AbstractPropertyService {
 	 * @param distributionNode the distribution node
 	 * @return true if the given node belongs to the given distribution node
 	 */
-	public static boolean belongsToDistributionNode(Task task, Task distributionNode) {
-		String attrName = Property.DistributionNode.name();
+	public static boolean belongsToDistributionNode(final Task task, final Task distributionNode) {
+		final String attrName = Property.DistributionNode.name();
 		if (!isAttributeSet(task, attrName)) {
 			return false;
 		}
@@ -66,8 +66,8 @@ public final class PropertyServiceReproduction extends AbstractPropertyService {
 	 * @param task             the task to annotate
 	 * @param distributionNode the distribution node
 	 */
-	public static void annotateDistributionNode(Task task, String distributionNodeId) {
-		String attrName = Property.DistributionNode.name();
+	public static void annotateDistributionNode(final Task task, final String distributionNodeId) {
+		final String attrName = Property.DistributionNode.name();
 		task.setAttribute(attrName, distributionNodeId);
 	}
 
@@ -77,11 +77,11 @@ public final class PropertyServiceReproduction extends AbstractPropertyService {
 	 * @param element     the given element
 	 * @param scopeString the provided scope string
 	 */
-	protected static void setReproductionScope(Element element, String scopeString) {
+	protected static void setReproductionScope(final Element element, final String scopeString) {
 		if (!isReproduced(element)) {
 			throw new IllegalArgumentException("The element " + element.getId() + " was not created by reproduction.");
 		}
-		String attrName = Property.ReproductionScope.name();
+		final String attrName = Property.ReproductionScope.name();
 		element.setAttribute(attrName, scopeString);
 	}
 
@@ -91,11 +91,11 @@ public final class PropertyServiceReproduction extends AbstractPropertyService {
 	 * @param element the given element
 	 * @return the reproduction scope of the given element
 	 */
-	public static String getReproductionScope(Element element) {
+	public static String getReproductionScope(final Element element) {
 		if (!isReproduced(element)) {
 			throw new IllegalArgumentException("The element " + element.getId() + " was not created by reproduction.");
 		}
-		String attrName = Property.ReproductionScope.name();
+		final String attrName = Property.ReproductionScope.name();
 		return (String) getAttribute(element, attrName);
 	}
 
@@ -105,8 +105,8 @@ public final class PropertyServiceReproduction extends AbstractPropertyService {
 	 * @param element the given element
 	 * @return true if the given element was created by reproduction
 	 */
-	public static boolean isReproduced(Element element) {
-		String attrName = Property.IsReproduced.name();
+	public static boolean isReproduced(final Element element) {
+		final String attrName = Property.IsReproduced.name();
 		if (!isAttributeSet(element, attrName)) {
 			return false;
 		}
@@ -118,8 +118,8 @@ public final class PropertyServiceReproduction extends AbstractPropertyService {
 	 * 
 	 * @param element the given element
 	 */
-	protected static void makeReproduced(Element element) {
-		String attrName = Property.IsReproduced.name();
+	protected static void makeReproduced(final Element element) {
+		final String attrName = Property.IsReproduced.name();
 		element.setAttribute(attrName, true);
 	}
 
@@ -137,8 +137,8 @@ public final class PropertyServiceReproduction extends AbstractPropertyService {
 	 * @return the created dependency
 	 */
 	public static Dependency addDataDependencyOffspring(final Task src, final Task dest, final String jsonKey,
-			final EnactmentGraph graph, Dependency parent, String reproductionScope) {
-		Dependency dependency = PropertyServiceDependency.addDataDependency(src, dest, jsonKey, graph);
+			final EnactmentGraph graph, final Dependency parent, final String reproductionScope) {
+		final Dependency dependency = PropertyServiceDependency.addDataDependency(src, dest, jsonKey, graph);
 		dependency.setParent(parent);
 		makeReproduced(dependency);
 		setReproductionScope(dependency, reproductionScope);
@@ -153,8 +153,9 @@ public final class PropertyServiceReproduction extends AbstractPropertyService {
 	 * @param offspringId the offspring ID
 	 * @return an offspring task for the given original.
 	 */
-	public static Task createOffspringTask(Task original, String scope, String offspringId) {
-		Task result = TaskPropertyService.isProcess(original) ? new Task(offspringId) : new Communication(offspringId);
+	public static Task createOffspringTask(final Task original, final String scope, final String offspringId) {
+		final Task result = TaskPropertyService.isProcess(original) ? new Task(offspringId)
+				: new Communication(offspringId);
 		result.setParent(original);
 		makeReproduced(result);
 		setReproductionScope(result, scope);

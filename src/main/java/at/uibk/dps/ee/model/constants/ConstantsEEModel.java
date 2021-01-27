@@ -46,7 +46,7 @@ public final class ConstantsEEModel {
 	 * @param idx      the index
 	 * @return the element of a collection on an index
 	 */
-	public static String getCollectionElementKey(String collName, int idx) {
+	public static String getCollectionElementKey(final String collName, final int idx) {
 		return collName + ConstantsEEModel.CollectionIndexPrefix + idx + ConstantsEEModel.CollectionIndexSuffix;
 	}
 
@@ -56,17 +56,17 @@ public final class ConstantsEEModel {
 	 * @param elementKey the string used as the json key of a single element
 	 * @return the collection name
 	 */
-	public static String getCollectionName(String elementKey) {
+	public static String getCollectionName(final String elementKey) {
 		return elementKey.split("\\" + CollectionIndexPrefix)[0];
 	}
 
 	/**
-	 * Returns the element index
+	 * Returns the array index (position of the element within the array)
 	 * 
 	 * @param elementKey the string used as the json key of a single element
-	 * @return the element index name
+	 * @return the index of the element within the array
 	 */
-	public static int getElementIndex(String elementKey) {
+	public static int getArrayIndex(final String elementKey) {
 		String intString = elementKey.split("\\" + CollectionIndexPrefix)[1];
 		intString = intString.split("\\" + CollectionIndexSuffix)[0];
 		return Integer.parseInt(intString);
