@@ -81,7 +81,7 @@ public final class PropertyServiceReproduction extends AbstractPropertyService {
 		if (!isReproduced(element)) {
 			throw new IllegalArgumentException("The element " + element.getId() + " was not created by reproduction.");
 		}
-		String attrName = Property.IsReproduced.name();
+		String attrName = Property.ReproductionScope.name();
 		element.setAttribute(attrName, scopeString);
 	}
 
@@ -95,7 +95,7 @@ public final class PropertyServiceReproduction extends AbstractPropertyService {
 		if (!isReproduced(element)) {
 			throw new IllegalArgumentException("The element " + element.getId() + " was not created by reproduction.");
 		}
-		String attrName = Property.IsReproduced.name();
+		String attrName = Property.ReproductionScope.name();
 		return (String) getAttribute(element, attrName);
 	}
 

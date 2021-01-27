@@ -1,8 +1,10 @@
 package at.uibk.dps.ee.model.properties;
 
+import at.uibk.dps.ee.model.properties.PropertyServiceFunction.FunctionType;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunctionDataFlow.DataFlowType;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.AbstractPropertyService;
+import net.sf.opendse.model.properties.TaskPropertyService;
 
 /**
  * Static method container for methods used to control the properties of the
@@ -57,8 +59,9 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
 	 * @return a task with the given ID, modeling the requested collection data flow
 	 *         operation
 	 */
-	public static Task createCollectionDataFlowTask(String taskId, OperationType operationType, String scope) {
-		Task result = PropertyServiceFunctionDataFlow.createDataFlowFunction(taskId, DataFlowType.Collections);
+	public static Task createCollectionDataFlowTask(final String taskId, final OperationType operationType,
+			final String scope) {
+		final Task result = PropertyServiceFunctionDataFlow.createDataFlowFunction(taskId, DataFlowType.Collections);
 		setOperationType(result, operationType);
 		setScope(result, scope);
 		return result;
@@ -70,11 +73,11 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
 	 * @param task            the provided task
 	 * @param iterationNumber the iteration number
 	 */
-	public static void setIterationNumber(Task task, int iterationNumber) {
+	public static void setIterationNumber(final Task task, final int iterationNumber) {
 		if (!isDistributionNode(task)) {
 			throw new IllegalArgumentException("Task " + task.getId() + " is not a distribution node.");
 		}
-		String attrName = Property.IterationNumber.name();
+		final String attrName = Property.IterationNumber.name();
 		task.setAttribute(attrName, iterationNumber);
 	}
 
@@ -84,11 +87,11 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
 	 * @param task the given task
 	 * @return the iteration number annotated at the given task
 	 */
-	public static int getIterationNumber(Task task) {
+	public static int getIterationNumber(final Task task) {
 		if (!isDistributionNode(task)) {
 			throw new IllegalArgumentException("Task " + task.getId() + " is not a distribution node.");
 		}
-		String attrName = Property.IterationNumber.name();
+		final String attrName = Property.IterationNumber.name();
 		return (int) getAttribute(task, attrName);
 	}
 
@@ -98,13 +101,11 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
 	 * @param task the given task
 	 * @return true iff the given node is an aggregation node
 	 */
-	public static boolean isAggregationNode(Task task) {
-		try {
-			checkTask(task);
-			return getOperationType(task).equals(OperationType.Aggregation);
-		} catch (IllegalArgumentException exc) {
-			return false;
-		}
+	public static boolean isAggregationNode(final Task task) {
+		return TaskPropertyService.isProcess(task)
+				&& PropertyServiceFunction.getType(task).equals(FunctionType.DataFlow)
+				&& PropertyServiceFunctionDataFlow.getDataFlowType(task).equals(DataFlowType.Collections)
+				&& PropertyServiceFunctionDataFlowCollections.getOperationType(task).equals(OperationType.Aggregation);
 	}
 
 	/**
@@ -113,13 +114,11 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
 	 * @param task the given task
 	 * @return true iff the given node is an distribution node
 	 */
-	public static boolean isDistributionNode(Task task) {
-		try {
-			checkTask(task);
-			return getOperationType(task).equals(OperationType.Distribution);
-		} catch (IllegalArgumentException exc) {
-			return false;
-		}
+	public static boolean isDistributionNode(final Task task) {
+		return TaskPropertyService.isProcess(task)
+				&& PropertyServiceFunction.getType(task).equals(FunctionType.DataFlow)
+				&& PropertyServiceFunctionDataFlow.getDataFlowType(task).equals(DataFlowType.Collections)
+				&& PropertyServiceFunctionDataFlowCollections.getOperationType(task).equals(OperationType.Distribution);
 	}
 
 	/**
@@ -128,9 +127,9 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
 	 * @param task          the given task
 	 * @param operationType the given operation type
 	 */
-	protected static void setOperationType(Task task, OperationType operationType) {
+	protected static void setOperationType(final Task task, final OperationType operationType) {
 		checkTask(task);
-		String attrName = Property.OperationType.name();
+		final String attrName = Property.OperationType.name();
 		task.setAttribute(attrName, operationType.name());
 	}
 
@@ -140,9 +139,9 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
 	 * @param task the given task
 	 * @return the operation type of the given task
 	 */
-	public static OperationType getOperationType(Task task) {
+	public static OperationType getOperationType(final Task task) {
 		checkTask(task);
-		String attrName = Property.OperationType.name();
+		final String attrName = Property.OperationType.name();
 		return OperationType.valueOf((String) getAttribute(task, attrName));
 	}
 
@@ -152,9 +151,9 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
 	 * @param task the given task
 	 * @return the scope string
 	 */
-	public static String getScope(Task task) {
+	public static String getScope(final Task task) {
 		checkTask(task);
-		String attrName = Property.Scope.name();
+		final String attrName = Property.Scope.name();
 		return (String) getAttribute(task, attrName);
 	}
 
@@ -164,9 +163,9 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
 	 * @param task  the given task
 	 * @param scope the scope
 	 */
-	protected static void setScope(Task task, String scope) {
+	protected static void setScope(final Task task, final String scope) {
 		checkTask(task);
-		String attrName = Property.Scope.name();
+		final String attrName = Property.Scope.name();
 		task.setAttribute(attrName, scope);
 	}
 
@@ -175,7 +174,7 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
 	 * 
 	 * @param task the given task
 	 */
-	protected static void checkTask(Task task) {
+	protected static void checkTask(final Task task) {
 		PropertyServiceFunctionDataFlow.checkTask(task);
 		if (!PropertyServiceFunctionDataFlow.getDataFlowType(task).equals(DataFlowType.Collections)) {
 			throw new IllegalArgumentException(
