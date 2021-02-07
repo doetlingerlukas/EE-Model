@@ -9,8 +9,15 @@ package at.uibk.dps.ee.model.constants;
  */
 public final class ConstantsEEModel {
 
+	// General constants
 	public static final String KeywordSeparator1 = "--";
 	public static final String KeyWordSeparator2 = "__";
+	
+	// Resource graph constants
+	public static final String idLocalResource = "Enactment Engine (Local Machine)";
+	
+	
+	// Enactment graph constants
 	public static final String NegationPrefix = "!(";
 	public static final String NegationSuffix = ")";
 	public static final String CollectionIndexPrefix = "[";

@@ -1,6 +1,6 @@
 package at.uibk.dps.ee.model.properties;
 
-import at.uibk.dps.ee.model.properties.PropertyServiceFunction.FunctionType;
+import at.uibk.dps.ee.model.properties.PropertyServiceFunction.UsageType;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunctionDataFlow.DataFlowType;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.AbstractPropertyService;
@@ -103,7 +103,7 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
 	 */
 	public static boolean isAggregationNode(final Task task) {
 		return TaskPropertyService.isProcess(task)
-				&& PropertyServiceFunction.getType(task).equals(FunctionType.DataFlow)
+				&& PropertyServiceFunction.getUsageType(task).equals(UsageType.DataFlow)
 				&& PropertyServiceFunctionDataFlow.getDataFlowType(task).equals(DataFlowType.Collections)
 				&& PropertyServiceFunctionDataFlowCollections.getOperationType(task).equals(OperationType.Aggregation);
 	}
@@ -116,7 +116,7 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
 	 */
 	public static boolean isDistributionNode(final Task task) {
 		return TaskPropertyService.isProcess(task)
-				&& PropertyServiceFunction.getType(task).equals(FunctionType.DataFlow)
+				&& PropertyServiceFunction.getUsageType(task).equals(UsageType.DataFlow)
 				&& PropertyServiceFunctionDataFlow.getDataFlowType(task).equals(DataFlowType.Collections)
 				&& PropertyServiceFunctionDataFlowCollections.getOperationType(task).equals(OperationType.Distribution);
 	}

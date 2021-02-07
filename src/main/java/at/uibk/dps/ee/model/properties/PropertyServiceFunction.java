@@ -30,12 +30,14 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 		/**
 		 * The type of the modeled function
 		 */
-		FunctionType,
+		UsageType,
 		/**
 		 * The enactable associated with the task
 		 */
 		Enactable
 	}
+	
+	protected static final String propNameUsageType = Property.UsageType.name();
 
 	/**
 	 * The types of the modeled function.
@@ -43,15 +45,12 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 	 * @author Fedor Smirnov
 	 *
 	 */
-	public enum FunctionType {
+	public enum UsageType {
 		/**
-		 * Serverless functions, e.g., AWS Lambda
+		 * Functions performing the actual calculation/processing defined by the user
+		 * (the practical purpose of the WF execution).
 		 */
-		Serverless,
-		/**
-		 * Functions executed on the same machine where the EE is running.
-		 */
-		Local,
+		User,
 		/**
 		 * Local functions which realize the data and control flow defined by the WF
 		 * designer with some degree of processing.
@@ -93,10 +92,9 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 	 * @param functionType the type to set
 	 * @param the          task to annotate
 	 */
-	public static void setType(final FunctionType functionType, final Task task) {
+	public static void setUsageType(final UsageType functionType, final Task task) {
 		checkTask(task);
-		final String attrName = Property.FunctionType.name();
-		task.setAttribute(attrName, functionType.name());
+		task.setAttribute(propNameUsageType, functionType.name());
 	}
 
 	/**
@@ -105,10 +103,9 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
 	 * @param task the given task
 	 * @return the function type of the given task
 	 */
-	public static FunctionType getType(final Task task) {
+	public static UsageType getUsageType(final Task task) {
 		checkTask(task);
-		final String attrName = Property.FunctionType.name();
-		return FunctionType.valueOf((String) getAttribute(task, attrName));
+		return UsageType.valueOf((String) getAttribute(task, propNameUsageType));
 	}
 
 	/**

@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import at.uibk.dps.ee.model.constants.ConstantsEEModel;
-import at.uibk.dps.ee.model.properties.PropertyServiceFunction.FunctionType;
+import at.uibk.dps.ee.model.properties.PropertyServiceFunction.UsageType;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunctionUtility.UtilityType;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunctionUtilityCollections.CollectionOperation;
 import net.sf.opendse.model.Task;
@@ -32,7 +32,7 @@ public class PropertyServiceFunctionUtilityElementIndexTest {
 	@Test
 	public void testGetSetSubCollections() {
 		Task task = new Task("task");
-		PropertyServiceFunction.setType(FunctionType.Utility, task);
+		PropertyServiceFunction.setUsageType(UsageType.Utility, task);
 		PropertyServiceFunctionUtility.setUtilityType(task, UtilityType.CollectionOperation);
 		String string = "bla";
 		PropertyServiceFunctionUtilityCollections.setSubCollectionsString(task, string);
@@ -42,7 +42,7 @@ public class PropertyServiceFunctionUtilityElementIndexTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testCheckTask() {
 		Task task = new Task("task");
-		PropertyServiceFunction.setType(FunctionType.Utility, task);
+		PropertyServiceFunction.setUsageType(UsageType.Utility, task);
 		PropertyServiceFunctionUtility.setUtilityType(task, UtilityType.Condition);
 		PropertyServiceFunctionUtilityCollections.checkTask(task);
 	}

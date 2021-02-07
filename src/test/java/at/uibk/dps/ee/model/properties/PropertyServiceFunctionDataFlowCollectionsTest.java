@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import at.uibk.dps.ee.model.properties.PropertyServiceFunction.FunctionType;
+import at.uibk.dps.ee.model.properties.PropertyServiceFunction.UsageType;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunctionDataFlow.DataFlowType;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunctionDataFlowCollections.OperationType;
 import net.sf.opendse.model.Communication;
@@ -53,7 +53,7 @@ public class PropertyServiceFunctionDataFlowCollectionsTest {
 
 		Communication noAggTask1 = new Communication("comm");
 		Task noAggTask2 = new Task("task");
-		PropertyServiceFunction.setType(FunctionType.Local, noAggTask2);
+		PropertyServiceFunction.setUsageType(UsageType.User, noAggTask2);
 		Task noAggTask3 = PropertyServiceFunctionDataFlow.createDataFlowFunction("bla", DataFlowType.EarliestInput);
 		Task noAggTask4 = PropertyServiceFunctionDataFlowCollections.createCollectionDataFlowTask("bla",
 				OperationType.Distribution, "scope");
@@ -72,7 +72,7 @@ public class PropertyServiceFunctionDataFlowCollectionsTest {
 
 		Communication noAggTask1 = new Communication("comm");
 		Task noAggTask2 = new Task("task");
-		PropertyServiceFunction.setType(FunctionType.Local, noAggTask2);
+		PropertyServiceFunction.setUsageType(UsageType.User, noAggTask2);
 		Task noAggTask3 = PropertyServiceFunctionDataFlow.createDataFlowFunction("bla", DataFlowType.EarliestInput);
 		Task noAggTask4 = PropertyServiceFunctionDataFlowCollections.createCollectionDataFlowTask("bla",
 				OperationType.Aggregation, "scope");

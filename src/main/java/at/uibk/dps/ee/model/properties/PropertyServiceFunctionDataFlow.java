@@ -1,6 +1,6 @@
 package at.uibk.dps.ee.model.properties;
 
-import at.uibk.dps.ee.model.properties.PropertyServiceFunction.FunctionType;
+import at.uibk.dps.ee.model.properties.PropertyServiceFunction.UsageType;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.AbstractPropertyService;
 
@@ -56,7 +56,7 @@ public final class PropertyServiceFunctionDataFlow extends AbstractPropertyServi
 	 */
 	public static Task createDataFlowFunction(final String taskId, final DataFlowType dataFlowType) {
 		final Task result = new Task(taskId);
-		PropertyServiceFunction.setType(FunctionType.DataFlow, result);
+		PropertyServiceFunction.setUsageType(UsageType.DataFlow, result);
 		PropertyServiceFunctionDataFlow.setDataFlowType(result, dataFlowType);
 		return result;
 	}
@@ -92,7 +92,7 @@ public final class PropertyServiceFunctionDataFlow extends AbstractPropertyServi
 	 */
 	protected static void checkTask(final Task task) {
 		PropertyServiceFunction.checkTask(task);
-		if (!PropertyServiceFunction.getType(task).equals(FunctionType.DataFlow)) {
+		if (!PropertyServiceFunction.getUsageType(task).equals(UsageType.DataFlow)) {
 			throw new IllegalArgumentException("Task " + task.getId() + " is not a data flow task");
 		}
 	}

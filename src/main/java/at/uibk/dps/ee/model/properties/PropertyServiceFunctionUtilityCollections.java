@@ -1,7 +1,7 @@
 package at.uibk.dps.ee.model.properties;
 
 import at.uibk.dps.ee.model.constants.ConstantsEEModel;
-import at.uibk.dps.ee.model.properties.PropertyServiceFunction.FunctionType;
+import at.uibk.dps.ee.model.properties.PropertyServiceFunction.UsageType;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunctionUtility.UtilityType;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.AbstractPropertyService;
@@ -59,7 +59,7 @@ public final class PropertyServiceFunctionUtilityCollections extends AbstractPro
 		final String taskId = dataId + ConstantsEEModel.KeywordSeparator1 + collectionOperation.name()
 				+ ConstantsEEModel.KeywordSeparator1 + subCollectionsString;
 		final Task result = new Task(taskId);
-		PropertyServiceFunction.setType(FunctionType.Utility, result);
+		PropertyServiceFunction.setUsageType(UsageType.Utility, result);
 		PropertyServiceFunctionUtility.setUtilityType(result, UtilityType.CollectionOperation);
 		setSubCollectionsString(result, subCollectionsString);
 		setCollectionOperation(result, collectionOperation);

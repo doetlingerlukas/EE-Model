@@ -1,6 +1,6 @@
 package at.uibk.dps.ee.model.properties;
 
-import at.uibk.dps.ee.model.properties.PropertyServiceFunction.FunctionType;
+import at.uibk.dps.ee.model.properties.PropertyServiceFunction.UsageType;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.AbstractPropertyService;
 
@@ -76,7 +76,7 @@ public final class PropertyServiceFunctionUtility extends AbstractPropertyServic
 	 */
 	protected static void checkTask(final Task task) {
 		PropertyServiceFunction.checkTask(task);
-		if (!PropertyServiceFunction.getType(task).equals(FunctionType.Utility)) {
+		if (!PropertyServiceFunction.getUsageType(task).equals(UsageType.Utility)) {
 			throw new IllegalArgumentException("Task " + task.getId() + " is not a utility function.");
 		}
 	}

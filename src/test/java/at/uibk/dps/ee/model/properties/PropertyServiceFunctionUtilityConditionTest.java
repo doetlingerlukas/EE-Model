@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import at.uibk.dps.ee.model.objects.Condition;
 import at.uibk.dps.ee.model.objects.Condition.Operator;
-import at.uibk.dps.ee.model.properties.PropertyServiceFunction.FunctionType;
+import at.uibk.dps.ee.model.properties.PropertyServiceFunction.UsageType;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunctionUtility.Property;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunctionUtility.UtilityType;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunctionUtilityCondition.Summary;
@@ -20,7 +20,7 @@ public class PropertyServiceFunctionUtilityConditionTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testExc() {
 		Task task = new Task("t");
-		PropertyServiceFunction.setType(FunctionType.Utility, task);
+		PropertyServiceFunction.setUsageType(UsageType.Utility, task);
 		task.setAttribute(Property.UtilityType.name(), "unknown");
 		PropertyServiceFunctionUtilityCondition.getConditions(task);
 	}
@@ -28,7 +28,7 @@ public class PropertyServiceFunctionUtilityConditionTest {
 	@Test
 	public void testGetSetSummary() {
 		Task task = new Task("task");
-		PropertyServiceFunction.setType(FunctionType.Utility, task);
+		PropertyServiceFunction.setUsageType(UsageType.Utility, task);
 		PropertyServiceFunctionUtility.setUtilityType(task, UtilityType.Condition);
 		PropertyServiceFunctionUtilityCondition.setSummary(task, Summary.AND);
 		assertEquals(Summary.AND, PropertyServiceFunctionUtilityCondition.getSummary(task));
@@ -37,7 +37,7 @@ public class PropertyServiceFunctionUtilityConditionTest {
 	@Test
 	public void testGetSetConditions() {
 		Task task = new Task("task");
-		PropertyServiceFunction.setType(FunctionType.Utility, task);
+		PropertyServiceFunction.setUsageType(UsageType.Utility, task);
 		PropertyServiceFunctionUtility.setUtilityType(task, UtilityType.Condition);
 		
 		Condition cond1 = new Condition("d1", "d2", Operator.EQUAL, false);

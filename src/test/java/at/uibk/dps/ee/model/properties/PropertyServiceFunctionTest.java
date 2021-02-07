@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import at.uibk.dps.ee.core.enactable.Enactable;
-import at.uibk.dps.ee.model.properties.PropertyServiceFunction.FunctionType;
+import at.uibk.dps.ee.model.properties.PropertyServiceFunction.UsageType;
 import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Task;
 
@@ -22,8 +22,8 @@ public class PropertyServiceFunctionTest {
 	@Test
 	public void testGetSetFunctionType() {
 		Task task = new Task("task");
-		PropertyServiceFunction.setType(FunctionType.Local, task);
-		assertEquals(FunctionType.Local, PropertyServiceFunction.getType(task));
+		PropertyServiceFunction.setUsageType(UsageType.User, task);
+		assertEquals(UsageType.User, PropertyServiceFunction.getUsageType(task));
 	}
 
 	@Test

@@ -33,7 +33,11 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
 		/**
 		 * The json key used by the Function endpoint of the edge
 		 */
-		JsonKey
+		JsonKey,
+		/**
+		 * Whether or not the data was already transmitted over this edge
+		 */
+		TransmissionDone
 	}
 
 	/**
@@ -51,6 +55,51 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
 		 * Control flow following from if compounds
 		 */
 		ControlIf
+	}
+
+	/**
+	 * Returns true if the data transmission over the edge has occurred.
+	 * 
+	 * @param dependency the dependency edge
+	 * @return true if the data transmission over the edge has occurred
+	 */
+	public static boolean isTransmissionDone(Dependency dependency) {
+		String attrName = Property.TransmissionDone.name();
+		if (!isAttributeSet(dependency, attrName)) {
+			return false;
+		}
+		return (boolean) getAttribute(dependency, attrName);
+	}
+
+	/**
+	 * Resets the transmission annotation.
+	 * 
+	 * @param dependency the given dependency
+	 */
+	public static void resetTransmissionAnnotation(Dependency dependency) {
+		setTransmissionDone(dependency, false);
+	}
+
+	/**
+	 * Annotates that the data transmission over the given dependency has already
+	 * occurred.
+	 * 
+	 * @param dependency the given dependency
+	 */
+	public static void annotateFinishedTransmission(Dependency dependency) {
+		setTransmissionDone(dependency, true);
+	}
+
+	/**
+	 * Annotates whether the transmission on the given edge has already occurred.
+	 * 
+	 * @param dependency the given edge
+	 * @param done       true: the transmission is done, false: the transmission is
+	 *                   not done
+	 */
+	protected static void setTransmissionDone(Dependency dependency, boolean done) {
+		String attrName = Property.TransmissionDone.name();
+		dependency.setAttribute(attrName, done);
 	}
 
 	/**
