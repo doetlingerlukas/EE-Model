@@ -12,6 +12,8 @@ import net.sf.opendse.model.properties.AbstractPropertyService;
  */
 public final class PropertyServiceFunctionUser extends AbstractPropertyService {
 
+  private static final String propNameFunctionType = Property.FunctionType.name();
+
   /**
    * No constructor.
    */
@@ -28,8 +30,6 @@ public final class PropertyServiceFunctionUser extends AbstractPropertyService {
      */
     FunctionType
   }
-
-  protected static final String propNameFunctionType = Property.FunctionType.name();
 
   /**
    * Creates a task node with the given ID, modeling a user function of the
