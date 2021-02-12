@@ -13,5 +13,5 @@ import net.sf.opendse.model.Resource;
  */
 public class ResourceGraph extends Architecture<Resource, Link> {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 }

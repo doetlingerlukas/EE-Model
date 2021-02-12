@@ -9,10 +9,10 @@ package at.uibk.dps.ee.model.graph;
  */
 public interface EnactmentGraphProvider {
 
-	/**
-	 * Returns the {@link EnactmentGraph} modeling the enactment process.
-	 * 
-	 * @return the {@link EnactmentGraph} modeling the enactment process
-	 */
-	EnactmentGraph getEnactmentGraph();
+  /**
+   * Returns the {@link EnactmentGraph} modeling the enactment process.
+   * 
+   * @return the {@link EnactmentGraph} modeling the enactment process
+   */
+  EnactmentGraph getEnactmentGraph();
 }

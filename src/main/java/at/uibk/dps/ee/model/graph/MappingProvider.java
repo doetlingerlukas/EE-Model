@@ -12,10 +12,10 @@ import net.sf.opendse.model.Task;
  */
 public interface MappingProvider {
 
-	/**
-	 * Returns the mappings.
-	 * 
-	 * @return the mappings
-	 */
-	Mappings<Task, Resource> getMappings();
+  /**
+   * Returns the mappings.
+   * 
+   * @return the mappings
+   */
+  Mappings<Task, Resource> getMappings();
 }

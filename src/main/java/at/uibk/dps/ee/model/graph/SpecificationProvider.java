@@ -5,12 +5,13 @@ package at.uibk.dps.ee.model.graph;
  * 
  * @author Fedor Smirnov
  */
-public interface SpecificationProvider extends ResourceGraphProvider, EnactmentGraphProvider, MappingProvider {
+public interface SpecificationProvider
+    extends ResourceGraphProvider, EnactmentGraphProvider, MappingProvider {
 
-	/**
-	 * Returns the whole specification graph.
-	 * 
-	 * @return the specification graph.
-	 */
-	EnactmentSpecification getSpecification();
+  /**
+   * Returns the whole specification graph.
+   * 
+   * @return the specification graph.
+   */
+  EnactmentSpecification getSpecification();
 }

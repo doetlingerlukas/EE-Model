@@ -12,26 +12,26 @@ import net.sf.opendse.model.Task;
  */
 public class EnactmentSpecification extends Specification {
 
-	public EnactmentSpecification(EnactmentGraph enactmentGraph, ResourceGraph resourceGraph,
-			Mappings<Task, Resource> mappings) {
-		super(enactmentGraph, resourceGraph, mappings, null);
-	}
+  public EnactmentSpecification(EnactmentGraph enactmentGraph, ResourceGraph resourceGraph,
+      Mappings<Task, Resource> mappings) {
+    super(enactmentGraph, resourceGraph, mappings, null);
+  }
 
-	/**
-	 * Returns the enactment graph.
-	 * 
-	 * @return the enactment graph
-	 */
-	public EnactmentGraph getEnactmentGraph() {
-		return (EnactmentGraph) getApplication();
-	}
+  /**
+   * Returns the enactment graph.
+   * 
+   * @return the enactment graph
+   */
+  public EnactmentGraph getEnactmentGraph() {
+    return (EnactmentGraph) getApplication();
+  }
 
-	/**
-	 * Returns the resource graph
-	 * 
-	 * @return the resource graph
-	 */
-	public ResourceGraph getResourceGraph() {
-		return (ResourceGraph) getArchitecture();
-	}
+  /**
+   * Returns the resource graph
+   * 
+   * @return the resource graph
+   */
+  public ResourceGraph getResourceGraph() {
+    return (ResourceGraph) getArchitecture();
+  }
 }

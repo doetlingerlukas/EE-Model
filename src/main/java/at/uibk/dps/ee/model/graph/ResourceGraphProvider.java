@@ -8,11 +8,11 @@ package at.uibk.dps.ee.model.graph;
  */
 public interface ResourceGraphProvider {
 
-	/**
-	 * Returns the resource graph
-	 * 
-	 * @return the resource graph
-	 */
-	ResourceGraph getResourceGraph();
-	
+  /**
+   * Returns the resource graph
+   * 
+   * @return the resource graph
+   */
+  ResourceGraph getResourceGraph();
+
 }

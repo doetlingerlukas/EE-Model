@@ -12,6 +12,6 @@ import net.sf.opendse.model.Task;
  */
 public class EnactmentGraph extends Application<Task, Dependency> {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
 }
