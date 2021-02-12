@@ -14,6 +14,8 @@ import net.sf.opendse.model.properties.TaskPropertyService;
  */
 public final class PropertyServiceFunction extends AbstractPropertyService {
 
+  private static final String propNameUsageType = Property.UsageType.name();
+
   /**
    * No constructor
    */
@@ -35,8 +37,6 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
      */
     Enactable
   }
-
-  protected static final String propNameUsageType = Property.UsageType.name();
 
   /**
    * The types of the modeled function.

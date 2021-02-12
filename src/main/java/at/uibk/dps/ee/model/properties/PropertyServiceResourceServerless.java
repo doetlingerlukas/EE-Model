@@ -12,6 +12,8 @@ import net.sf.opendse.model.properties.AbstractPropertyService;
  */
 public final class PropertyServiceResourceServerless extends AbstractPropertyService {
 
+  public static final String propNameUri = Property.Uri.name();
+
   /**
    * No constructor
    */
@@ -29,18 +31,15 @@ public final class PropertyServiceResourceServerless extends AbstractPropertySer
     Uri
   }
 
-  public static final String propNameUri = Property.Uri.name();
-
-
   /**
    * Creates a serverless resource with the provided resource link and ID.
    * 
-   * @param id the provided ID
+   * @param resId the provided ID
    * @param resourceLink the resource link
    * @return a serverless resource with the provided resource link and ID
    */
-  public static Resource createServerlessResource(final String id, final String resourceLink) {
-    final Resource result = new Resource(id);
+  public static Resource createServerlessResource(final String resId, final String resourceLink) {
+    final Resource result = new Resource(resId);
     PropertyServiceResource.setResourceType(result, ResourceType.Serverless);
     setUri(result, resourceLink);
     return result;

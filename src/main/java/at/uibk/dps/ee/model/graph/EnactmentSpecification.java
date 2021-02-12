@@ -12,8 +12,17 @@ import net.sf.opendse.model.Task;
  */
 public class EnactmentSpecification extends Specification {
 
-  public EnactmentSpecification(EnactmentGraph enactmentGraph, ResourceGraph resourceGraph,
-      Mappings<Task, Resource> mappings) {
+  /**
+   * Creates an {@link EnactmentSpecification} containing the provided
+   * {@link EnactmentGraph} and {@link ResourceGraph}, connected by the provided
+   * {@link Mappings}. The message routing is set to null.
+   * 
+   * @param enactmentGraph the enactment graph (application model)
+   * @param resourceGraph the resource graph (resource model)
+   * @param mappings the mappings
+   */
+  public EnactmentSpecification(final EnactmentGraph enactmentGraph,
+      final ResourceGraph resourceGraph, final Mappings<Task, Resource> mappings) {
     super(enactmentGraph, resourceGraph, mappings, null);
   }
 

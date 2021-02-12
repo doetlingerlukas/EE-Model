@@ -11,6 +11,8 @@ import net.sf.opendse.model.properties.AbstractPropertyService;
  */
 public final class PropertyServiceResource extends AbstractPropertyService {
 
+  private static final String propNameType = Property.Type.name();
+
   /**
    * No constructor.
    */
@@ -27,8 +29,6 @@ public final class PropertyServiceResource extends AbstractPropertyService {
      */
     Type
   }
-
-  protected static final String propNameType = Property.Type.name();
 
   /**
    * The general types of resources.
@@ -49,12 +49,12 @@ public final class PropertyServiceResource extends AbstractPropertyService {
   /**
    * Creates a resource node with the provided ID and the provided type.
    * 
-   * @param id the resource id
+   * @param resId the resource id
    * @param type the type of the resource
    * @return a resource node with the provided ID and the provided type
    */
-  public static Resource createResource(final String id, final ResourceType type) {
-    final Resource result = new Resource(id);
+  public static Resource createResource(final String resId, final ResourceType type) {
+    final Resource result = new Resource(resId);
     setResourceType(result, type);
     return result;
   }
