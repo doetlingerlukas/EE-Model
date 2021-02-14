@@ -3,6 +3,7 @@ package at.uibk.dps.ee.model.properties;
 import java.util.Set;
 
 import at.uibk.dps.ee.model.objects.Condition;
+import at.uibk.dps.ee.model.properties.PropertyServiceFunction.UsageType;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunctionUtility.UtilityType;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.AbstractPropertyService;
@@ -47,6 +48,24 @@ public final class PropertyServiceFunctionUtilityCondition extends AbstractPrope
   }
 
   /**
+   * Creates a function task representing the evaluation of a condition.
+   * 
+   * @param taskId the task id
+   * @param conditions the set of conditions
+   * @param summary the way that the condition are evaluated
+   * @return a function task representing the evaluation of a condition
+   */
+  public static Task createConditionEvaluation(final String taskId, Set<Condition> conditions,
+      final Summary summary) {
+    final Task result = new Task(taskId);
+    PropertyServiceFunction.setUsageType(UsageType.Utility, result);
+    PropertyServiceFunctionUtility.setUtilityType(result, UtilityType.Condition);
+    setConditions(result, conditions);
+    setSummary(result, summary);
+    return result;
+  }
+
+  /**
    * Returns the summary type annotated at the given task.
    * 
    * @param task the given task
@@ -64,7 +83,7 @@ public final class PropertyServiceFunctionUtilityCondition extends AbstractPrope
    * @param task the provided task
    * @param summary the summary type to set
    */
-  public static void setSummary(final Task task, final Summary summary) {
+  protected static void setSummary(final Task task, final Summary summary) {
     checkTask(task);
     final String attrName = Property.Summary.name();
     task.setAttribute(attrName, summary.name());

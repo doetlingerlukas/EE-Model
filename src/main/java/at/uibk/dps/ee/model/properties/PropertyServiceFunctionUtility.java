@@ -49,7 +49,7 @@ public final class PropertyServiceFunctionUtility extends AbstractPropertyServic
    * @param task the task to annotate
    * @param type the type of the task
    */
-  public static void setUtilityType(final Task task, final UtilityType type) {
+  protected static void setUtilityType(final Task task, final UtilityType type) {
     checkTask(task);
     final String attrName = Property.UtilityType.name();
     task.setAttribute(attrName, type.name());
