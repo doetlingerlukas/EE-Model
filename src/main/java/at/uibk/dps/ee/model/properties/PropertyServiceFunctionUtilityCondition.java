@@ -55,7 +55,7 @@ public final class PropertyServiceFunctionUtilityCondition extends AbstractPrope
    * @param summary the way that the condition are evaluated
    * @return a function task representing the evaluation of a condition
    */
-  public static Task createConditionEvaluation(final String taskId, Set<Condition> conditions,
+  public static Task createConditionEvaluation(final String taskId, final Set<Condition> conditions,
       final Summary summary) {
     final Task result = new Task(taskId);
     PropertyServiceFunction.setUsageType(UsageType.Utility, result);
