@@ -1,6 +1,9 @@
 package at.uibk.dps.ee.model.properties;
 
+import java.util.HashSet;
+import java.util.Set;
 import net.sf.opendse.model.Resource;
+import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.AbstractPropertyService;
 
 /**
@@ -12,6 +15,8 @@ import net.sf.opendse.model.properties.AbstractPropertyService;
 public final class PropertyServiceResource extends AbstractPropertyService {
 
   private static final String propNameType = Property.Type.name();
+  private static final String propNameState = Property.State.name();
+  private static final String propNameUsedBy = Property.UsedBy.name();
 
   /**
    * No constructor.
@@ -27,7 +32,15 @@ public final class PropertyServiceResource extends AbstractPropertyService {
     /**
      * The type of the resource.
      */
-    Type
+    Type,
+    /**
+     * The state of the resource
+     */
+    State,
+    /**
+     * The set of tasks currently using the resource
+     */
+    UsedBy
   }
 
   /**
@@ -44,6 +57,85 @@ public final class PropertyServiceResource extends AbstractPropertyService {
      * Models an execution via a serverless function.
      */
     Serverless
+  }
+
+  /**
+   * Models the different states of the resources.
+   * 
+   * @author Fedor Smirnov
+   *
+   */
+  public enum ResourceState {
+    /**
+     * The resource is currently being used
+     */
+    Used,
+    /**
+     * The resource is idle
+     */
+    Idle
+  }
+
+  /**
+   * Removes a task from the list of users of the given resource.
+   * 
+   * @param task the given task
+   * @param res the given resource
+   */
+  public static void removeUsingTask(Task task, Resource res) {
+    Set<String> users = getUsingTaskIds(res);
+    users.remove(task.getId());
+    res.setAttribute(propNameUsedBy, users);
+  }
+  
+  /**
+   * Adds a task to the list of users of the given resource
+   * 
+   * @param task the task to add
+   * @param res the resource
+   */
+  public static void addUsingTask(Task task, Resource res) {
+    Set<String> users = getUsingTaskIds(res);
+    users.add(task.getId());
+    res.setAttribute(propNameUsedBy, users);
+  }
+  
+  /**
+   * Returns the IDs of the tasks currently using the resource.
+   * 
+   * @param res the resource
+   * @return the IDs of the tasks currently using the resource
+   */
+  @SuppressWarnings("unchecked")
+  public static Set<String> getUsingTaskIds(Resource res) {
+    if (isAttributeSet(res, propNameUsedBy)) {
+      return (Set<String>) res.getAttribute(propNameUsedBy);
+    } else {
+      return new HashSet<>();
+    }
+  }
+
+  /**
+   * Returns the current state of the given resource
+   * 
+   * @param res the given resource
+   * @return the current state of the given resource
+   */
+  public static ResourceState getState(Resource res) {
+    if (!isAttributeSet(res, propNameState)) {
+      return ResourceState.Idle;
+    }
+    return ResourceState.valueOf((String) res.getAttribute(propNameState));
+  }
+
+  /**
+   * Sets the state of the given resource
+   * 
+   * @param res the given resource
+   * @param state the state to set
+   */
+  public static void setState(Resource res, ResourceState state) {
+    res.setAttribute(propNameState, state.name());
   }
 
   /**

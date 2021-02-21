@@ -23,7 +23,7 @@ public class EnactmentSpecification extends Specification {
    */
   public EnactmentSpecification(final EnactmentGraph enactmentGraph,
       final ResourceGraph resourceGraph, final Mappings<Task, Resource> mappings) {
-    super(enactmentGraph, resourceGraph, mappings, null);
+    super(enactmentGraph, resourceGraph, mappings);
   }
 
   /**
