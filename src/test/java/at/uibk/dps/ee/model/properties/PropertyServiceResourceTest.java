@@ -46,4 +46,14 @@ public class PropertyServiceResourceTest {
     assertFalse(PropertyServiceResource.getUsingTaskIds(result).contains(task1.getId()));
     assertTrue(PropertyServiceResource.getUsingTaskIds(result).contains(task2.getId()));
   }
+
+  @Test(expected = IllegalStateException.class)
+  public void testUsedByException() {
+    String id = "resId";
+    ResourceType type = ResourceType.Local;
+    Resource result = PropertyServiceResource.createResource(id, type);
+    assertTrue(PropertyServiceResource.getUsingTaskIds(result).isEmpty());
+    Task task1 = new Task("task1");
+    PropertyServiceResource.removeUsingTask(task1, result);
+  }
 }

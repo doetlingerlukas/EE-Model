@@ -84,10 +84,14 @@ public final class PropertyServiceResource extends AbstractPropertyService {
    */
   public static void removeUsingTask(Task task, Resource res) {
     Set<String> users = getUsingTaskIds(res);
+    if (!users.contains(task.getId())) {
+      throw new IllegalStateException("The task " + task.getId()
+          + " cannote be removed from resource " + res.getId() + " since it is not using it.");
+    }
     users.remove(task.getId());
     res.setAttribute(propNameUsedBy, users);
   }
-  
+
   /**
    * Adds a task to the list of users of the given resource
    * 
@@ -99,7 +103,7 @@ public final class PropertyServiceResource extends AbstractPropertyService {
     users.add(task.getId());
     res.setAttribute(propNameUsedBy, users);
   }
-  
+
   /**
    * Returns the IDs of the tasks currently using the resource.
    * 
