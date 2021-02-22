@@ -82,8 +82,8 @@ public final class PropertyServiceResource extends AbstractPropertyService {
    * @param task the given task
    * @param res the given resource
    */
-  public static void removeUsingTask(Task task, Resource res) {
-    Set<String> users = getUsingTaskIds(res);
+  public static void removeUsingTask(final Task task, final Resource res) {
+    final Set<String> users = getUsingTaskIds(res);
     if (!users.contains(task.getId())) {
       throw new IllegalStateException("The task " + task.getId()
           + " cannote be removed from resource " + res.getId() + " since it is not using it.");
@@ -98,8 +98,8 @@ public final class PropertyServiceResource extends AbstractPropertyService {
    * @param task the task to add
    * @param res the resource
    */
-  public static void addUsingTask(Task task, Resource res) {
-    Set<String> users = getUsingTaskIds(res);
+  public static void addUsingTask(final Task task, final Resource res) {
+    final Set<String> users = getUsingTaskIds(res);
     users.add(task.getId());
     res.setAttribute(propNameUsedBy, users);
   }
@@ -111,7 +111,7 @@ public final class PropertyServiceResource extends AbstractPropertyService {
    * @return the IDs of the tasks currently using the resource
    */
   @SuppressWarnings("unchecked")
-  public static Set<String> getUsingTaskIds(Resource res) {
+  public static Set<String> getUsingTaskIds(final Resource res) {
     if (isAttributeSet(res, propNameUsedBy)) {
       return (Set<String>) res.getAttribute(propNameUsedBy);
     } else {
