@@ -27,6 +27,8 @@ public final class ConstantsEEModel {
   public static final String DecisionVariableSuffix = "--decisionVariable";
   public static final String DecisionVariableJsonKey = "decisionVariable";
   public static final String EarliestArrivalJsonKey = "earliestArrival";
+  
+  public static final String JsonKeySequentiality = "SeqKey";
 
   // Function node name components
   public static final String FuncNameUtilityDistribution = "Distribution";

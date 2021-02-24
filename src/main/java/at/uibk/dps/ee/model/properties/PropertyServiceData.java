@@ -79,7 +79,11 @@ public final class PropertyServiceData extends AbstractPropertyService {
     /**
      * Data nodes whose content is used for control flow decisions.
      */
-    Decision
+    Decision,
+    /**
+     * Data nodes used to model sequentiality without data exchange
+     */
+    Sequentiality
   }
 
   /**
@@ -127,6 +131,19 @@ public final class PropertyServiceData extends AbstractPropertyService {
     result.setAttribute(attrNameContent, content);
     final String dataAvalAttrName = Property.DataAvailable.name();
     result.setAttribute(dataAvalAttrName, true);
+    return result;
+  }
+
+  /**
+   * Creates a sequentiality node with the requested ID.
+   * 
+   * @param nodeId the requested ID
+   * @return Creates a sequentiality node with the requested ID
+   */
+  public static Task createSequentialityNode(final String nodeId) {
+    final Task result = new Communication(nodeId);
+    setDataType(result, DataType.Boolean);
+    setNodeType(result, NodeType.Sequentiality);
     return result;
   }
 
