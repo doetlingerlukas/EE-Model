@@ -165,7 +165,7 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
    * @param task the given task
    * @param scope the scope
    */
-  protected static void setScope(final Task task, final String scope) {
+  public static void setScope(final Task task, final String scope) {
     checkTask(task);
     final String attrName = Property.Scope.name();
     task.setAttribute(attrName, scope);
