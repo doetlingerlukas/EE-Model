@@ -125,7 +125,7 @@ public final class PropertyServiceResource extends AbstractPropertyService {
    * @param res the given resource
    * @return the current state of the given resource
    */
-  public static ResourceState getState(Resource res) {
+  public static ResourceState getState(final Resource res) {
     if (!isAttributeSet(res, propNameState)) {
       return ResourceState.Idle;
     }
@@ -138,7 +138,7 @@ public final class PropertyServiceResource extends AbstractPropertyService {
    * @param res the given resource
    * @param state the state to set
    */
-  public static void setState(Resource res, ResourceState state) {
+  public static void setState(final Resource res, final ResourceState state) {
     res.setAttribute(propNameState, state.name());
   }
 
