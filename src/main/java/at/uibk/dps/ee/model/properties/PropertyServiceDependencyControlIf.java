@@ -1,6 +1,8 @@
 package at.uibk.dps.ee.model.properties;
 
+import at.uibk.dps.ee.model.graph.EnactmentGraph;
 import at.uibk.dps.ee.model.properties.PropertyServiceDependency.TypeDependency;
+import edu.uci.ics.jung.graph.util.EdgeType;
 import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.AbstractPropertyService;
@@ -32,6 +34,22 @@ public final class PropertyServiceDependencyControlIf extends AbstractPropertySe
   }
 
   /**
+   * Adds an if dependency between the provided end nodes to the given graph and
+   * annotates it with the given activation bool.
+   * 
+   * @param src the src node
+   * @param dst the dst node
+   * @param jsonKey the jsonkey
+   * @param activation the activation to annotate
+   * @param graph the enactment graph
+   */
+  public static void addIfDependency(Task src, Task dst, String jsonKey, boolean activation,
+      EnactmentGraph graph) {
+    Dependency toAdd = createControlIfDependency(src, dst, jsonKey, activation);
+    graph.addEdge(toAdd, src, dst, EdgeType.DIRECTED);
+  }
+
+  /**
    * Creates a control if dependency which will be used to connect the given src
    * to the given dest and annotates it with the given activation.
    * 
@@ -41,7 +59,7 @@ public final class PropertyServiceDependencyControlIf extends AbstractPropertySe
    * @return a control if dependency which will be used to connect the given src
    *         to the given dest and annotates it with the given activation
    */
-  public static Dependency createControlIfDependency(final Task src, final Task dest,
+  protected static Dependency createControlIfDependency(final Task src, final Task dest,
       final String jsonKey, final boolean activation) {
     final Dependency result = PropertyServiceDependency.createDependency(src, dest);
     PropertyServiceDependency.setType(result, TypeDependency.ControlIf);

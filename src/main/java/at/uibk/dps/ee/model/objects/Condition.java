@@ -21,25 +21,24 @@ public final class Condition implements Serializable {
    * @author Fedor Smirnov
    */
   public enum Operator {
-    EQUAL(DataType.Number), LESS(DataType.Number), GREATER(DataType.Number), LESS_EQUAL(
-        DataType.Number), GREATER_EQUAL(DataType.Number), UNEQUAL(DataType.Number), CONTAINS(
-            DataType.String), STARTS_WITH(DataType.String), ENDS_WITH(
-                DataType.Number), AND(DataType.Boolean), OR(DataType.Boolean);
+    EQUAL, LESS, GREATER, LESS_EQUAL, GREATER_EQUAL, UNEQUAL, CONTAINS, STARTS_WITH, ENDS_WITH;
+  }
 
-    private final DataType dataType;
-
-    Operator(final DataType dataType) {
-      this.dataType = dataType;
-    }
-
-    public DataType getDataType() {
-      return this.dataType;
-    }
+  /**
+   * The operator used to combine the result of the condition with the conditions
+   * defined later.
+   * 
+   * @author Fedor Smirnov
+   */
+  public enum CombinedWith {
+    And, Or
   }
 
   private final String firstInputId;
   private final String secondInputId;
   private final Operator operator;
+  private final DataType type;
+  private final CombinedWith combinedWith;
   private final boolean negation;
 
   /**
@@ -51,11 +50,13 @@ public final class Condition implements Serializable {
    * @param negation true iff the result is negated
    */
   public Condition(final String firstInputId, final String secondInputId, final Operator operator,
-      final boolean negation) {
+      final boolean negation, final DataType type, final CombinedWith combinedWith) {
     this.firstInputId = firstInputId;
     this.secondInputId = secondInputId;
     this.operator = operator;
     this.negation = negation;
+    this.type = type;
+    this.combinedWith = combinedWith;
   }
 
   public String getFirstInputId() {
@@ -72,6 +73,14 @@ public final class Condition implements Serializable {
 
   public boolean isNegation() {
     return negation;
+  }
+
+  public DataType getType() {
+    return type;
+  }
+
+  public CombinedWith getCombinedWith() {
+    return combinedWith;
   }
 
   @Override
@@ -105,6 +114,7 @@ public final class Condition implements Serializable {
     final Condition otherCondi = (Condition) obj;
     return firstInputId.equals(otherCondi.getFirstInputId())
         && secondInputId.equals(otherCondi.getSecondInputId())
-        && operator.equals(otherCondi.getOperator()) && negation == otherCondi.isNegation();
+        && operator.equals(otherCondi.getOperator()) && negation == otherCondi.isNegation()
+        && type.equals(otherCondi.getType()) && combinedWith.equals(otherCondi.getCombinedWith());
   }
 }

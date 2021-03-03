@@ -1,6 +1,6 @@
 package at.uibk.dps.ee.model.properties;
 
-import java.util.Set;
+import java.util.List;
 
 import at.uibk.dps.ee.model.objects.Condition;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunction.UsageType;
@@ -31,20 +31,7 @@ public final class PropertyServiceFunctionUtilityCondition extends AbstractPrope
     /**
      * The checked conditions
      */
-    Conditions,
-    /**
-     * Summary operator
-     */
-    Summary
-  }
-
-  /**
-   * Ways of summarizing conditions
-   * 
-   * @author Fedor Smirnov
-   */
-  public enum Summary {
-    AND, OR
+    Conditions,    
   }
 
   /**
@@ -55,38 +42,12 @@ public final class PropertyServiceFunctionUtilityCondition extends AbstractPrope
    * @param summary the way that the condition are evaluated
    * @return a function task representing the evaluation of a condition
    */
-  public static Task createConditionEvaluation(final String taskId, final Set<Condition> conditions,
-      final Summary summary) {
+  public static Task createConditionEvaluation(final String taskId, final List<Condition> conditions) {
     final Task result = new Task(taskId);
     PropertyServiceFunction.setUsageType(UsageType.Utility, result);
     PropertyServiceFunctionUtility.setUtilityType(result, UtilityType.Condition);
     setConditions(result, conditions);
-    setSummary(result, summary);
     return result;
-  }
-
-  /**
-   * Returns the summary type annotated at the given task.
-   * 
-   * @param task the given task
-   * @return the summary type annotated at the given task
-   */
-  public static Summary getSummary(final Task task) {
-    checkTask(task);
-    final String attrName = Property.Summary.name();
-    return Summary.valueOf((String) getAttribute(task, attrName));
-  }
-
-  /**
-   * Sets the summary type for the provided task
-   * 
-   * @param task the provided task
-   * @param summary the summary type to set
-   */
-  protected static void setSummary(final Task task, final Summary summary) {
-    checkTask(task);
-    final String attrName = Property.Summary.name();
-    task.setAttribute(attrName, summary.name());
   }
 
   /**
@@ -96,10 +57,10 @@ public final class PropertyServiceFunctionUtilityCondition extends AbstractPrope
    * @return the set of conditions annotated on the provided task
    */
   @SuppressWarnings("unchecked")
-  public static Set<Condition> getConditions(final Task task) {
+  public static List<Condition> getConditions(final Task task) {
     checkTask(task);
     final String attrName = Property.Conditions.name();
-    return (Set<Condition>) getAttribute(task, attrName);
+    return (List<Condition>) getAttribute(task, attrName);
   }
 
   /**
@@ -108,7 +69,7 @@ public final class PropertyServiceFunctionUtilityCondition extends AbstractPrope
    * @param task the condition task
    * @param conditions the set of conditions to annotate
    */
-  public static void setConditions(final Task task, final Set<Condition> conditions) {
+  public static void setConditions(final Task task, final List<Condition> conditions) {
     checkTask(task);
     final String attrName = Property.Conditions.name();
     task.setAttribute(attrName, conditions);

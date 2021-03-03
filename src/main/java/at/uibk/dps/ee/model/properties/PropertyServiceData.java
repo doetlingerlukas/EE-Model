@@ -57,7 +57,7 @@ public final class PropertyServiceData extends AbstractPropertyService {
   }
 
   public enum DataType {
-    Number, String, Object, Collection, Boolean
+    Number, String, Object, Collection, Boolean, Array
   }
 
   /**

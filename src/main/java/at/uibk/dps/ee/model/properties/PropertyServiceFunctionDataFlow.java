@@ -3,6 +3,7 @@ package at.uibk.dps.ee.model.properties;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunction.UsageType;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.AbstractPropertyService;
+import net.sf.opendse.model.properties.TaskPropertyService;
 
 /**
  * Static method container to access properties of data flow function nodes.
@@ -41,9 +42,25 @@ public final class PropertyServiceFunctionDataFlow extends AbstractPropertyServi
      */
     EarliestInput,
     /**
+     * A 2:1 multiplexer operating based on a boolean variable.
+     */
+    Multiplexer,
+    /**
      * Operations for collection distribution and aggregation
      */
     Collections,
+  }
+
+  /**
+   * Returns true if the given task is a multiplexer node.
+   * 
+   * @param task the given task
+   * @return true if the given task is a multiplexer node
+   */
+  public static boolean isMultiplexerNode(Task task) {
+    return TaskPropertyService.isProcess(task)
+        && PropertyServiceFunction.getUsageType(task).equals(UsageType.DataFlow)
+        && getDataFlowType(task).equals(DataFlowType.Multiplexer);
   }
 
   /**

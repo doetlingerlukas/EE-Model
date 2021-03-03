@@ -148,8 +148,8 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
     final boolean dataPresent =
         TaskPropertyService.isCommunication(src) || TaskPropertyService.isCommunication(dest);
     if (!(functionPresent && dataPresent)) {
-      throw new IllegalArgumentException(
-          "Dependency end points are not a function AND a data node.");
+      throw new IllegalArgumentException("Dependency end points " + src.getId() + " and "
+          + dest.getId() + "are not a function AND a data node.");
     }
   }
 

@@ -27,7 +27,13 @@ public final class ConstantsEEModel {
   public static final String DecisionVariableSuffix = "--decisionVariable";
   public static final String DecisionVariableJsonKey = "decisionVariable";
   public static final String EarliestArrivalJsonKey = "earliestArrival";
-  
+  public static final String JsonKeyThen = "Then";
+  public static final String JsonKeyElse = "Else";
+  // used for the edges from decision variable
+  public static final String JsonKeyIfDecision = "IfDecision";
+  // used for the edges to the nodes containing the compound result
+  public static final String JsonKeyIfResult = "IfResult";
+
   public static final String JsonKeySequentiality = "SeqKey";
 
   // Function node name components
