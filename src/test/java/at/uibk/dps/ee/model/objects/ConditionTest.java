@@ -50,7 +50,7 @@ public class ConditionTest {
         new Condition(first, second, operator, true, DataType.Number, CombinedWith.And);
     Condition tested2 =
         new Condition(first, second, operator, true, DataType.Number, CombinedWith.And);
-
+    assertEquals(tested1.hashCode(), tested2.hashCode());
     assertEquals(tested1, tested2);
   }
 }

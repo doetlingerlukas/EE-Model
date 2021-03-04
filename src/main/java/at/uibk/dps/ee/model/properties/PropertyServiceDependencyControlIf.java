@@ -43,9 +43,9 @@ public final class PropertyServiceDependencyControlIf extends AbstractPropertySe
    * @param activation the activation to annotate
    * @param graph the enactment graph
    */
-  public static void addIfDependency(Task src, Task dst, String jsonKey, boolean activation,
-      EnactmentGraph graph) {
-    Dependency toAdd = createControlIfDependency(src, dst, jsonKey, activation);
+  public static void addIfDependency(final Task src, final Task dst, final String jsonKey,
+      final boolean activation, final EnactmentGraph graph) {
+    final Dependency toAdd = createControlIfDependency(src, dst, jsonKey, activation);
     graph.addEdge(toAdd, src, dst, EdgeType.DIRECTED);
   }
 

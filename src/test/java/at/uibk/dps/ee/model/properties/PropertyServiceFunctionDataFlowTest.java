@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import at.uibk.dps.ee.model.properties.PropertyServiceFunction.UsageType;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunctionDataFlow.DataFlowType;
+import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Task;
 
 public class PropertyServiceFunctionDataFlowTest {
@@ -33,5 +34,18 @@ public class PropertyServiceFunctionDataFlowTest {
 		PropertyServiceFunction.setUsageType(UsageType.DataFlow, task);
 		PropertyServiceFunctionDataFlow.setDataFlowType(task, DataFlowType.EarliestInput);
 		assertEquals(DataFlowType.EarliestInput, PropertyServiceFunctionDataFlow.getDataFlowType(task));
+	}
+	
+	@Test
+	public void testIsMultiplexer() {
+	  Task muxer = PropertyServiceFunctionDataFlow.createDataFlowFunction("t", DataFlowType.Multiplexer);
+	  Task notMuxer1 = PropertyServiceFunctionDataFlow.createDataFlowFunction("t", DataFlowType.EarliestInput);
+	  Task notMuxer2 = PropertyServiceFunctionUser.createUserTask("t2", "addition");
+	  Task notMuxer4 = new Communication("comm");
+	  
+	  assertTrue(PropertyServiceFunctionDataFlow.isMultiplexerNode(muxer));
+	  assertFalse(PropertyServiceFunctionDataFlow.isMultiplexerNode(notMuxer1));
+	  assertFalse(PropertyServiceFunctionDataFlow.isMultiplexerNode(notMuxer2));
+	  assertFalse(PropertyServiceFunctionDataFlow.isMultiplexerNode(notMuxer4));
 	}
 }

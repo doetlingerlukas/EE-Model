@@ -57,7 +57,7 @@ public final class PropertyServiceFunctionDataFlow extends AbstractPropertyServi
    * @param task the given task
    * @return true if the given task is a multiplexer node
    */
-  public static boolean isMultiplexerNode(Task task) {
+  public static boolean isMultiplexerNode(final Task task) {
     return TaskPropertyService.isProcess(task)
         && PropertyServiceFunction.getUsageType(task).equals(UsageType.DataFlow)
         && getDataFlowType(task).equals(DataFlowType.Multiplexer);
