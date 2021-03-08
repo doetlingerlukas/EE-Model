@@ -42,11 +42,13 @@ public final class PropertyServiceDependencyControlIf extends AbstractPropertySe
    * @param jsonKey the jsonkey
    * @param activation the activation to annotate
    * @param graph the enactment graph
+   * @return the created {@link Dependency}
    */
-  public static void addIfDependency(final Task src, final Task dst, final String jsonKey,
+  public static Dependency addIfDependency(final Task src, final Task dst, final String jsonKey,
       final boolean activation, final EnactmentGraph graph) {
     final Dependency toAdd = createControlIfDependency(src, dst, jsonKey, activation);
     graph.addEdge(toAdd, src, dst, EdgeType.DIRECTED);
+    return toAdd;
   }
 
   /**

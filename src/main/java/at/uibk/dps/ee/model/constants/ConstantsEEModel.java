@@ -15,6 +15,7 @@ public final class ConstantsEEModel {
 
   // Resource graph constants
   public static final String idLocalResource = "Enactment Engine (Local Machine)";
+  public static final int defaultTimeoutInSecondsServerless = 3;
 
 
   // Enactment graph constants

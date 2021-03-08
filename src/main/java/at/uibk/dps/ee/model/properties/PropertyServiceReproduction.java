@@ -140,8 +140,21 @@ public final class PropertyServiceReproduction extends AbstractPropertyService {
   public static Dependency addDataDependencyOffspring(final Task src, final Task dest,
       final String jsonKey, final EnactmentGraph graph, final Dependency parent,
       final String reproductionScope) {
-    final Dependency dependency =
-        PropertyServiceDependency.addDataDependency(src, dest, jsonKey, graph);
+    Dependency dependency = null;
+    switch (PropertyServiceDependency.getType(parent)) {
+      case Data:
+        dependency = PropertyServiceDependency.addDataDependency(src, dest, jsonKey, graph);
+        break;
+      case ControlIf:
+        boolean activation = PropertyServiceDependencyControlIf.getActivation(parent);
+        dependency = PropertyServiceDependencyControlIf.addIfDependency(src, dest, jsonKey,
+            activation, graph);
+        break;
+      default:
+        throw new IllegalArgumentException(
+            "Reproduction of dependencies not yet implemented for dependency type: "
+                + PropertyServiceDependency.getType(parent).name());
+    }
     dependency.setParent(parent);
     makeReproduced(dependency);
     setReproductionScope(dependency, reproductionScope);

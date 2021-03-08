@@ -1,5 +1,6 @@
 package at.uibk.dps.ee.model.properties;
 
+import at.uibk.dps.ee.model.constants.ConstantsEEModel;
 import at.uibk.dps.ee.model.properties.PropertyServiceResource.ResourceType;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.properties.AbstractPropertyService;
@@ -13,6 +14,7 @@ import net.sf.opendse.model.properties.AbstractPropertyService;
 public final class PropertyServiceResourceServerless extends AbstractPropertyService {
 
   public static final String propNameUri = Property.Uri.name();
+  public static final String propNameTimeout = Property.TimeoutInSeconds.name();
 
   /**
    * No constructor
@@ -28,7 +30,11 @@ public final class PropertyServiceResourceServerless extends AbstractPropertySer
     /**
      * The URI to the serverless function.
      */
-    Uri
+    Uri,
+    /**
+     * The timeout configured for the function
+     */
+    TimeoutInSeconds
   }
 
   /**
@@ -43,6 +49,34 @@ public final class PropertyServiceResourceServerless extends AbstractPropertySer
     PropertyServiceResource.setResourceType(result, ResourceType.Serverless);
     setUri(result, resourceLink);
     return result;
+  }
+
+  /**
+   * Returns the timeout set for the serverless resource or the default value if
+   * no timeout is set.
+   * 
+   * @param res the given resource.
+   * @return the timeout set for the serverless resource or the default value if
+   *         no timeout is set
+   */
+  public static int getTimeoutInSeconds(Resource res) {
+    checkResource(res);
+    if (isAttributeSet(res, propNameTimeout)) {
+      return (int) getAttribute(res, propNameTimeout);
+    } else {
+      return ConstantsEEModel.defaultTimeoutInSecondsServerless;
+    }
+  }
+
+  /**
+   * Sets the timeout in seconds for the given resource.
+   * 
+   * @param res the given resource
+   * @param timeoutInSeconds the timeout in seconds to set
+   */
+  protected static void setTimeoutInSeconds(Resource res, int timeoutInSeconds) {
+    checkResource(res);
+    res.setAttribute(propNameTimeout, timeoutInSeconds);
   }
 
   /**
