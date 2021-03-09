@@ -1,5 +1,6 @@
 package at.uibk.dps.ee.model.properties;
 
+import com.google.gson.JsonElement;
 import at.uibk.dps.ee.model.constants.ConstantsEEModel;
 import at.uibk.dps.ee.model.properties.PropertyServiceResource.ResourceType;
 import net.sf.opendse.model.Resource;
@@ -62,7 +63,12 @@ public final class PropertyServiceResourceServerless extends AbstractPropertySer
   public static int getTimeoutInSeconds(Resource res) {
     checkResource(res);
     if (isAttributeSet(res, propNameTimeout)) {
-      return (int) getAttribute(res, propNameTimeout);
+      Object attr = getAttribute(res, propNameTimeout);
+      if (attr instanceof JsonElement) {
+        return ((JsonElement) attr).getAsInt();
+      }else {
+        return (int) attr;
+      }
     } else {
       return ConstantsEEModel.defaultTimeoutInSecondsServerless;
     }

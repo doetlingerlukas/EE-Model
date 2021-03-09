@@ -2,6 +2,7 @@ package at.uibk.dps.ee.model.properties;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
+import com.google.gson.JsonPrimitive;
 import at.uibk.dps.ee.model.properties.PropertyServiceResource.ResourceType;
 import net.sf.opendse.model.Resource;
 
@@ -23,5 +24,7 @@ public class PropertyServiceResourceServerlessTest {
     assertEquals(3, PropertyServiceResourceServerless.getTimeoutInSeconds(result));
     PropertyServiceResourceServerless.setTimeoutInSeconds(result, 5);
     assertEquals(5, PropertyServiceResourceServerless.getTimeoutInSeconds(result));
+    result.setAttribute(PropertyServiceResourceServerless.propNameTimeout, new JsonPrimitive(10));
+    assertEquals(10, PropertyServiceResourceServerless.getTimeoutInSeconds(result));
   }
 }
