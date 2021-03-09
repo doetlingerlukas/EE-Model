@@ -146,7 +146,7 @@ public final class PropertyServiceReproduction extends AbstractPropertyService {
         dependency = PropertyServiceDependency.addDataDependency(src, dest, jsonKey, graph);
         break;
       case ControlIf:
-        boolean activation = PropertyServiceDependencyControlIf.getActivation(parent);
+        final boolean activation = PropertyServiceDependencyControlIf.getActivation(parent);
         dependency = PropertyServiceDependencyControlIf.addIfDependency(src, dest, jsonKey,
             activation, graph);
         break;

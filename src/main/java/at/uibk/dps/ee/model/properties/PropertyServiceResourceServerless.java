@@ -60,17 +60,17 @@ public final class PropertyServiceResourceServerless extends AbstractPropertySer
    * @return the timeout set for the serverless resource or the default value if
    *         no timeout is set
    */
-  public static int getTimeoutInSeconds(Resource res) {
+  public static int getTimeoutInSeconds(final Resource res) {
     checkResource(res);
     if (isAttributeSet(res, propNameTimeout)) {
-      Object attr = getAttribute(res, propNameTimeout);
+      final Object attr = getAttribute(res, propNameTimeout);
       if (attr instanceof JsonElement) {
         return ((JsonElement) attr).getAsInt();
-      }else {
+      } else {
         return (int) attr;
       }
     } else {
-      return ConstantsEEModel.defaultTimeoutInSecondsServerless;
+      return ConstantsEEModel.defaultFaaSTimeoutSeconds;
     }
   }
 
@@ -80,7 +80,7 @@ public final class PropertyServiceResourceServerless extends AbstractPropertySer
    * @param res the given resource
    * @param timeoutInSeconds the timeout in seconds to set
    */
-  protected static void setTimeoutInSeconds(Resource res, int timeoutInSeconds) {
+  protected static void setTimeoutInSeconds(final Resource res, final int timeoutInSeconds) {
     checkResource(res);
     res.setAttribute(propNameTimeout, timeoutInSeconds);
   }
