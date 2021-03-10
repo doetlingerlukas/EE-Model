@@ -33,8 +33,6 @@ dependencies {
   }else {
     implementation 'com.github.Apollo-Core:EE-Core:master-SNAPSHOT'
   }
-  // dependencies to other parts of the Apollo Core EE
-  implementation 'com.github.Apollo-Core:EE-Core:master-SNAPSHOT'
 
   // as an example: dependency to Opt4J
   implementation 'com.github.FedorSmirnov89:opt4j:-SNAPSHOT'
