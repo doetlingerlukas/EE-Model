@@ -1,0 +1,3 @@
+include 'EE-Core'
+
+project (':EE-Core').projectDir = new File(settingsDir, "../EE-Core")
