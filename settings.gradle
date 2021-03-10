@@ -1,3 +1,5 @@
-include 'EE-Core'
+if(startParameter.projectProperties.containsKey("local")) {
+  include 'EE-Core'
 
-project (':EE-Core').projectDir = new File(settingsDir, "../EE-Core")
+  project (':EE-Core').projectDir = new File(settingsDir, "../EE-Core")
+}
