@@ -12,7 +12,7 @@ import net.sf.opendse.model.properties.AbstractPropertyService;
  */
 public final class PropertyServiceFunctionUser extends AbstractPropertyService {
 
-  private static final String propNameFunctionType = Property.FunctionType.name();
+  private static final String propNameFunctionType = Property.TypeID.name();
 
   /**
    * No constructor.
@@ -28,7 +28,7 @@ public final class PropertyServiceFunctionUser extends AbstractPropertyService {
     /**
      * The type of the function.
      */
-    FunctionType
+    TypeID
   }
 
   /**
@@ -43,7 +43,7 @@ public final class PropertyServiceFunctionUser extends AbstractPropertyService {
   public static Task createUserTask(final String taskId, final String functionTypeString) {
     final Task result = new Task(taskId);
     PropertyServiceFunction.setUsageType(UsageType.User, result);
-    setFunctionTypeString(result, functionTypeString);
+    setTypeId(result, functionTypeString);
     return result;
   }
 
@@ -53,7 +53,7 @@ public final class PropertyServiceFunctionUser extends AbstractPropertyService {
    * @param task the given task
    * @return the function type string for the given task
    */
-  public static String getFunctionTypeString(final Task task) {
+  public static String getTypeId(final Task task) {
     return (String) getAttribute(task, propNameFunctionType);
   }
 
@@ -63,7 +63,7 @@ public final class PropertyServiceFunctionUser extends AbstractPropertyService {
    * @param task the provided task
    * @param functionTypeString the function type string to set
    */
-  protected static void setFunctionTypeString(final Task task, final String functionTypeString) {
+  protected static void setTypeId(final Task task, final String functionTypeString) {
     checkTask(task);
     task.setAttribute(propNameFunctionType, functionTypeString);
   }

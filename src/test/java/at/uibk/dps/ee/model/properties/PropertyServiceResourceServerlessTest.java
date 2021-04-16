@@ -3,16 +3,9 @@ package at.uibk.dps.ee.model.properties;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import com.google.gson.JsonPrimitive;
-import at.uibk.dps.ee.model.properties.PropertyServiceResource.ResourceType;
 import net.sf.opendse.model.Resource;
 
 public class PropertyServiceResourceServerlessTest {
-
-  @Test(expected = IllegalArgumentException.class)
-  public void testCheckResource() {
-    Resource res = PropertyServiceResource.createResource("bla", ResourceType.Local);
-    PropertyServiceResourceServerless.checkResource(res);
-  }
 
   @Test
   public void testCreateServerless() {
