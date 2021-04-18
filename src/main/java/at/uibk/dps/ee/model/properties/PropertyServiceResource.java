@@ -128,7 +128,6 @@ public final class PropertyServiceResource extends AbstractPropertyService {
    * @return a resource node with the provided ID and the provided type
    */
   public static Resource createResource(final String resId) {
-    final Resource result = new Resource(resId);
-    return result;
+    return new Resource(resId);
   }
 }

@@ -64,7 +64,7 @@ public final class PropertyServiceMapping extends AbstractPropertyService {
    * @param mapping the requested mapping.
    * @return the implementation ID of the requested mapping.
    */
-  public static String getImplementationId(Mapping<Task, Resource> mapping) {
+  public static String getImplementationId(final Mapping<Task, Resource> mapping) {
     return (String) getAttribute(mapping, propNameImplId);
   }
 
@@ -74,7 +74,7 @@ public final class PropertyServiceMapping extends AbstractPropertyService {
    * @param mapping the requested mapping.
    * @return the enactment mode of the requested mapping.
    */
-  public static EnactmentMode getEnactmentMode(Mapping<Task, Resource> mapping) {
+  public static EnactmentMode getEnactmentMode(final Mapping<Task, Resource> mapping) {
     return EnactmentMode.valueOf((String) getAttribute(mapping, propNameEnactmentMode));
   }
 
@@ -84,7 +84,8 @@ public final class PropertyServiceMapping extends AbstractPropertyService {
    * @param mapping the given mapping
    * @param implId the impl id to set
    */
-  protected static void setImplementationId(Mapping<Task, Resource> mapping, String implId) {
+  protected static void setImplementationId(final Mapping<Task, Resource> mapping,
+      final String implId) {
     mapping.setAttribute(propNameImplId, implId);
   }
 
@@ -94,8 +95,8 @@ public final class PropertyServiceMapping extends AbstractPropertyService {
    * @param mapping the given mapping
    * @param enactmentMode the enactment mode to set
    */
-  protected static void setEnactmentMode(Mapping<Task, Resource> mapping,
-      EnactmentMode enactmentMode) {
+  protected static void setEnactmentMode(final Mapping<Task, Resource> mapping,
+      final EnactmentMode enactmentMode) {
     mapping.setAttribute(propNameEnactmentMode, enactmentMode.name());
   }
 
@@ -109,8 +110,8 @@ public final class PropertyServiceMapping extends AbstractPropertyService {
    * @return a mapping edge from the given src task to the given dst resource
    */
   public static Mapping<Task, Resource> createMapping(final Task src, final Resource dst,
-      EnactmentMode enactmentMode, String implId) {
-    Mapping<Task, Resource> result = new Mapping<Task, Resource>(getMappingId(src, dst), src, dst);
+      final EnactmentMode enactmentMode, final String implId) {
+    final Mapping<Task, Resource> result = new Mapping<>(getMappingId(src, dst), src, dst);
     setEnactmentMode(result, enactmentMode);
     setImplementationId(result, implId);
     return result;
