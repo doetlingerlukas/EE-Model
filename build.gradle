@@ -31,7 +31,7 @@ dependencies {
   if (project.hasProperty("local")) {
     implementation project (':EE-Core')
   }else {
-    implementation 'com.github.Apollo-Core:EE-Core:functionCallInterface-SNAPSHOT'
+    implementation 'com.github.Apollo-Core:EE-Core:master-SNAPSHOT'
   }
 
   // as an example: dependency to Opt4J
