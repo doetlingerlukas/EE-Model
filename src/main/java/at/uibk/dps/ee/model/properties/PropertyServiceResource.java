@@ -14,7 +14,6 @@ import net.sf.opendse.model.properties.AbstractPropertyService;
  */
 public final class PropertyServiceResource extends AbstractPropertyService {
 
-  private static final String propNameType = Property.Type.name();
   private static final String propNameState = Property.State.name();
   private static final String propNameUsedBy = Property.UsedBy.name();
 
@@ -30,10 +29,6 @@ public final class PropertyServiceResource extends AbstractPropertyService {
    */
   protected enum Property {
     /**
-     * The type of the resource.
-     */
-    Type,
-    /**
      * The state of the resource
      */
     State,
@@ -41,22 +36,6 @@ public final class PropertyServiceResource extends AbstractPropertyService {
      * The set of tasks currently using the resource
      */
     UsedBy
-  }
-
-  /**
-   * The general types of resources.
-   * 
-   * @author Fedor Smirnov
-   */
-  public enum ResourceType {
-    /**
-     * Models an execution on the local resource (the resource running the EE).
-     */
-    Local,
-    /**
-     * Models an execution via a serverless function.
-     */
-    Serverless
   }
 
   /**
@@ -146,33 +125,9 @@ public final class PropertyServiceResource extends AbstractPropertyService {
    * Creates a resource node with the provided ID and the provided type.
    * 
    * @param resId the resource id
-   * @param type the type of the resource
    * @return a resource node with the provided ID and the provided type
    */
-  public static Resource createResource(final String resId, final ResourceType type) {
-    final Resource result = new Resource(resId);
-    setResourceType(result, type);
-    return result;
+  public static Resource createResource(final String resId) {
+    return new Resource(resId);
   }
-
-  /**
-   * Sets the type for the provided resource.
-   * 
-   * @param res the provided resource
-   * @param type the type to set
-   */
-  protected static void setResourceType(final Resource res, final ResourceType type) {
-    res.setAttribute(propNameType, type.name());
-  }
-
-  /**
-   * Returns the resource type of the provided resource.
-   * 
-   * @param res the provided resource
-   * @return the type of the resource
-   */
-  public static ResourceType getResourceType(final Resource res) {
-    return ResourceType.valueOf((String) getAttribute(res, propNameType));
-  }
-
 }

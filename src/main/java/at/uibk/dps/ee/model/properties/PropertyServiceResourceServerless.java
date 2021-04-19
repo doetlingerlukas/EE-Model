@@ -2,7 +2,6 @@ package at.uibk.dps.ee.model.properties;
 
 import com.google.gson.JsonElement;
 import at.uibk.dps.ee.model.constants.ConstantsEEModel;
-import at.uibk.dps.ee.model.properties.PropertyServiceResource.ResourceType;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.properties.AbstractPropertyService;
 
@@ -43,11 +42,11 @@ public final class PropertyServiceResourceServerless extends AbstractPropertySer
    * 
    * @param resId the provided ID
    * @param resourceLink the resource link
+   * @param implId the implementation id
    * @return a serverless resource with the provided resource link and ID
    */
   public static Resource createServerlessResource(final String resId, final String resourceLink) {
-    final Resource result = new Resource(resId);
-    PropertyServiceResource.setResourceType(result, ResourceType.Serverless);
+    final Resource result = PropertyServiceResource.createResource(resId);
     setUri(result, resourceLink);
     return result;
   }
@@ -113,8 +112,6 @@ public final class PropertyServiceResourceServerless extends AbstractPropertySer
    * @param res the provided resource.
    */
   protected static void checkResource(final Resource res) {
-    if (!PropertyServiceResource.getResourceType(res).equals(ResourceType.Serverless)) {
-      throw new IllegalArgumentException("Resource " + res + " is not a serverless resource.");
-    }
+    // this could be probably dropped
   }
 }

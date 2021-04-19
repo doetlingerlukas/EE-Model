@@ -21,6 +21,6 @@ public class PropertyServiceFunctionUserTest {
     Task result = PropertyServiceFunctionUser.createUserTask(id, functionTypeString);
     assertEquals(UsageType.User, PropertyServiceFunction.getUsageType(result));
     assertEquals(id, result.getId());
-    assertEquals(functionTypeString, PropertyServiceFunctionUser.getFunctionTypeString(result));
+    assertEquals(functionTypeString, PropertyServiceFunctionUser.getTypeId(result));
   }
 }

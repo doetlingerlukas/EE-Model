@@ -16,6 +16,9 @@ public final class ConstantsEEModel {
   // Resource graph constants
   public static final String idLocalResource = "Enactment Engine (Local Machine)";
   public static final int defaultFaaSTimeoutSeconds = 3;
+  
+  // Mapping edge constants
+  public static final String implIdLocalNative = "native";
 
 
   // Enactment graph constants
