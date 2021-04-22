@@ -17,6 +17,7 @@ import net.sf.opendse.model.properties.TaskPropertyService;
 public final class PropertyServiceDependency extends AbstractPropertyService {
 
   private static final String propNameExtractionDone = Property.ExtractionDone.name();
+  private static final String propNameDataConsumed = Property.DataConsumed.name();
 
   private PropertyServiceDependency() {}
 
@@ -40,6 +41,11 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
      */
     TransmissionDone,
     /**
+     * Whether the data transmitted by this edge was already consumed by its
+     * destination
+     */
+    DataConsumed,
+    /**
      * Whether or not the data was already extracted from the edge's source
      */
     ExtractionDone
@@ -60,6 +66,44 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
      * Control flow following from if compounds
      */
     ControlIf
+  }
+
+  /**
+   * Resets the transmission annotations on the given edge
+   * 
+   * @param dependency the given edge
+   */
+  public static void resetTransmission(Dependency dependency) {
+    resetTransmissionAnnotation(dependency);
+    dependency.setAttribute(propNameDataConsumed, false);
+  }
+
+  /**
+   * Annotates data consumption on the given edge
+   * 
+   * @param dependency the given edge
+   */
+  public static void setDataConsumed(Dependency dependency) {
+    if (!isTransmissionDone(dependency)) {
+      throw new IllegalStateException(
+          "Data consumption can only occur after transmission: " + dependency);
+    }
+    dependency.setAttribute(propNameDataConsumed, true);
+  }
+
+  /**
+   * Returns true if the edge annotation suggests that the data has been consumed
+   * by the edge source.
+   * 
+   * @param dependency the edge
+   * @return true if the edge annotation suggests that the data has been consumed
+   *         by the edge source
+   */
+  public static boolean isDataConsumed(Dependency dependency) {
+    if (!isAttributeSet(dependency, propNameDataConsumed)) {
+      return false;
+    }
+    return (boolean) getAttribute(dependency, propNameDataConsumed);
   }
 
   /**
@@ -112,7 +156,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * 
    * @param dependency the given dependency
    */
-  public static void resetTransmissionAnnotation(final Dependency dependency) {
+  protected static void resetTransmissionAnnotation(final Dependency dependency) {
     setTransmissionDone(dependency, false);
   }
 

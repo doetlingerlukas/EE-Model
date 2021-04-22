@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 
 import at.uibk.dps.ee.model.properties.PropertyServiceData.DataType;
 import at.uibk.dps.ee.model.properties.PropertyServiceData.NodeType;
+import at.uibk.dps.ee.model.properties.PropertyServiceData.Property;
 import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Task;
 
@@ -32,6 +33,24 @@ public class PropertyServiceDataTest {
     assertEquals(DataType.String, PropertyServiceData.getDataType(result));
     assertEquals(NodeType.Constant, PropertyServiceData.getNodeType(result));
     assertEquals(content, PropertyServiceData.getContent(result));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void checkResetContentConstant() {
+    Task task = new Communication("comm");
+    PropertyServiceData.setContent(task, new JsonObject());
+    PropertyServiceData.setNodeType(task, NodeType.Constant);
+    PropertyServiceData.resetContent(task);
+  }
+  
+  @Test
+  public void checkResetContent() {
+    Task task = new Communication("comm");
+    PropertyServiceData.setContent(task, new JsonObject());
+    assertTrue(PropertyServiceData.isDataAvailable(task));
+    PropertyServiceData.resetContent(task);
+    assertFalse(PropertyServiceData.isDataAvailable(task));
+    assertNull(task.getAttribute(Property.Content.name()));
   }
 
   @Test(expected = IllegalArgumentException.class)

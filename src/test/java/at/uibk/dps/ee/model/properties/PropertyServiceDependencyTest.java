@@ -23,6 +23,28 @@ public class PropertyServiceDependencyTest {
     assertFalse(PropertyServiceDependency.isExtractionDone(dep));
   }
 
+  @Test(expected = IllegalStateException.class)
+  public void testDataConsumptionNotOkay() {
+    Task task1 = new Task("task");
+    Task task2 = new Task("othertask");
+    Dependency dep = PropertyServiceDependency.createDependency(task1, task2);
+    PropertyServiceDependency.setDataConsumed(dep);
+  }
+
+  @Test
+  public void testDataConsumptionOkay() {
+    Task task1 = new Task("task");
+    Task task2 = new Task("othertask");
+    Dependency dep = PropertyServiceDependency.createDependency(task1, task2);
+    PropertyServiceDependency.annotateFinishedTransmission(dep);
+    assertFalse(PropertyServiceDependency.isDataConsumed(dep));
+    PropertyServiceDependency.setDataConsumed(dep);
+    assertTrue(PropertyServiceDependency.isDataConsumed(dep));
+    PropertyServiceDependency.resetTransmission(dep);
+    assertFalse(PropertyServiceDependency.isDataConsumed(dep));
+    assertFalse(PropertyServiceDependency.isTransmissionDone(dep));
+  }
+
   @Test
   public void testTransmissionAnnotation() {
     Task task1 = new Task("task");

@@ -301,6 +301,22 @@ public final class PropertyServiceData extends AbstractPropertyService {
     }
     return (boolean) getAttribute(task, attrName);
   }
+  
+  /**
+   * Empties the data node by resetting its content.
+   * 
+   * @param task the data node
+   */
+  public static void resetContent(Task task) {
+    checkTask(task);
+    if (getNodeType(task).equals(NodeType.Constant)) {
+      throw new IllegalArgumentException("The content of a constant data node must not be set.");
+    }
+    final String attrName = Property.DataAvailable.name();
+    task.setAttribute(attrName, false);
+    final String attrNameContent = Property.Content.name();
+    task.setAttribute(attrNameContent, null);
+  }
 
   /**
    * Checks whether a given task is processable by this service. Throws an
