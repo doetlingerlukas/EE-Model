@@ -16,6 +16,8 @@ import net.sf.opendse.model.properties.TaskPropertyService;
  */
 public final class PropertyServiceDependency extends AbstractPropertyService {
 
+  private static final String propNameExtractionDone = Property.ExtractionDone.name();
+
   private PropertyServiceDependency() {}
 
   /**
@@ -36,7 +38,11 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
     /**
      * Whether or not the data was already transmitted over this edge
      */
-    TransmissionDone
+    TransmissionDone,
+    /**
+     * Whether or not the data was already extracted from the edge's source
+     */
+    ExtractionDone
   }
 
   /**
@@ -54,6 +60,37 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
      * Control flow following from if compounds
      */
     ControlIf
+  }
+
+  /**
+   * Returns true iff the data extraction over the given edge is finished.
+   * 
+   * @param dependency the given edge
+   * @return true iff the data extraction over the given edge is finished
+   */
+  public static boolean isExtractionDone(final Dependency dependency) {
+    if (!isAttributeSet(dependency, propNameExtractionDone)) {
+      return false;
+    }
+    return (boolean) getAttribute(dependency, propNameExtractionDone);
+  }
+
+  /**
+   * Annotates that the extraction over the given edge has been finished.
+   * 
+   * @param dependency the given edge
+   */
+  public static void setExtractionDone(final Dependency dependency) {
+    dependency.setAttribute(propNameExtractionDone, true);
+  }
+
+  /**
+   * Annotates that the extraction over the given edge has not been finished.
+   * 
+   * @param dependency the given edge
+   */
+  public static void resetExtractionDone(final Dependency dependency) {
+    dependency.setAttribute(propNameExtractionDone, false);
   }
 
   /**

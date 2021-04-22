@@ -14,6 +14,16 @@ import net.sf.opendse.model.Task;
 public class PropertyServiceDependencyTest {
 
   @Test
+  public void testExtractionDone() {
+    Dependency dep = new Dependency("dep");
+    assertFalse(PropertyServiceDependency.isExtractionDone(dep));
+    PropertyServiceDependency.setExtractionDone(dep);
+    assertTrue(PropertyServiceDependency.isExtractionDone(dep));
+    PropertyServiceDependency.resetExtractionDone(dep);
+    assertFalse(PropertyServiceDependency.isExtractionDone(dep));
+  }
+
+  @Test
   public void testTransmissionAnnotation() {
     Task task1 = new Task("task");
     Task task2 = new Task("othertask");
