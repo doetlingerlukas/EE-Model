@@ -73,7 +73,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * 
    * @param dependency the given edge
    */
-  public static void resetTransmission(Dependency dependency) {
+  public static void resetTransmission(final Dependency dependency) {
     resetTransmissionAnnotation(dependency);
     dependency.setAttribute(propNameDataConsumed, false);
   }
@@ -83,7 +83,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * 
    * @param dependency the given edge
    */
-  public static void setDataConsumed(Dependency dependency) {
+  public static void setDataConsumed(final Dependency dependency) {
     if (!isTransmissionDone(dependency)) {
       throw new IllegalStateException(
           "Data consumption can only occur after transmission: " + dependency);
@@ -99,7 +99,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * @return true if the edge annotation suggests that the data has been consumed
    *         by the edge source
    */
-  public static boolean isDataConsumed(Dependency dependency) {
+  public static boolean isDataConsumed(final Dependency dependency) {
     if (!isAttributeSet(dependency, propNameDataConsumed)) {
       return false;
     }

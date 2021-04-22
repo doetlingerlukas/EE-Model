@@ -20,6 +20,7 @@ public class ResourceGraph extends Architecture<Resource, Link> {
    * Default constructor.
    */
   public ResourceGraph() {
+    super();
   }
   
   /**
@@ -27,11 +28,11 @@ public class ResourceGraph extends Architecture<Resource, Link> {
    * 
    * @param arch the given architecture
    */
-  public ResourceGraph(Architecture<Resource, Link> arch) {
+  public ResourceGraph(final Architecture<Resource, Link> arch) {
     super();
     arch.getEdges().forEach(link -> {
-      Resource res1 = arch.getEndpoints(link).getFirst();
-      Resource res2 = arch.getEndpoints(link).getSecond();
+      final Resource res1 = arch.getEndpoints(link).getFirst();
+      final Resource res2 = arch.getEndpoints(link).getSecond();
       this.addEdge(link, res1, res2, EdgeType.UNDIRECTED);
     });
     arch.forEach(res -> this.addVertex(res));
