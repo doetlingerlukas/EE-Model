@@ -1,7 +1,7 @@
 package at.uibk.dps.ee.model.properties;
 
 import com.google.gson.JsonElement;
-
+import com.google.gson.JsonParser;
 import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.AbstractPropertyService;
@@ -128,7 +128,7 @@ public final class PropertyServiceData extends AbstractPropertyService {
     setDataType(result, dataType);
     setNodeType(result, NodeType.Constant);
     final String attrNameContent = Property.Content.name();
-    result.setAttribute(attrNameContent, content);
+    result.setAttribute(attrNameContent, content.toString());
     final String dataAvalAttrName = Property.DataAvailable.name();
     result.setAttribute(dataAvalAttrName, true);
     return result;
@@ -268,7 +268,7 @@ public final class PropertyServiceData extends AbstractPropertyService {
       throw new IllegalArgumentException("The content of a constant data node must not be set.");
     }
     final String attrNameContent = Property.Content.name();
-    task.setAttribute(attrNameContent, content);
+    task.setAttribute(attrNameContent, content.toString());
     final String attrNameAval = Property.DataAvailable.name();
     task.setAttribute(attrNameAval, true);
   }
@@ -284,7 +284,8 @@ public final class PropertyServiceData extends AbstractPropertyService {
     checkTask(task);
     final String attrName = Property.Content.name();
     checkAttribute(task, attrName);
-    return (JsonElement) getAttribute(task, attrName);
+    final String jsonString = (String) getAttribute(task, attrName);
+    return JsonParser.parseString(jsonString);
   }
 
   /**

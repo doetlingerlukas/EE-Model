@@ -3,10 +3,10 @@ package at.uibk.dps.ee.model.properties;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
+import com.google.gson.JsonPrimitive;
 import at.uibk.dps.ee.model.properties.PropertyServiceData.DataType;
 import at.uibk.dps.ee.model.properties.PropertyServiceData.NodeType;
 import at.uibk.dps.ee.model.properties.PropertyServiceData.Property;
@@ -71,6 +71,38 @@ public class PropertyServiceDataTest {
     Task input = new Communication("comm");
     assertFalse(PropertyServiceData.isDataAvailable(input));
     JsonObject json = new JsonObject();
+    PropertyServiceData.setContent(input, json);
+    assertTrue(PropertyServiceData.isDataAvailable(input));
+    assertEquals(json, PropertyServiceData.getContent(input));
+  }
+  
+  @Test
+  public void testGetSetAvailabilityContentString() {
+    Task input = new Communication("comm");
+    assertFalse(PropertyServiceData.isDataAvailable(input));
+    JsonElement json = new JsonPrimitive("123");
+    PropertyServiceData.setContent(input, json);
+    assertTrue(PropertyServiceData.isDataAvailable(input));
+    assertEquals(json, PropertyServiceData.getContent(input));
+  }
+  
+  @Test
+  public void testGetSetAvailabilityContentNumber() {
+    Task input = new Communication("comm");
+    assertFalse(PropertyServiceData.isDataAvailable(input));
+    JsonElement json = new JsonPrimitive(123);
+    PropertyServiceData.setContent(input, json);
+    assertTrue(PropertyServiceData.isDataAvailable(input));
+    assertEquals(json, PropertyServiceData.getContent(input));
+  }
+  
+  @Test
+  public void testGetSetAvailabilityContentArray() {
+    Task input = new Communication("comm");
+    assertFalse(PropertyServiceData.isDataAvailable(input));
+    JsonArray json = new JsonArray();
+    json.add(123);
+    json.add("123");
     PropertyServiceData.setContent(input, json);
     assertTrue(PropertyServiceData.isDataAvailable(input));
     assertEquals(json, PropertyServiceData.getContent(input));
