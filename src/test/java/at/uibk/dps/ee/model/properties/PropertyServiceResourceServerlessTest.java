@@ -3,6 +3,7 @@ package at.uibk.dps.ee.model.properties;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import com.google.gson.JsonPrimitive;
+import at.uibk.dps.ee.model.constants.ConstantsEEModel;
 import net.sf.opendse.model.Resource;
 
 public class PropertyServiceResourceServerlessTest {
@@ -14,7 +15,8 @@ public class PropertyServiceResourceServerlessTest {
     Resource result = PropertyServiceResourceServerless.createServerlessResource(id, uri);
     assertEquals(id, result.getId());
     assertEquals(uri, PropertyServiceResourceServerless.getUri(result));
-    assertEquals(3, PropertyServiceResourceServerless.getTimeoutInSeconds(result));
+    assertEquals(ConstantsEEModel.defaultFaaSTimeoutSeconds,
+        PropertyServiceResourceServerless.getTimeoutInSeconds(result));
     PropertyServiceResourceServerless.setTimeoutInSeconds(result, 5);
     assertEquals(5, PropertyServiceResourceServerless.getTimeoutInSeconds(result));
     result.setAttribute(PropertyServiceResourceServerless.propNameTimeout, new JsonPrimitive(10));

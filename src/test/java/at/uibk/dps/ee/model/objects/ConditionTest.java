@@ -15,10 +15,14 @@ public class ConditionTest {
   public void test() {
     String first = "first";
     String second = "second";
+    DataType type = DataType.Number;
+    CombinedWith combined = CombinedWith.And;
     Operator operator = Operator.LESS;
-    String toString = ConstantsEEModel.NegationPrefix + first + " " + operator.name() + " " + second
-        + ConstantsEEModel.NegationSuffix;
-    String toString2 = first + " " + operator.name() + " " + second;
+    String toString =
+        ConstantsEEModel.NegationPrefix + ' ' + first + " " + operator.name() + " " + second + " "
+            + combined.name() + " " + type.name() + ' ' + ConstantsEEModel.NegationSuffix;
+    String toString2 =
+        first + " " + operator.name() + " " + second + " " + combined.name() + " " + type.name();
 
     Condition tested1 =
         new Condition(first, second, operator, true, DataType.Number, CombinedWith.And);
@@ -38,6 +42,9 @@ public class ConditionTest {
     assertEquals(operator, tested2.getOperator());
     assertFalse(tested2.isNegation());
     assertEquals(toString2, tested2.toString());
+
+    Condition deserialized = new Condition(toString);
+    assertEquals(tested1, deserialized);
   }
 
   @Test

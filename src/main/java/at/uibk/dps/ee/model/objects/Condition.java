@@ -59,6 +59,29 @@ public final class Condition implements Serializable {
     this.combinedWith = combinedWith;
   }
 
+  /**
+   * This constructor is needed to deserialize conditions.
+   * 
+   * @param deserialized the deserialized string
+   */
+  public Condition(String deserialized) {
+    String[] splitted = deserialized.split("\\s+");
+    // check for negation
+    int idx = 0;
+    if (splitted[idx].equals(ConstantsEEModel.NegationPrefix)) {
+      this.negation = true;
+      idx++;
+    } else {
+      this.negation = false;
+    }
+    this.firstInputId = splitted[idx++];
+    this.operator = Operator.valueOf(splitted[idx++]);
+    this.secondInputId = splitted[idx++];
+    this.combinedWith = CombinedWith.valueOf(splitted[idx++]);
+    this.type = DataType.valueOf(splitted[idx++]);
+  }
+
+
   public String getFirstInputId() {
     return firstInputId;
   }
@@ -87,10 +110,11 @@ public final class Condition implements Serializable {
   public String toString() {
     final StringBuilder builder = new StringBuilder();
     builder.append(firstInputId).append(' ').append(operator.name()).append(' ')
-        .append(secondInputId);
+        .append(secondInputId).append(' ').append(combinedWith.name()).append(' ')
+        .append(type.name());
     if (negation) {
-      builder.insert(0, ConstantsEEModel.NegationPrefix);
-      builder.append(ConstantsEEModel.NegationSuffix);
+      builder.insert(0, ConstantsEEModel.NegationPrefix + ' ');
+      builder.append(' ' + ConstantsEEModel.NegationSuffix);
     }
     return builder.toString();
   }
