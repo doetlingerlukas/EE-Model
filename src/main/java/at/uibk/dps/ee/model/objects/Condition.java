@@ -64,21 +64,21 @@ public final class Condition implements Serializable {
    * 
    * @param deserialized the deserialized string
    */
-  public Condition(String deserialized) {
-    String[] splitted = deserialized.split("\\s+");
+  public Condition(final String deserialized) {
+    final String[] subStrings = deserialized.split("\\s+");
     // check for negation
     int idx = 0;
-    if (splitted[idx].equals(ConstantsEEModel.NegationPrefix)) {
+    if (subStrings[idx].equals(ConstantsEEModel.NegationPrefix)) {
       this.negation = true;
       idx++;
     } else {
       this.negation = false;
     }
-    this.firstInputId = splitted[idx++];
-    this.operator = Operator.valueOf(splitted[idx++]);
-    this.secondInputId = splitted[idx++];
-    this.combinedWith = CombinedWith.valueOf(splitted[idx++]);
-    this.type = DataType.valueOf(splitted[idx++]);
+    this.firstInputId = subStrings[idx++];
+    this.operator = Operator.valueOf(subStrings[idx++]);
+    this.secondInputId = subStrings[idx++];
+    this.combinedWith = CombinedWith.valueOf(subStrings[idx++]);
+    this.type = DataType.valueOf(subStrings[idx]);
   }
 
 

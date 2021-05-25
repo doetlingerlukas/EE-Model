@@ -17,7 +17,7 @@ import net.sf.opendse.model.properties.AbstractPropertyService;
 public final class PropertyServiceMappingLocal extends AbstractPropertyService {
 
   public static final String propNameImage = Property.Image.name();
-  protected static final String macAddress = getMacAddress();
+  private static final String macAddress = getMacAddress();
 
   /**
    * Properties of the local mappings.
@@ -40,11 +40,11 @@ public final class PropertyServiceMappingLocal extends AbstractPropertyService {
    * @param imageName the name of the image used in the container
    * @return a local mapping for a container with the provided image name
    */
-  public static Mapping<Task, Resource> createMappingLocal(Task src, Resource dst,
-      String imageName) {
-    String implId = macAddress + "--" + imageName;
-    String mappingId = PropertyServiceMapping.getMappingId(src, dst) + "-" + imageName;
-    Mapping<Task, Resource> result =
+  public static Mapping<Task, Resource> createMappingLocal(final Task src, final Resource dst,
+      final String imageName) {
+    final String implId = macAddress + "--" + imageName;
+    final String mappingId = PropertyServiceMapping.getMappingId(src, dst) + "-" + imageName;
+    final Mapping<Task, Resource> result =
         PropertyServiceMapping.createMapping(src, dst, EnactmentMode.Local, implId, mappingId);
     setImageName(result, imageName);
     return result;
@@ -56,7 +56,8 @@ public final class PropertyServiceMappingLocal extends AbstractPropertyService {
    * @param mapping the given mapping
    * @param imageName the image name
    */
-  protected static void setImageName(Mapping<Task, Resource> mapping, String imageName) {
+  protected static void setImageName(final Mapping<Task, Resource> mapping,
+      final String imageName) {
     checkMapping(mapping);
     mapping.setAttribute(propNameImage, imageName);
   }
@@ -66,7 +67,7 @@ public final class PropertyServiceMappingLocal extends AbstractPropertyService {
    * 
    * @param mapping the provided mapping.
    */
-  public static String getImageName(Mapping<Task, Resource> mapping) {
+  public static String getImageName(final Mapping<Task, Resource> mapping) {
     checkMapping(mapping);
     return (String) getAttribute(mapping, propNameImage);
   }
@@ -76,7 +77,7 @@ public final class PropertyServiceMappingLocal extends AbstractPropertyService {
    * 
    * @param mapping the provided mapping
    */
-  protected static void checkMapping(Mapping<Task, Resource> mapping) {
+  protected static void checkMapping(final Mapping<Task, Resource> mapping) {
     if (!PropertyServiceMapping.getEnactmentMode(mapping).equals(EnactmentMode.Local)) {
       throw new IllegalArgumentException("The mapping " + mapping + " is not a local mapping.");
     }
@@ -89,15 +90,16 @@ public final class PropertyServiceMappingLocal extends AbstractPropertyService {
    */
   protected static String getMacAddress() {
     try {
-      NetworkInterface ni = NetworkInterface.getNetworkInterfaces().nextElement();
-      byte[] hardwareAddress = ni.getHardwareAddress();
-      String[] hexadecimal = new String[hardwareAddress.length];
+      final NetworkInterface networkInterface =
+          NetworkInterface.getNetworkInterfaces().nextElement();
+      final byte[] hardwareAddress = networkInterface.getHardwareAddress();
+      final String[] hexadecimal = new String[hardwareAddress.length];
       for (int i = 0; i < hardwareAddress.length; i++) {
         hexadecimal[i] = String.format("%02X", hardwareAddress[i]);
       }
       return String.join("-", hexadecimal);
     } catch (SocketException e) {
-      throw new IllegalStateException("Mac address of the host could not be determined.");
+      throw new IllegalStateException("Mac address of the host could not be determined.", e);
     }
   }
 

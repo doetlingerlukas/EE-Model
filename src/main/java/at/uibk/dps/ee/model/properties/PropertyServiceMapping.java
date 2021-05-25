@@ -121,11 +121,12 @@ public final class PropertyServiceMapping extends AbstractPropertyService {
    * @param dst the dst resource
    * @param enactmentMode the enactment mode
    * @param implId the implementation ID
+   * @param mappingId the id that the created mapping will have
    * @return a mapping edge from the given src task to the given dst resource
    */
   protected static Mapping<Task, Resource> createMapping(final Task src, final Resource dst,
-      final EnactmentMode enactmentMode, final String implId, final String id) {
-    final Mapping<Task, Resource> result = new Mapping<>(id, src, dst);
+      final EnactmentMode enactmentMode, final String implId, final String mappingId) {
+    final Mapping<Task, Resource> result = new Mapping<>(mappingId, src, dst);
     setEnactmentMode(result, enactmentMode);
     setImplementationId(result, implId);
     return result;
