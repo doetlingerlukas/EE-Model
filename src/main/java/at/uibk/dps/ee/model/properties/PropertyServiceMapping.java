@@ -55,7 +55,11 @@ public final class PropertyServiceMapping extends AbstractPropertyService {
     /**
      * Models an execution via a serverless function.
      */
-    Serverless
+    Serverless,
+    /**
+     * Natively implemented functions, used for demo purposes
+     */
+    Demo
   }
 
   /**
