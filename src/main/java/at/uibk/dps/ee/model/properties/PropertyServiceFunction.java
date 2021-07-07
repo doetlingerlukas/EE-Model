@@ -1,6 +1,6 @@
 package at.uibk.dps.ee.model.properties;
 
-import at.uibk.dps.ee.core.enactable.Enactable;
+import com.google.gson.JsonObject;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.AbstractPropertyService;
 import net.sf.opendse.model.properties.TaskPropertyService;
@@ -15,6 +15,8 @@ import net.sf.opendse.model.properties.TaskPropertyService;
 public final class PropertyServiceFunction extends AbstractPropertyService {
 
   private static final String propNameUsageType = Property.UsageType.name();
+  private static final String propNameInput = Property.Input.name();
+  private static final String propNameOutput = Property.Output.name();
 
   /**
    * No constructor
@@ -33,9 +35,13 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
      */
     UsageType,
     /**
-     * The enactable associated with the task
+     * The input of the function
      */
-    Enactable
+    Input,
+    /**
+     * The output of the function
+     */
+    Output
   }
 
   /**
@@ -62,27 +68,95 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
   }
 
   /**
-   * Returns the enactable of the given task.
+   * Resets the output for the given task.
    * 
    * @param task the given task
-   * @return the enactable of the given task
    */
-  public static Enactable getEnactable(final Task task) {
+  public static void resetOutput(Task task) {
     checkTask(task);
-    final String attrName = Property.Enactable.name();
-    return (Enactable) getAttribute(task, attrName);
+    task.setAttribute(propNameOutput, null);
   }
 
   /**
-   * Sets the enactable for the given task-
+   * Returns the output stored for the given task.
    * 
    * @param task the given task
-   * @param enactable the enactable to set
+   * @return the output stored for the given task
    */
-  public static void setEnactable(final Task task, final Enactable enactable) {
+  public static JsonObject getOutput(Task task) {
     checkTask(task);
-    final String attrName = Property.Enactable.name();
-    task.setAttribute(attrName, enactable);
+    if (!isOutputSet(task)) {
+      throw new IllegalStateException("Output of task " + task + " not set but requested.");
+    }
+    return (JsonObject) task.getAttribute(propNameOutput);
+  }
+
+  /**
+   * Sets the given output for the given task.
+   * 
+   * @param task the given task
+   * @param output the given output
+   */
+  public static void setOutput(Task task, JsonObject output) {
+    checkTask(task);
+    if (isOutputSet(task)) {
+      throw new IllegalStateException("Output for task " + task.getId() + " is already set.");
+    }
+    task.setAttribute(propNameOutput, output);
+  }
+
+  /**
+   * Returns true iff the output is set for the given function task
+   * 
+   * @param task the given function task
+   * @return true iff the output is set for the given function task
+   */
+  public static boolean isOutputSet(Task task) {
+    checkTask(task);
+    return task.getAttribute(propNameOutput) != null;
+  }
+
+  /**
+   * Sets the key content for a given task node.
+   * 
+   * @param task the task node
+   * @param content the content to set
+   */
+  public static void setInput(Task task, JsonObject content) {
+    checkTask(task);
+    if (isInputSet(task)) {
+      throw new IllegalStateException("Input of task " + task + " already set.");
+    }
+    task.setAttribute(propNameInput, content);
+  }
+
+  public static JsonObject getInput(Task task) {
+    checkTask(task);
+    if (!isInputSet(task)) {
+      throw new IllegalStateException("Input of task " + task + " not set but requested.");
+    }
+    return (JsonObject) task.getAttribute(propNameInput);
+  }
+
+  /**
+   * Resets the function input.
+   * 
+   * @param task the function
+   */
+  public static void resetInput(Task task) {
+    checkTask(task);
+    task.setAttribute(propNameInput, null);
+  }
+
+  /**
+   * Returns true if at least one of the keys of the input is set.
+   * 
+   * @param task
+   * @return
+   */
+  public static boolean isInputSet(Task task) {
+    checkTask(task);
+    return task.getAttribute(propNameInput) != null;
   }
 
   /**

@@ -1,7 +1,5 @@
 package at.uibk.dps.ee.model.properties;
 
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import at.uibk.dps.ee.model.properties.PropertyServiceMapping.EnactmentMode;
 import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Resource;
@@ -89,18 +87,9 @@ public final class PropertyServiceMappingLocal extends AbstractPropertyService {
    * @return a string representation of Apollo's host machine
    */
   protected static String getMacAddress() {
-    try {
-      final NetworkInterface networkInterface =
-          NetworkInterface.getNetworkInterfaces().nextElement();
-      final byte[] hardwareAddress = networkInterface.getHardwareAddress();
-      final String[] hexadecimal = new String[hardwareAddress.length];
-      for (int i = 0; i < hardwareAddress.length; i++) {
-        hexadecimal[i] = String.format("%02X", hardwareAddress[i]);
-      }
-      return String.join("-", hexadecimal);
-    } catch (SocketException e) {
-      throw new IllegalStateException("Mac address of the host could not be determined.", e);
-    }
+    System.err.println("Need to implement a proper way to get the MAC address");
+    // just for now
+    return "myMachine";
   }
 
   /**

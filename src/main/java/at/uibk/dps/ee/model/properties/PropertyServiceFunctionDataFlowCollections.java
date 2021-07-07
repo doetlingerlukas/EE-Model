@@ -14,6 +14,8 @@ import net.sf.opendse.model.properties.TaskPropertyService;
  */
 public final class PropertyServiceFunctionDataFlowCollections extends AbstractPropertyService {
 
+  protected static final String propertyNameFinished = Property.Finished.name();
+
   /**
    * No constructor.
    */
@@ -36,7 +38,11 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
     /**
      * The number of iterations.
      */
-    IterationNumber
+    IterationNumber,
+    /**
+     * Whether the aggregation operation was already finished or not.
+     */
+    Finished
   }
 
   /**
@@ -47,6 +53,26 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
    */
   public enum OperationType {
     Distribution, Aggregation
+  }
+
+  public static boolean isFinished(Task task) {
+    checkTask(task);
+    if (!getOperationType(task).equals(OperationType.Aggregation)) {
+      throw new IllegalArgumentException("Only applicable to aggregation tasks");
+    }
+    if (!isAttributeSet(task, propertyNameFinished)) {
+      return false;
+    } else {
+      return (boolean) getAttribute(task, propertyNameFinished);
+    }
+  }
+
+  public static void setFinished(Task task, boolean finished) {
+    checkTask(task);
+    if (!getOperationType(task).equals(OperationType.Aggregation)) {
+      throw new IllegalArgumentException("Only applicable to aggregation tasks");
+    }
+    task.setAttribute(propertyNameFinished, finished);
   }
 
   /**
