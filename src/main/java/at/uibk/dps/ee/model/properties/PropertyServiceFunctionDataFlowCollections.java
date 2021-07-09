@@ -14,7 +14,7 @@ import net.sf.opendse.model.properties.TaskPropertyService;
  */
 public final class PropertyServiceFunctionDataFlowCollections extends AbstractPropertyService {
 
-  protected static final String propertyNameFinished = Property.Finished.name();
+  private static final String propertyNameFinished = Property.Finished.name();
 
   /**
    * No constructor.
@@ -55,21 +55,35 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
     Distribution, Aggregation
   }
 
-  public static boolean isFinished(Task task) {
+  /**
+   * Returns true iff the given aggregation task is annotated as finished
+   * (precondition to reverse the distribution transformation).
+   * 
+   * @param task the given task
+   * @return true iff the given task is annotated as finished (precondition to
+   *         reverse the distribution transformation)
+   */
+  public static boolean isFinished(final Task task) {
     checkTask(task);
-    if (!getOperationType(task).equals(OperationType.Aggregation)) {
+    if (!isAggregationNode(task)) {
       throw new IllegalArgumentException("Only applicable to aggregation tasks");
     }
-    if (!isAttributeSet(task, propertyNameFinished)) {
-      return false;
-    } else {
+    if (isAttributeSet(task, propertyNameFinished)) {
       return (boolean) getAttribute(task, propertyNameFinished);
+    } else {
+      return false;
     }
   }
 
-  public static void setFinished(Task task, boolean finished) {
+  /**
+   * Annotates whether the given aggregation task is finished.
+   * 
+   * @param task the given aggregation task
+   * @param finished true iff finished
+   */
+  public static void setFinished(final Task task, boolean finished) {
     checkTask(task);
-    if (!getOperationType(task).equals(OperationType.Aggregation)) {
+    if (!isAggregationNode(task)) {
       throw new IllegalArgumentException("Only applicable to aggregation tasks");
     }
     task.setAttribute(propertyNameFinished, finished);

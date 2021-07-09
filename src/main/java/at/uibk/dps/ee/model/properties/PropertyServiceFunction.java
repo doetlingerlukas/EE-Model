@@ -72,7 +72,7 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
    * 
    * @param task the given task
    */
-  public static void resetOutput(Task task) {
+  public static void resetOutput(final Task task) {
     checkTask(task);
     task.setAttribute(propNameOutput, null);
   }
@@ -83,7 +83,7 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
    * @param task the given task
    * @return the output stored for the given task
    */
-  public static JsonObject getOutput(Task task) {
+  public static JsonObject getOutput(final Task task) {
     checkTask(task);
     if (!isOutputSet(task)) {
       throw new IllegalStateException("Output of task " + task + " not set but requested.");
@@ -97,7 +97,7 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
    * @param task the given task
    * @param output the given output
    */
-  public static void setOutput(Task task, JsonObject output) {
+  public static void setOutput(final Task task, final JsonObject output) {
     checkTask(task);
     if (isOutputSet(task)) {
       throw new IllegalStateException("Output for task " + task.getId() + " is already set.");
@@ -122,7 +122,7 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
    * @param task the task node
    * @param content the content to set
    */
-  public static void setInput(Task task, JsonObject content) {
+  public static void setInput(final Task task, final JsonObject content) {
     checkTask(task);
     if (isInputSet(task)) {
       throw new IllegalStateException("Input of task " + task + " already set.");
@@ -130,7 +130,13 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
     task.setAttribute(propNameInput, content);
   }
 
-  public static JsonObject getInput(Task task) {
+  /**
+   * Returns the input annotated at the given function task.
+   * 
+   * @param task the given function task
+   * @return the input annotated at the given function task
+   */
+  public static JsonObject getInput(final Task task) {
     checkTask(task);
     if (!isInputSet(task)) {
       throw new IllegalStateException("Input of task " + task + " not set but requested.");
@@ -143,7 +149,7 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
    * 
    * @param task the function
    */
-  public static void resetInput(Task task) {
+  public static void resetInput(final Task task) {
     checkTask(task);
     task.setAttribute(propNameInput, null);
   }
@@ -154,7 +160,7 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
    * @param task
    * @return
    */
-  public static boolean isInputSet(Task task) {
+  public static boolean isInputSet(final Task task) {
     checkTask(task);
     return task.getAttribute(propNameInput) != null;
   }
