@@ -41,7 +41,8 @@ public final class PropertyServiceMappingLocal extends AbstractPropertyService {
   public static Mapping<Task, Resource> createMappingLocal(final Task src, final Resource dst,
       final String imageName) {
     final String implId = macAddress + "--" + imageName;
-    final String mappingId = PropertyServiceMapping.getMappingId(src, dst) + "-" + imageName;
+    final String mappingId =
+        PropertyServiceMapping.getMappingId(src, dst, implId) + "-" + imageName;
     final Mapping<Task, Resource> result =
         PropertyServiceMapping.createMapping(src, dst, EnactmentMode.Local, implId, mappingId);
     setImageName(result, imageName);

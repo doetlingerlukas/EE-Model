@@ -19,7 +19,8 @@ public class PropertyServiceMappingTest {
     EnactmentMode mode = EnactmentMode.Local;
     String implId = "impl1";
 
-    String expectedId = taskId + ConstantsEEModel.KeywordSeparator1 + resId;
+    String expectedId = taskId + ConstantsEEModel.KeywordSeparator1 + resId
+        + ConstantsEEModel.KeywordSeparator1 + implId;
     Mapping<Task, Resource> result = PropertyServiceMapping.createMapping(task, res, mode, implId);
     assertEquals(expectedId, result.getId());
     assertEquals(task, result.getSource());

@@ -115,7 +115,7 @@ public final class PropertyServiceMapping extends AbstractPropertyService {
    */
   public static Mapping<Task, Resource> createMapping(final Task src, final Resource dst,
       final EnactmentMode enactmentMode, final String implId) {
-    return createMapping(src, dst, enactmentMode, implId, getMappingId(src, dst));
+    return createMapping(src, dst, enactmentMode, implId, getMappingId(src, dst, implId));
   }
 
   /**
@@ -145,7 +145,8 @@ public final class PropertyServiceMapping extends AbstractPropertyService {
    * @return the id string of a mapping from the given src task to the given
    *         destination
    */
-  protected static String getMappingId(final Task src, final Resource dst) {
-    return src.getId() + ConstantsEEModel.KeywordSeparator1 + dst.getId();
+  protected static String getMappingId(final Task src, final Resource dst, final String implId) {
+    return src.getId() + ConstantsEEModel.KeywordSeparator1 + dst.getId()
+        + ConstantsEEModel.KeywordSeparator1 + implId;
   }
 }
