@@ -11,7 +11,7 @@ apply plugin: 'maven'
 apply plugin: 'jacoco'
 // for compliance with higher Java versions
 jacoco {
-  toolVersion = "0.8.5"
+  toolVersion = "0.8.5"  
 }
 // to use GitHub repositories as dependencies
 
@@ -43,12 +43,20 @@ dependencies {
   implementation 'com.google.code.gson:gson:2.8.6'
 
   // test dependencies
-  testCompile group: 'junit', 		name: 'junit', 					version: '4.+'
+  
+  // mockito
   testCompile group: 'org.mockito',     name: 'mockito-core',     version: '3.4.4'
+  // JUnit 5 
+  testImplementation(platform('org.junit:junit-bom:5.7.2'))
+  testImplementation('org.junit.jupiter:junit-jupiter')
 }
 
 jacocoTestReport {
   reports {
     xml.enabled true
   }
+}
+
+test {
+  useJUnitPlatform()
 }

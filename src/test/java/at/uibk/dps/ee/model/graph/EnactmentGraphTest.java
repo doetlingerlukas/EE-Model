@@ -1,7 +1,8 @@
 package at.uibk.dps.ee.model.graph;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.Test;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import net.sf.opendse.model.Application;
 import net.sf.opendse.model.Communication;
@@ -33,5 +34,4 @@ public class EnactmentGraphTest {
     assertEquals(d0, original.findEdge(t0, c0));
     assertEquals(d1, original.findEdge(c0, t1));
   }
-
 }

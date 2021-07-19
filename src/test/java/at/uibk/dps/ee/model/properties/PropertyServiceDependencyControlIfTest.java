@@ -1,8 +1,10 @@
 package at.uibk.dps.ee.model.properties;
 
-import static org.junit.Assert.*;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
 import at.uibk.dps.ee.model.graph.EnactmentGraph;
 import at.uibk.dps.ee.model.properties.PropertyServiceDependency.TypeDependency;
 import net.sf.opendse.model.Communication;
@@ -48,10 +50,12 @@ public class PropertyServiceDependencyControlIfTest {
     assertFalse(PropertyServiceDependencyControlIf.getActivation(dep));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testCheckDep() {
-    Dependency dep = new Dependency("dep");
-    PropertyServiceDependency.setType(dep, TypeDependency.Data);
-    PropertyServiceDependencyControlIf.checkDependency(dep);
+    assertThrows(IllegalArgumentException.class, () -> {
+      Dependency dep = new Dependency("dep");
+      PropertyServiceDependency.setType(dep, TypeDependency.Data);
+      PropertyServiceDependencyControlIf.checkDependency(dep);
+    });
   }
 }

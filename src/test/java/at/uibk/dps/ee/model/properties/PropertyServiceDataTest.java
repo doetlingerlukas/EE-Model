@@ -1,8 +1,13 @@
 package at.uibk.dps.ee.model.properties;
 
-import static org.junit.Assert.*;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -35,14 +40,16 @@ public class PropertyServiceDataTest {
     assertEquals(content, PropertyServiceData.getContent(result));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void checkResetContentConstant() {
-    Task task = new Communication("comm");
-    PropertyServiceData.setContent(task, new JsonObject());
-    PropertyServiceData.setNodeType(task, NodeType.Constant);
-    PropertyServiceData.resetContent(task);
+    assertThrows(IllegalArgumentException.class, () -> {
+      Task task = new Communication("comm");
+      PropertyServiceData.setContent(task, new JsonObject());
+      PropertyServiceData.setNodeType(task, NodeType.Constant);
+      PropertyServiceData.resetContent(task);
+    });
   }
-  
+
   @Test
   public void checkResetContent() {
     Task task = new Communication("comm");
@@ -53,17 +60,21 @@ public class PropertyServiceDataTest {
     assertNull(task.getAttribute(Property.Content.name()));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testSetContentConstant() {
-    Task task = new Communication("comm");
-    PropertyServiceData.setNodeType(task, NodeType.Constant);
-    PropertyServiceData.setContent(task, new JsonObject());
+    assertThrows(IllegalArgumentException.class, () -> {
+      Task task = new Communication("comm");
+      PropertyServiceData.setNodeType(task, NodeType.Constant);
+      PropertyServiceData.setContent(task, new JsonObject());
+    });
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testGetContentException() {
-    Task task = new Communication("comm");
-    PropertyServiceData.getContent(task);
+    assertThrows(IllegalArgumentException.class, () -> {
+      Task task = new Communication("comm");
+      PropertyServiceData.getContent(task);
+    });
   }
 
   @Test
@@ -75,7 +86,7 @@ public class PropertyServiceDataTest {
     assertTrue(PropertyServiceData.isDataAvailable(input));
     assertEquals(json, PropertyServiceData.getContent(input));
   }
-  
+
   @Test
   public void testGetSetAvailabilityContentString() {
     Task input = new Communication("comm");
@@ -85,7 +96,7 @@ public class PropertyServiceDataTest {
     assertTrue(PropertyServiceData.isDataAvailable(input));
     assertEquals(json, PropertyServiceData.getContent(input));
   }
-  
+
   @Test
   public void testGetSetAvailabilityContentNumber() {
     Task input = new Communication("comm");
@@ -95,7 +106,7 @@ public class PropertyServiceDataTest {
     assertTrue(PropertyServiceData.isDataAvailable(input));
     assertEquals(json, PropertyServiceData.getContent(input));
   }
-  
+
   @Test
   public void testGetSetAvailabilityContentArray() {
     Task input = new Communication("comm");
@@ -108,10 +119,12 @@ public class PropertyServiceDataTest {
     assertEquals(json, PropertyServiceData.getContent(input));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testCheckTaskFail() {
-    Task task = new Task("task");
-    PropertyServiceData.checkTask(task);
+    assertThrows(IllegalArgumentException.class, () -> {
+      Task task = new Task("task");
+      PropertyServiceData.checkTask(task);
+    });
   }
 
   @Test
@@ -124,10 +137,12 @@ public class PropertyServiceDataTest {
     }
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testDataTypeUnset() {
-    Task task = new Communication("comm");
-    PropertyServiceData.getDataType(task);
+    assertThrows(IllegalArgumentException.class, () -> {
+      Task task = new Communication("comm");
+      PropertyServiceData.getDataType(task);
+    });
   }
 
   @Test
@@ -145,16 +160,20 @@ public class PropertyServiceDataTest {
     assertEquals("key", PropertyServiceData.getJsonKey(task));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testJsonKeyNonRootLeaf() {
-    Task task = new Communication("comm");
-    PropertyServiceData.getJsonKey(task);
+    assertThrows(IllegalArgumentException.class, () -> {
+      Task task = new Communication("comm");
+      PropertyServiceData.getJsonKey(task);
+    });
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testJsonKeySetNonRootLeaf() {
-    Task task = new Communication("comm");
-    PropertyServiceData.setJsonKey(task, "key");
+    assertThrows(IllegalArgumentException.class, () -> {
+      Task task = new Communication("comm");
+      PropertyServiceData.setJsonKey(task, "key");
+    });
   }
 
   @Test

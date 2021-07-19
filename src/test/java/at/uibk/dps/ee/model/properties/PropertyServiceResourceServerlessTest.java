@@ -1,7 +1,7 @@
 package at.uibk.dps.ee.model.properties;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 import com.google.gson.JsonPrimitive;
 import at.uibk.dps.ee.model.constants.ConstantsEEModel;
 import net.sf.opendse.model.Resource;

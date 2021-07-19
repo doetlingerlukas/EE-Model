@@ -1,10 +1,11 @@
 package at.uibk.dps.ee.model.properties;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import at.uibk.dps.ee.model.objects.Condition;
 import at.uibk.dps.ee.model.objects.Condition.CombinedWith;
 import at.uibk.dps.ee.model.objects.Condition.Operator;
@@ -32,12 +33,14 @@ public class PropertyServiceFunctionUtilityConditionTest {
     assertEquals(conditions, PropertyServiceFunctionUtilityCondition.getConditions(result));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testExc() {
-    Task task = new Task("t");
-    PropertyServiceFunction.setUsageType(UsageType.Utility, task);
-    task.setAttribute(Property.UtilityType.name(), "unknown");
-    PropertyServiceFunctionUtilityCondition.getConditions(task);
+    assertThrows(IllegalArgumentException.class, () -> {
+      Task task = new Task("t");
+      PropertyServiceFunction.setUsageType(UsageType.Utility, task);
+      task.setAttribute(Property.UtilityType.name(), "unknown");
+      PropertyServiceFunctionUtilityCondition.getConditions(task);
+    });
   }
 
   @Test

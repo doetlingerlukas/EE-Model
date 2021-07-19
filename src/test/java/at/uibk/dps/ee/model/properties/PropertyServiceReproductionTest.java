@@ -1,9 +1,11 @@
 package at.uibk.dps.ee.model.properties;
 
-import static org.junit.Assert.*;
 
-import org.junit.Test;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 import at.uibk.dps.ee.model.graph.EnactmentGraph;
 import at.uibk.dps.ee.model.properties.PropertyServiceDependency.TypeDependency;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunctionDataFlowCollections.OperationType;
@@ -30,17 +32,21 @@ public class PropertyServiceReproductionTest {
     assertEquals(scope, PropertyServiceReproduction.getReproductionScope(task));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testGetSetReproductionScopeExc1() {
-    Task task = new Task("task");
-    PropertyServiceReproduction.getReproductionScope(task);
+    assertThrows(IllegalArgumentException.class, () -> {
+      Task task = new Task("task");
+      PropertyServiceReproduction.getReproductionScope(task);
+    });
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testGetSetReproductionScopeExc2() {
-    Task task = new Task("task");
-    String scope = "scope";
-    PropertyServiceReproduction.setReproductionScope(task, scope);
+    assertThrows(IllegalArgumentException.class, () -> {
+      Task task = new Task("task");
+      String scope = "scope";
+      PropertyServiceReproduction.setReproductionScope(task, scope);
+    });
   }
 
   @Test

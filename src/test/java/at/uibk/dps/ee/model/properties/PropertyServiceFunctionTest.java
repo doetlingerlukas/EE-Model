@@ -1,9 +1,10 @@
 package at.uibk.dps.ee.model.properties;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -13,10 +14,12 @@ import net.sf.opendse.model.Task;
 
 public class PropertyServiceFunctionTest {
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testNotFunction() {
-    Task comm = new Communication("comm");
-    PropertyServiceFunction.checkTask(comm);
+    assertThrows(IllegalArgumentException.class, () -> {
+      Task comm = new Communication("comm");
+      PropertyServiceFunction.checkTask(comm);
+    });
   }
 
   @Test
@@ -45,20 +48,22 @@ public class PropertyServiceFunctionTest {
     PropertyServiceFunction.resetInput(task);
     assertFalse(PropertyServiceFunction.isInputSet(task));
   }
-  
-  @Test(expected = IllegalStateException.class)
+
+  @Test
   public void testSetInputAlredySet() {
-    Task task = new Task("task");
-    assertFalse(PropertyServiceFunction.isInputSet(task));
+    assertThrows(IllegalStateException.class, () -> {
+      Task task = new Task("task");
+      assertFalse(PropertyServiceFunction.isInputSet(task));
 
-    JsonElement element = new JsonPrimitive(42);
-    String key = "key";
-    JsonObject input = new JsonObject();
-    input.add(key, element);
-    JsonObject input2 = new JsonObject();
-    input2.add(key, element);
+      JsonElement element = new JsonPrimitive(42);
+      String key = "key";
+      JsonObject input = new JsonObject();
+      input.add(key, element);
+      JsonObject input2 = new JsonObject();
+      input2.add(key, element);
 
-    PropertyServiceFunction.setInput(task, input);
-    PropertyServiceFunction.setInput(task, input2);
+      PropertyServiceFunction.setInput(task, input);
+      PropertyServiceFunction.setInput(task, input2);
+    });
   }
 }

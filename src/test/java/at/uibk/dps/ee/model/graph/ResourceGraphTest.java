@@ -1,7 +1,8 @@
 package at.uibk.dps.ee.model.graph;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.Test;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import net.sf.opendse.model.Architecture;
 import net.sf.opendse.model.Link;
@@ -31,5 +32,4 @@ public class ResourceGraphTest {
     assertEquals(l0, tested.findEdge(res0, res1));
     assertEquals(l1, tested.findEdge(res0, res2));
   }
-
 }

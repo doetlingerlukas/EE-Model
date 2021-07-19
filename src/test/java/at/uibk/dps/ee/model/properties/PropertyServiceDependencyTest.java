@@ -1,9 +1,12 @@
 package at.uibk.dps.ee.model.properties;
 
-import static org.junit.Assert.*;
 
-import org.junit.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 import at.uibk.dps.ee.model.constants.ConstantsEEModel;
 import at.uibk.dps.ee.model.graph.EnactmentGraph;
 import at.uibk.dps.ee.model.properties.PropertyServiceDependency.TypeDependency;
@@ -23,12 +26,14 @@ public class PropertyServiceDependencyTest {
     assertFalse(PropertyServiceDependency.isExtractionDone(dep));
   }
 
-  @Test(expected = IllegalStateException.class)
+  @Test
   public void testDataConsumptionNotOkay() {
-    Task task1 = new Task("task");
-    Task task2 = new Task("othertask");
-    Dependency dep = PropertyServiceDependency.createDependency(task1, task2);
-    PropertyServiceDependency.setDataConsumed(dep);
+    assertThrows(IllegalStateException.class, () -> {
+      Task task1 = new Task("task");
+      Task task2 = new Task("othertask");
+      Dependency dep = PropertyServiceDependency.createDependency(task1, task2);
+      PropertyServiceDependency.setDataConsumed(dep);
+    });
   }
 
   @Test
@@ -69,18 +74,22 @@ public class PropertyServiceDependencyTest {
     assertEquals(TypeDependency.Data, PropertyServiceDependency.getType(result));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testChecDataDepEndpointsTwoProc() {
-    Task proc1 = new Task("process1");
-    Task proc2 = new Task("process2");
-    PropertyServiceDependency.checkDataDependencyEndPoints(proc1, proc2);
+    assertThrows(IllegalArgumentException.class, () -> {
+      Task proc1 = new Task("process1");
+      Task proc2 = new Task("process2");
+      PropertyServiceDependency.checkDataDependencyEndPoints(proc1, proc2);
+    });
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testChecDataDepEndpointsTwoData() {
-    Communication data1 = new Communication("data1");
-    Communication data2 = new Communication("data2");
-    PropertyServiceDependency.checkDataDependencyEndPoints(data2, data1);
+    assertThrows(IllegalArgumentException.class, () -> {
+      Communication data1 = new Communication("data1");
+      Communication data2 = new Communication("data2");
+      PropertyServiceDependency.checkDataDependencyEndPoints(data2, data1);
+    });
   }
 
   @Test

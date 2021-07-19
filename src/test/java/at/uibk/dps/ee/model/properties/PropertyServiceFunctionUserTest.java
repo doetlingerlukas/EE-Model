@@ -1,17 +1,20 @@
 package at.uibk.dps.ee.model.properties;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunction.UsageType;
 import net.sf.opendse.model.Task;
 
 public class PropertyServiceFunctionUserTest {
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testCheckTask() {
-    Task task = new Task("task");
-    PropertyServiceFunction.setUsageType(UsageType.DataFlow, task);
-    PropertyServiceFunctionUser.checkTask(task);
+    assertThrows(IllegalArgumentException.class, () -> {
+      Task task = new Task("task");
+      PropertyServiceFunction.setUsageType(UsageType.DataFlow, task);
+      PropertyServiceFunctionUser.checkTask(task);
+    });
   }
 
   @Test
