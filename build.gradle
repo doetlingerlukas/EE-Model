@@ -43,7 +43,6 @@ dependencies {
   implementation 'com.google.code.gson:gson:2.8.6'
 
   // test dependencies
-  
   // mockito
   testCompile group: 'org.mockito',     name: 'mockito-core',     version: '3.4.4'
   // JUnit 5 
