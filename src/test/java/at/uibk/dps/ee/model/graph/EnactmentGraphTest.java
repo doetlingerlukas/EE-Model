@@ -2,6 +2,7 @@ package at.uibk.dps.ee.model.graph;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import net.sf.opendse.model.Application;
@@ -33,5 +34,43 @@ public class EnactmentGraphTest {
 
     assertEquals(d0, original.findEdge(t0, c0));
     assertEquals(d1, original.findEdge(c0, t1));
+  }
+
+  @Test
+  void testAddRemoveVertex() {
+    EnactmentGraph tested = new EnactmentGraph();
+    Task t1 = new Task("t1");
+    Task t2 = new Task("t2");
+    Task t3 = new Task("t3");
+    Dependency dep = new Dependency("dep");
+    assertThrows(IllegalStateException.class, () -> {
+      tested.getTask("t1");
+    });
+    assertThrows(IllegalStateException.class, () -> {
+      tested.getTask("t2");
+    });
+    assertThrows(IllegalStateException.class, () -> {
+      tested.getTask("t3");
+    });
+    tested.addVertex(t1);
+    assertEquals(t1, tested.getTask("t1"));
+    tested.addEdge(dep, t2, t3, EdgeType.DIRECTED);
+    assertEquals(t2, tested.getTask("t2"));
+    assertEquals(t3, tested.getTask("t3"));
+    tested.removeVertex(t1);
+    assertThrows(IllegalStateException.class, () -> {
+      tested.getTask("t1");
+    });
+    tested.removeEdge(dep);
+    assertEquals(t2, tested.getTask("t2"));
+    assertEquals(t3, tested.getTask("t3"));
+    tested.removeVertex(t2);
+    assertThrows(IllegalStateException.class, () -> {
+      tested.getTask("t2");
+    });
+    tested.removeVertex(t3);
+    assertThrows(IllegalStateException.class, () -> {
+      tested.getTask("t3");
+    });
   }
 }
