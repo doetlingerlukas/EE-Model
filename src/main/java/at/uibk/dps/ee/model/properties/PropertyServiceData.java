@@ -2,6 +2,7 @@ package at.uibk.dps.ee.model.properties;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.AbstractPropertyService;
@@ -83,7 +84,23 @@ public final class PropertyServiceData extends AbstractPropertyService {
     /**
      * Data nodes used to model sequentiality without data exchange
      */
-    Sequentiality
+    Sequentiality,
+    /**
+     * Data node representing the start of a while compound
+     */
+    WhileStart
+  }
+
+  /**
+   * Returns true iff the given node is constant.
+   * 
+   * @param node the given data node
+   * @return true iff the given node is constant
+   */
+  public static boolean isConstantNode(Task node) {
+    checkTask(node);
+    NodeType type = getNodeType(node);
+    return type.equals(NodeType.Constant) || type.equals(NodeType.WhileStart);
   }
 
   /**
@@ -131,6 +148,18 @@ public final class PropertyServiceData extends AbstractPropertyService {
     result.setAttribute(attrNameContent, content.toString());
     final String dataAvalAttrName = Property.DataAvailable.name();
     result.setAttribute(dataAvalAttrName, true);
+    return result;
+  }
+
+  /**
+   * Creates a constant node representing the start of a while loop.
+   * 
+   * @param nodeId the node id
+   * @return a constant node representing the start of a while loop
+   */
+  public static Task createWhileStart(String nodeId) {
+    Task result = createConstantNode(nodeId, DataType.Boolean, new JsonPrimitive(true));
+    setNodeType(result, NodeType.WhileStart);
     return result;
   }
 

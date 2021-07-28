@@ -19,6 +19,8 @@ public final class ConstantsEEModel {
   
   // Mapping edge constants
   public static final String implIdLocalNative = "native";
+  
+  public static final String ConstantNodeAffix = "Constant";
 
 
   // Enactment graph constants
@@ -39,6 +41,10 @@ public final class ConstantsEEModel {
   public static final String JsonKeyIfResult = "IfResult";
 
   public static final String JsonKeySequentiality = "SeqKey";
+  
+  public static final String JsonKeyWhileStart = "WhileKey";
+  public static final String JsonKeyWhileCounter = "WhileCounter";
+  public static final String JsonKeyWhileDecision = "WhileDecision";
 
   // Function node name components
   public static final String FuncNameUtilityDistribution = "Distribution";
@@ -46,6 +52,11 @@ public final class ConstantsEEModel {
   public static final String FuncNameUtilityAggregation = "Aggregation";
   public static final String JsonKeyAggregation = "aggregateEntry";
   public static final String JsonKeyDistribution = "distributedEntry";
+  
+  public static final String WhileStopConditionSuffix = "stopCondition";
+  public static final String WhileStopConditionBooleanSuffix = "stopDecision";  
+  public static final String WhileLoopCounterSuffix = "counter";
+  public static final String WhileEndSuffix = "whileEnd";
 
   // Element index properties
   public static final String EIdxSeparatorInternal = ":";

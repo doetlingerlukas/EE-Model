@@ -35,14 +35,19 @@ public final class EnactmentGraphUtils {
    * @return the non-constant root data nodes (inputs) of the given graph
    */
   public static Set<Task> getNonConstRootNodes(EnactmentGraph graph) {
-    final Set<Task> result =
-        graph.getVertices().stream().filter(task -> graph.getInEdges(task).size() == 0)
-            .filter(task -> !PropertyServiceData.getNodeType(task).equals(NodeType.Constant))
-            .collect(Collectors.toSet());
-    if (result.stream().anyMatch(task -> !PropertyServiceData.isRoot(task))) {
-      throw new IllegalStateException("Non-root nodes without in edges present.");
+    try {
+      final Set<Task> result =
+          graph.getVertices().stream().filter(task -> graph.getInEdges(task).size() == 0)
+              .filter(task -> !PropertyServiceData.getNodeType(task).equals(NodeType.Constant))
+              .collect(Collectors.toSet());
+      if (result.stream().anyMatch(task -> !PropertyServiceData.isRoot(task))) {
+        throw new IllegalStateException("Non-root nodes without in edges present.");
+      }
+      return result;
+    } catch (Exception exc) {
+      exc.printStackTrace();
+      throw exc;
     }
-    return result;
   }
 
   /**

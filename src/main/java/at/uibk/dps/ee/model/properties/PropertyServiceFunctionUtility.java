@@ -40,7 +40,7 @@ public final class PropertyServiceFunctionUtility extends AbstractPropertyServic
     /**
      * Evaluating boolean conditions.
      */
-    Condition, CollectionOperation
+    Condition, CollectionOperation, While
   }
 
   /**

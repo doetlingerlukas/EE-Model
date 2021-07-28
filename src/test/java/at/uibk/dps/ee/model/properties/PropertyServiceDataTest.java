@@ -21,6 +21,16 @@ import net.sf.opendse.model.Task;
 public class PropertyServiceDataTest {
 
   @Test
+  void testCreateWhileStart() {
+    String id = "while";
+    Task result = PropertyServiceData.createWhileStart(id);
+    assertTrue(result instanceof Communication);
+    assertEquals(id, result.getId());
+    assertTrue(PropertyServiceData.isConstantNode(result));
+    assertTrue(PropertyServiceData.getContent(result).getAsBoolean());
+  }
+
+  @Test
   public void testCreateSeqNode() {
     String id = "id";
     Task result = PropertyServiceData.createSequentialityNode(id);
