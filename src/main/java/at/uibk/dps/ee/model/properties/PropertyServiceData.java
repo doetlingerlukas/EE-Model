@@ -88,7 +88,11 @@ public final class PropertyServiceData extends AbstractPropertyService {
     /**
      * Data node representing the start of a while compound
      */
-    WhileStart
+    WhileStart,
+    /**
+     * Data node representing the loop counter of a while compound
+     */
+    WhileCounter
   }
 
   /**
@@ -100,7 +104,8 @@ public final class PropertyServiceData extends AbstractPropertyService {
   public static boolean isConstantNode(Task node) {
     checkTask(node);
     NodeType type = getNodeType(node);
-    return type.equals(NodeType.Constant) || type.equals(NodeType.WhileStart);
+    return type.equals(NodeType.Constant) || type.equals(NodeType.WhileStart)
+        || type.equals(NodeType.WhileCounter);
   }
 
   /**
@@ -161,6 +166,33 @@ public final class PropertyServiceData extends AbstractPropertyService {
     Task result = createConstantNode(nodeId, DataType.Boolean, new JsonPrimitive(true));
     setNodeType(result, NodeType.WhileStart);
     return result;
+  }
+
+  /**
+   * Creates a constant (i.e., not input-driven) node representing the loop count
+   * of a while loop
+   * 
+   * @param nodeId the id of the created counter node
+   * @return a node representing the loop count of a while loop
+   */
+  public static Task createWhileCounter(String nodeId) {
+    Task result = createConstantNode(nodeId, DataType.Number, new JsonPrimitive(0));
+    setNodeType(result, NodeType.WhileCounter);
+    return result;
+  }
+
+  /**
+   * Increments the counter of the provided while counter node.
+   * 
+   * @param whileCounter the provided while counter node
+   */
+  public static void incrementWhileCounter(Task whileCounter) {
+    checkTask(whileCounter);
+    if (!getNodeType(whileCounter).equals(NodeType.WhileCounter)) {
+      throw new IllegalArgumentException("Data node " + whileCounter + " is not a while counter.");
+    }
+    int curCount = getContent(whileCounter).getAsInt();
+    setContent(whileCounter, new JsonPrimitive(++curCount));
   }
 
   /**

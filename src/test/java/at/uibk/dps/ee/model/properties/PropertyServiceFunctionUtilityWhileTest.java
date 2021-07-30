@@ -12,6 +12,7 @@ class PropertyServiceFunctionUtilityWhileTest {
     assertThrows(IllegalArgumentException.class, () -> {
       Task task = PropertyServiceFunctionUtilityCondition.createConditionEvaluation("bla",
           new ArrayList<>());
+      assertFalse(PropertyServiceFunctionUtilityWhile.isWhileEndTask(task));
       PropertyServiceFunctionUtilityWhile.checkTask(task);
     });
   }
@@ -20,8 +21,10 @@ class PropertyServiceFunctionUtilityWhileTest {
   void test() {
     String startId = "start";
     Task whileStart = new Task(startId);
-    Task result = PropertyServiceFunctionUtilityWhile.createWhileEndTask(whileStart);
+    Task whileCounter = new Task("whileCounter");
+    Task result = PropertyServiceFunctionUtilityWhile.createWhileEndTask(whileStart, whileCounter);
     assertEquals(startId, PropertyServiceFunctionUtilityWhile.getWhileStart(result));
+    assertTrue(PropertyServiceFunctionUtilityWhile.isWhileEndTask(result));
   }
 
 }

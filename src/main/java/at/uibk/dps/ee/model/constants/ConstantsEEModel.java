@@ -57,6 +57,7 @@ public final class ConstantsEEModel {
   public static final String WhileStopConditionBooleanSuffix = "stopDecision";  
   public static final String WhileLoopCounterSuffix = "counter";
   public static final String WhileEndSuffix = "whileEnd";
+  public static final String whileReplicaSuffix = "+";
 
   // Element index properties
   public static final String EIdxSeparatorInternal = ":";

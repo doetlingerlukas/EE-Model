@@ -18,6 +18,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
 
   private static final String propNameExtractionDone = Property.ExtractionDone.name();
   private static final String propNameDataConsumed = Property.DataConsumed.name();
+  private static final String propNameWhileRepReference = Property.WhileRepReference.name();
 
   private PropertyServiceDependency() {}
 
@@ -48,7 +49,12 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
     /**
      * Whether or not the data was already extracted from the edge's source
      */
-    ExtractionDone
+    ExtractionDone,
+    /**
+     * Used to annotate an edge which shall be used as source when the edge is
+     * replicated during a while transformation
+     */
+    WhileRepReference
   }
 
   /**
@@ -66,6 +72,47 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
      * Control flow following from if compounds
      */
     ControlIf
+  }
+
+  /**
+   * Returns true iff the given edge is annotated with a replica source
+   * 
+   * @param dependency the edge to check
+   * @return true iff the given edge is annotated with a replica source
+   */
+  public static boolean isWhileAnnotated(Dependency dependency) {
+    return isAttributeSet(dependency, propNameWhileRepReference);
+  }
+
+  /**
+   * Annotates that the given node shall be used as a source of the replica of the
+   * given edge
+   * 
+   * @param dependency the given edge
+   * @param data the node which shall be used as a src when the dependency is
+   *        replicated
+   */
+  public static void annotateWhileReplica(Dependency dependency, Task data) {
+    if (!TaskPropertyService.isCommunication(data)) {
+      throw new IllegalArgumentException(
+          "Only a data node can be a replica src, task " + data + " is not a data node.");
+    }
+    dependency.setAttribute(propNameWhileRepReference, data.getId());
+  }
+
+  /**
+   * Returns the reference to the node which is used as source for the replicas of
+   * the given dependency.
+   * 
+   * @param dependency the given dependency
+   * @return the reference to the node which is used as source for the replicas of
+   *         the given dependency
+   */
+  public static String getReplicaSrcReference(Dependency dependency) {
+    if (!isWhileAnnotated(dependency)) {
+      throw new IllegalArgumentException("Dependency " + dependency + " is not while annotated.");
+    }
+    return (String) getAttribute(dependency, propNameWhileRepReference);
   }
 
   /**

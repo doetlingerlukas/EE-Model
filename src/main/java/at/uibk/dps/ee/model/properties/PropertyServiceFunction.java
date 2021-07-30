@@ -41,7 +41,7 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
     /**
      * The output of the function
      */
-    Output
+    Output,
   }
 
   /**

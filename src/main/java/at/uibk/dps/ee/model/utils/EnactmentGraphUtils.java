@@ -4,7 +4,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import at.uibk.dps.ee.model.graph.EnactmentGraph;
 import at.uibk.dps.ee.model.properties.PropertyServiceData;
-import at.uibk.dps.ee.model.properties.PropertyServiceData.NodeType;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.TaskPropertyService;
 
@@ -24,7 +23,7 @@ public final class EnactmentGraphUtils {
    */
   public static Set<Task> getConstantDataNodes(EnactmentGraph graph) {
     return graph.getVertices().stream().filter(task -> TaskPropertyService.isCommunication(task))
-        .filter(dataNode -> PropertyServiceData.getNodeType(dataNode).equals(NodeType.Constant))
+        .filter(dataNode -> PropertyServiceData.isConstantNode(dataNode))
         .collect(Collectors.toSet());
   }
 
@@ -38,7 +37,7 @@ public final class EnactmentGraphUtils {
     try {
       final Set<Task> result =
           graph.getVertices().stream().filter(task -> graph.getInEdges(task).size() == 0)
-              .filter(task -> !PropertyServiceData.getNodeType(task).equals(NodeType.Constant))
+              .filter(task -> !PropertyServiceData.isConstantNode(task))
               .collect(Collectors.toSet());
       if (result.stream().anyMatch(task -> !PropertyServiceData.isRoot(task))) {
         throw new IllegalStateException("Non-root nodes without in edges present.");

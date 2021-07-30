@@ -13,6 +13,7 @@ import net.sf.opendse.model.properties.AbstractPropertyService;
 public final class PropertyServiceFunctionUser extends AbstractPropertyService {
 
   private static final String propNameFunctionType = Property.TypeID.name();
+  private static final String propNameOriginalRef = Property.OriginalRef.name();
 
   /**
    * No constructor.
@@ -28,7 +29,48 @@ public final class PropertyServiceFunctionUser extends AbstractPropertyService {
     /**
      * The type of the function.
      */
-    TypeID
+    TypeID,
+    /**
+     * User to distinguis seqReplicas from the original task (so that they can have
+     * the same scheduling options)
+     */
+    OriginalRef
+  }
+
+  /**
+   * Sets the reference to the original task.
+   * 
+   * @param task the given task
+   * @param originalRef the reference to the original task
+   */
+  public static void setOriginalRef(Task task, String originalRef) {
+    checkTask(task);
+    task.setAttribute(propNameOriginalRef, originalRef);
+  }
+
+  /**
+   * Returns the original ref of the given task.
+   * 
+   * @param task the given task
+   * @return the reference to the original task
+   */
+  public static String getOriginalRef(Task task) {
+    checkTask(task);
+    if (!isSeqReplica(task)) {
+      throw new IllegalArgumentException("task " + task + " is not a sequential replica.");
+    }
+    return (String) getAttribute(task, propNameOriginalRef);
+  }
+
+  /**
+   * Returs true if the given task is a sequential replica.
+   * 
+   * @param task the given task
+   * @return true iff the given task is a sequential replica
+   */
+  public static boolean isSeqReplica(Task task) {
+    checkTask(task);
+    return isAttributeSet(task, propNameOriginalRef);
   }
 
   /**
