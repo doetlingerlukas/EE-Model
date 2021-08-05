@@ -15,15 +15,19 @@ import net.sf.opendse.model.properties.TaskPropertyService;
  */
 public final class PropertyServiceFunctionUtilityWhile extends AbstractPropertyService {
 
-  protected final static String propNameWhileStart = Properties.WhileStart.name();
-  protected final static String propNameWhileCounter = Properties.WhileCounter.name();
+  private final static String propNameWhileStart = Properties.WhileStart.name();
+  private final static String propNameWhileCounter = Properties.WhileCounter.name();
 
   /**
    * No constructor.
    */
   private PropertyServiceFunctionUtilityWhile() {}
 
-
+  /**
+   * Properties annotated on nodes implementing the while functionality.
+   * 
+   * @author Fedor Smirnov
+   */
   protected enum Properties {
     /**
      * Reference to the data node modeling the start of the while body
@@ -43,22 +47,22 @@ public final class PropertyServiceFunctionUtilityWhile extends AbstractPropertyS
    * @param task the provided task
    * @return true iff the provided task models a while end operation
    */
-  public static boolean isWhileEndTask(Task task) {
+  public static boolean isWhileEndTask(final Task task) {
     return TaskPropertyService.isProcess(task)
         && PropertyServiceFunction.getUsageType(task).equals(UsageType.Utility)
         && PropertyServiceFunctionUtility.getUtilityType(task).equals(UtilityType.While);
   }
-  
+
   /**
    * Creates a node modeling the end of the while loop started by the given node.
    * 
    * @param whileStart the node at the start of the while loop
    * @return node modeling the end of the while loop started by the given node
    */
-  public static Task createWhileEndTask(Task whileStart, Task whileCounter) {
-    String nodeId =
+  public static Task createWhileEndTask(final Task whileStart, final Task whileCounter) {
+    final String nodeId =
         whileStart.getId() + ConstantsEEModel.KeywordSeparator1 + ConstantsEEModel.WhileEndSuffix;
-    Task result = new Task(nodeId);
+    final Task result = new Task(nodeId);
     PropertyServiceFunction.setUsageType(UsageType.Utility, result);
     PropertyServiceFunctionUtility.setUtilityType(result, UtilityType.While);
     setWhileCounterReference(result, whileCounter);
@@ -72,7 +76,7 @@ public final class PropertyServiceFunctionUtilityWhile extends AbstractPropertyS
    * @param whileEndTask the while end task
    * @param whileCounter the while counter
    */
-  protected static void setWhileCounterReference(Task whileEndTask, Task whileCounter) {
+  protected static void setWhileCounterReference(final Task whileEndTask, final Task whileCounter) {
     checkTask(whileEndTask);
     whileEndTask.setAttribute(propNameWhileCounter, whileCounter.getId());
   }
@@ -83,7 +87,7 @@ public final class PropertyServiceFunctionUtilityWhile extends AbstractPropertyS
    * @param whileEndTask the while end node
    * @return the reference to the while counter
    */
-  public static String getWhileCounterReference(Task whileEndTask) {
+  public static String getWhileCounterReference(final Task whileEndTask) {
     checkTask(whileEndTask);
     return (String) getAttribute(whileEndTask, propNameWhileCounter);
   }
@@ -94,12 +98,12 @@ public final class PropertyServiceFunctionUtilityWhile extends AbstractPropertyS
    * @param whileEnd the given while end node
    * @return the ID of the while start annotated at the given while end node
    */
-  public static String getWhileStart(Task whileEnd) {
+  public static String getWhileStart(final Task whileEnd) {
     checkTask(whileEnd);
     return (String) getAttribute(whileEnd, propNameWhileStart);
   }
 
-  
+
   /**
    * Annotates the given whileEnd task with a reference to the given whileStart
    * task.
@@ -107,7 +111,7 @@ public final class PropertyServiceFunctionUtilityWhile extends AbstractPropertyS
    * @param whileEnd the while end task
    * @param whileStart the id of the while start task
    */
-  public static void setWhileStart(Task whileEnd, String whileStartID) {
+  public static void setWhileStart(final Task whileEnd, final String whileStartID) {
     checkTask(whileEnd);
     whileEnd.setAttribute(propNameWhileStart, whileStartID);
   }
@@ -117,7 +121,7 @@ public final class PropertyServiceFunctionUtilityWhile extends AbstractPropertyS
    * 
    * @param task the given task
    */
-  protected static void checkTask(Task task) {
+  protected static void checkTask(final Task task) {
     PropertyServiceFunctionUtility.checkTask(task);
     if (!PropertyServiceFunctionUtility.getUtilityType(task).equals(UtilityType.While)) {
       throw new IllegalArgumentException(

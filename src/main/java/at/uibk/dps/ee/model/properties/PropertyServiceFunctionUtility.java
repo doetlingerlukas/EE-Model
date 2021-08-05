@@ -59,13 +59,14 @@ public final class PropertyServiceFunctionUtility extends AbstractPropertyServic
    * @param graph the enactment graph
    * @return
    */
-  public static Task addSequelizerNode(Task dataFirst, Task dataSecond, EnactmentGraph graph) {
+  public static Task addSequelizerNode(final Task dataFirst, final Task dataSecond,
+      final EnactmentGraph graph) {
     if (!(TaskPropertyService.isCommunication(dataFirst)
         && TaskPropertyService.isCommunication(dataSecond))) {
       throw new IllegalArgumentException("A sequelizer node has to connect 2 data nodes.");
     }
-    String seqNodeId = dataFirst.getId() + "-to-" + dataSecond.getId();
-    Task result = new Task(seqNodeId);
+    final String seqNodeId = dataFirst.getId() + "-to-" + dataSecond.getId();
+    final Task result = new Task(seqNodeId);
     PropertyServiceFunction.setUsageType(UsageType.Utility, result);
     setUtilityType(result, UtilityType.Sequelizer);
     PropertyServiceDependency.addDataDependency(dataFirst, result,

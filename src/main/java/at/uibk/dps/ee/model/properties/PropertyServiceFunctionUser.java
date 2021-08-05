@@ -43,7 +43,7 @@ public final class PropertyServiceFunctionUser extends AbstractPropertyService {
    * @param task the given task
    * @param originalRef the reference to the while task
    */
-  public static void setWhileRef(Task task, String originalRef) {
+  public static void setWhileRef(final Task task, final String originalRef) {
     checkTask(task);
     task.setAttribute(propNameWhileRef, originalRef);
   }
@@ -63,12 +63,12 @@ public final class PropertyServiceFunctionUser extends AbstractPropertyService {
   }
 
   /**
-   * Returs true if the given task is a sequential replica.
+   * Returns true if the given task is a while replica.
    * 
    * @param task the given task
-   * @return true iff the given task is a sequential replica
+   * @return true iff the given task is a while replica
    */
-  public static boolean isWhileReplica(Task task) {
+  public static boolean isWhileReplica(final Task task) {
     checkTask(task);
     return isAttributeSet(task, propNameWhileRef);
   }

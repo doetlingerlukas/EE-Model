@@ -108,7 +108,8 @@ public final class PropertyServiceData extends AbstractPropertyService {
    * @param dataOutWhile the data out to annotate
    * @param whileEndReference reference to the original while end
    */
-  public static void annotateOriginalWhileEnd(Task dataOutWhile, String whileEndReference) {
+  public static void annotateOriginalWhileEnd(final Task dataOutWhile,
+      final String whileEndReference) {
     checkTask(dataOutWhile);
     dataOutWhile.setAttribute(propNameOriginalWhileEnd, whileEndReference);
   }
@@ -121,7 +122,7 @@ public final class PropertyServiceData extends AbstractPropertyService {
    * @return the reference to the original while end of the given data out of a
    *         while compound
    */
-  public static String getOriginalWhileEndReference(Task dataOutWhile) {
+  public static String getOriginalWhileEndReference(final Task dataOutWhile) {
     checkTask(dataOutWhile);
     checkAttribute(dataOutWhile, propNameOriginalWhileEnd);
     return (String) getAttribute(dataOutWhile, propNameOriginalWhileEnd);
@@ -133,7 +134,7 @@ public final class PropertyServiceData extends AbstractPropertyService {
    * @param dataNode the given data node
    * @return true if the given node is an output of a while compound
    */
-  public static boolean isWhileOutput(Task dataNode) {
+  public static boolean isWhileOutput(final Task dataNode) {
     checkTask(dataNode);
     return isAttributeSet(dataNode, propNameOriginalWhileEnd);
   }
@@ -144,9 +145,9 @@ public final class PropertyServiceData extends AbstractPropertyService {
    * @param node the given data node
    * @return true iff the given node is constant
    */
-  public static boolean isConstantNode(Task node) {
+  public static boolean isConstantNode(final Task node) {
     checkTask(node);
-    NodeType type = getNodeType(node);
+    final NodeType type = getNodeType(node);
     return type.equals(NodeType.Constant) || type.equals(NodeType.WhileCounter);
   }
 
@@ -204,8 +205,8 @@ public final class PropertyServiceData extends AbstractPropertyService {
    * @param nodeId the node id
    * @return a constant node representing the start of a while loop
    */
-  public static Task createWhileStart(String nodeId) {
-    Task result = createConstantNode(nodeId, DataType.Boolean, new JsonPrimitive(true));
+  public static Task createWhileStart(final String nodeId) {
+    final Task result = createConstantNode(nodeId, DataType.Boolean, new JsonPrimitive(true));
     setNodeType(result, NodeType.WhileStart);
     return result;
   }
@@ -217,8 +218,8 @@ public final class PropertyServiceData extends AbstractPropertyService {
    * @param nodeId the id of the created counter node
    * @return a node representing the loop count of a while loop
    */
-  public static Task createWhileCounter(String nodeId) {
-    Task result = createConstantNode(nodeId, DataType.Number, new JsonPrimitive(0));
+  public static Task createWhileCounter(final String nodeId) {
+    final Task result = createConstantNode(nodeId, DataType.Number, new JsonPrimitive(0));
     setNodeType(result, NodeType.WhileCounter);
     return result;
   }
@@ -228,13 +229,13 @@ public final class PropertyServiceData extends AbstractPropertyService {
    * 
    * @param whileCounter the provided while counter node
    */
-  public static void incrementWhileCounter(Task whileCounter) {
+  public static void incrementWhileCounter(final Task whileCounter) {
     checkTask(whileCounter);
     if (!getNodeType(whileCounter).equals(NodeType.WhileCounter)) {
       throw new IllegalArgumentException("Data node " + whileCounter + " is not a while counter.");
     }
-    int curCount = getContent(whileCounter).getAsInt();
-    setContent(whileCounter, new JsonPrimitive(++curCount));
+    final int curCount = getContent(whileCounter).getAsInt();
+    setContent(whileCounter, new JsonPrimitive(curCount + 1));
   }
 
   /**

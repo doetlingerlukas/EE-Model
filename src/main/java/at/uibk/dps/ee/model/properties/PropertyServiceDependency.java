@@ -106,7 +106,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * 
    * @param dependency the given dependency
    */
-  public static void annotatePreviousIterationDependency(Dependency dependency) {
+  public static void annotatePreviousIterationDependency(final Dependency dependency) {
     dependency.setAttribute(propNamePrevWhileRef, true);
   }
 

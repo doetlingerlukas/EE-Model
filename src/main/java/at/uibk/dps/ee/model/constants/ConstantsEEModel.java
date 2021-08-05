@@ -53,8 +53,8 @@ public final class ConstantsEEModel {
   public static final String JsonKeyAggregation = "aggregateEntry";
   public static final String JsonKeyDistribution = "distributedEntry";
   
-  public static final String WhileStopConditionSuffix = "stopCondition";
-  public static final String WhileStopConditionBooleanSuffix = "stopDecision";  
+  public static final String WhileConditionSuffix = "stopCondition";
+  public static final String WhileConditionBoolSuffix = "stopDecision";  
   public static final String WhileLoopCounterSuffix = "counter";
   public static final String WhileEndSuffix = "whileEnd";
   public static final String whileReplicaSuffix = "+";

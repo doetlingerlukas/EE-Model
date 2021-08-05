@@ -18,7 +18,7 @@ import net.sf.opendse.model.properties.TaskPropertyService;
 public final class PropertyServiceReproduction extends AbstractPropertyService {
 
   private static final String propNameOriginalWhileEnd = Property.OriginalWhileEnd.name();
-  
+
   /**
    * No constructor
    */
@@ -45,38 +45,41 @@ public final class PropertyServiceReproduction extends AbstractPropertyService {
      */
     DistributionNode,
     /**
-     * The original while end which was the cause for the reproduction of the considered sequential replica
+     * The original while end which was the cause for the reproduction of the
+     * considered sequential replica
      */
     OriginalWhileEnd
   }
-  
+
   /**
-   * Returns true if the given task node was created by the transformation operation of a while
+   * Returns true if the given task node was created by the transformation
+   * operation of a while
    * 
    * @param task the given task
-   * @return true if the given task node was created by the transformation operation of a while
+   * @return true if the given task node was created by the transformation
+   *         operation of a while
    */
-  public static boolean isWhileReplica(Task task) {
+  public static boolean isWhileReplica(final Task task) {
     return isAttributeSet(task, propNameOriginalWhileEnd);
   }
-  
+
   /**
    * Sets the original while end reference of the given task.
    * 
    * @param task the given task
    * @param whileEndReference the original while end reference
    */
-  public static void setOriginalWhileEndReference(Task task, String whileEndReference) {
+  public static void setOriginalWhileEndReference(final Task task, final String whileEndReference) {
     task.setAttribute(propNameOriginalWhileEnd, whileEndReference);
   }
-  
+
   /**
    * Returns the original while end reference of the given task
    * 
    * @param task the given task
    * @return the original while end reference of the given task
    */
-  public static String getOriginalWhileEndReference(Task task) {
+  public static String getOriginalWhileEndReference(final Task task) {
     return (String) getAttribute(task, propNameOriginalWhileEnd);
   }
 
