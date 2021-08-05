@@ -1,8 +1,11 @@
 package at.uibk.dps.ee.model.properties;
 
+import at.uibk.dps.ee.model.constants.ConstantsEEModel;
+import at.uibk.dps.ee.model.graph.EnactmentGraph;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunction.UsageType;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.AbstractPropertyService;
+import net.sf.opendse.model.properties.TaskPropertyService;
 
 /**
  * Contains convenience methods to access the properties of the nodes modeling
@@ -40,7 +43,36 @@ public final class PropertyServiceFunctionUtility extends AbstractPropertyServic
     /**
      * Evaluating boolean conditions.
      */
-    Condition, CollectionOperation, While
+    Condition, CollectionOperation, While,
+    /**
+     * Establishing sequentiality between two data nodes (used for nested whiles)
+     */
+    Sequelizer
+  }
+
+  /**
+   * Adds a sequelizer node to the given graph to make sure that dataFirst
+   * precedes dataSecond.
+   * 
+   * @param dataFirst the first node
+   * @param dataSecond the second node
+   * @param graph the enactment graph
+   * @return
+   */
+  public static Task addSequelizerNode(Task dataFirst, Task dataSecond, EnactmentGraph graph) {
+    if (!(TaskPropertyService.isCommunication(dataFirst)
+        && TaskPropertyService.isCommunication(dataSecond))) {
+      throw new IllegalArgumentException("A sequelizer node has to connect 2 data nodes.");
+    }
+    String seqNodeId = dataFirst.getId() + "-to-" + dataSecond.getId();
+    Task result = new Task(seqNodeId);
+    PropertyServiceFunction.setUsageType(UsageType.Utility, result);
+    setUtilityType(result, UtilityType.Sequelizer);
+    PropertyServiceDependency.addDataDependency(dataFirst, result,
+        ConstantsEEModel.JsonKeySequentiality, graph);
+    PropertyServiceDependency.addDataDependency(result, dataSecond,
+        ConstantsEEModel.JsonKeySequentiality, graph);
+    return result;
   }
 
   /**

@@ -62,7 +62,7 @@ public final class PropertyServiceFunctionUtilityWhile extends AbstractPropertyS
     PropertyServiceFunction.setUsageType(UsageType.Utility, result);
     PropertyServiceFunctionUtility.setUtilityType(result, UtilityType.While);
     setWhileCounterReference(result, whileCounter);
-    setWhileStart(result, whileStart);
+    setWhileStart(result, whileStart.getId());
     return result;
   }
 
@@ -99,16 +99,17 @@ public final class PropertyServiceFunctionUtilityWhile extends AbstractPropertyS
     return (String) getAttribute(whileEnd, propNameWhileStart);
   }
 
+  
   /**
    * Annotates the given whileEnd task with a reference to the given whileStart
    * task.
    * 
    * @param whileEnd the while end task
-   * @param whileStart the while start task
+   * @param whileStart the id of the while start task
    */
-  public static void setWhileStart(Task whileEnd, Task whileStart) {
+  public static void setWhileStart(Task whileEnd, String whileStartID) {
     checkTask(whileEnd);
-    whileEnd.setAttribute(propNameWhileStart, whileStart.getId());
+    whileEnd.setAttribute(propNameWhileStart, whileStartID);
   }
 
   /**

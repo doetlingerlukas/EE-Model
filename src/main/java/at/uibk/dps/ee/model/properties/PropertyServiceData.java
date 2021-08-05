@@ -114,15 +114,28 @@ public final class PropertyServiceData extends AbstractPropertyService {
   }
 
   /**
-   * Returns the reference to the original while end of the given data out of a while compound.
+   * Returns the reference to the original while end of the given data out of a
+   * while compound.
    * 
    * @param dataOutWhile the data out of the while compound
-   * @return the reference to the original while end of the given data out of a while compound
+   * @return the reference to the original while end of the given data out of a
+   *         while compound
    */
   public static String getOriginalWhileEndReference(Task dataOutWhile) {
     checkTask(dataOutWhile);
     checkAttribute(dataOutWhile, propNameOriginalWhileEnd);
     return (String) getAttribute(dataOutWhile, propNameOriginalWhileEnd);
+  }
+
+  /**
+   * Returns true if the given node is an output of a while compound.
+   * 
+   * @param dataNode the given data node
+   * @return true if the given node is an output of a while compound
+   */
+  public static boolean isWhileOutput(Task dataNode) {
+    checkTask(dataNode);
+    return isAttributeSet(dataNode, propNameOriginalWhileEnd);
   }
 
   /**
@@ -134,8 +147,7 @@ public final class PropertyServiceData extends AbstractPropertyService {
   public static boolean isConstantNode(Task node) {
     checkTask(node);
     NodeType type = getNodeType(node);
-    return type.equals(NodeType.Constant) || type.equals(NodeType.WhileStart)
-        || type.equals(NodeType.WhileCounter);
+    return type.equals(NodeType.Constant) || type.equals(NodeType.WhileCounter);
   }
 
   /**

@@ -45,7 +45,7 @@ public final class ConstantsEEModel {
   public static final String JsonKeyWhileStart = "WhileKey";
   public static final String JsonKeyWhileCounter = "WhileCounter";
   public static final String JsonKeyWhileDecision = "WhileDecision";
-
+  
   // Function node name components
   public static final String FuncNameUtilityDistribution = "Distribution";
   public static final String JsonKeyConstantIterator = "ConstantIterator";
