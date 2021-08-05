@@ -17,6 +17,8 @@ import net.sf.opendse.model.properties.TaskPropertyService;
  */
 public final class PropertyServiceReproduction extends AbstractPropertyService {
 
+  private static final String propNameOriginalWhileEnd = Property.OriginalWhileEnd.name();
+  
   /**
    * No constructor
    */
@@ -41,7 +43,41 @@ public final class PropertyServiceReproduction extends AbstractPropertyService {
      * Indicates the distribution node responsible for the reproduction of this
      * element (annotated to originals)
      */
-    DistributionNode
+    DistributionNode,
+    /**
+     * The original while end which was the cause for the reproduction of the considered sequential replica
+     */
+    OriginalWhileEnd
+  }
+  
+  /**
+   * Returns true if the given task node was created by the transformation operation of a while
+   * 
+   * @param task the given task
+   * @return true if the given task node was created by the transformation operation of a while
+   */
+  public static boolean isSequentialReplica(Task task) {
+    return isAttributeSet(task, propNameOriginalWhileEnd);
+  }
+  
+  /**
+   * Sets the original while end reference of the given task.
+   * 
+   * @param task the given task
+   * @param whileEndReference the original while end reference
+   */
+  public static void setOriginalWhileEndReference(Task task, String whileEndReference) {
+    task.setAttribute(propNameOriginalWhileEnd, whileEndReference);
+  }
+  
+  /**
+   * Returns the original while end reference of the given task
+   * 
+   * @param task the given task
+   * @return the original while end reference of the given task
+   */
+  public static String getOriginalWhileEndReference(Task task) {
+    return (String) getAttribute(task, propNameOriginalWhileEnd);
   }
 
   /**

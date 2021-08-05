@@ -13,7 +13,7 @@ import net.sf.opendse.model.properties.AbstractPropertyService;
 public final class PropertyServiceFunctionUser extends AbstractPropertyService {
 
   private static final String propNameFunctionType = Property.TypeID.name();
-  private static final String propNameOriginalRef = Property.OriginalRef.name();
+  private static final String propNameWhileRef = Property.WhileRef.name();
 
   /**
    * No constructor.
@@ -34,18 +34,18 @@ public final class PropertyServiceFunctionUser extends AbstractPropertyService {
      * User to distinguis seqReplicas from the original task (so that they can have
      * the same scheduling options)
      */
-    OriginalRef
+    WhileRef
   }
 
   /**
-   * Sets the reference to the original task.
+   * Sets the reference to the while task for the given while replica.
    * 
    * @param task the given task
-   * @param originalRef the reference to the original task
+   * @param originalRef the reference to the while task
    */
-  public static void setOriginalRef(Task task, String originalRef) {
+  public static void setWhileRef(Task task, String originalRef) {
     checkTask(task);
-    task.setAttribute(propNameOriginalRef, originalRef);
+    task.setAttribute(propNameWhileRef, originalRef);
   }
 
   /**
@@ -59,7 +59,7 @@ public final class PropertyServiceFunctionUser extends AbstractPropertyService {
     if (!isSeqReplica(task)) {
       throw new IllegalArgumentException("task " + task + " is not a sequential replica.");
     }
-    return (String) getAttribute(task, propNameOriginalRef);
+    return (String) getAttribute(task, propNameWhileRef);
   }
 
   /**
@@ -70,7 +70,7 @@ public final class PropertyServiceFunctionUser extends AbstractPropertyService {
    */
   public static boolean isSeqReplica(Task task) {
     checkTask(task);
-    return isAttributeSet(task, propNameOriginalRef);
+    return isAttributeSet(task, propNameWhileRef);
   }
 
   /**

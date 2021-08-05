@@ -18,7 +18,10 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
 
   private static final String propNameExtractionDone = Property.ExtractionDone.name();
   private static final String propNameDataConsumed = Property.DataConsumed.name();
-  private static final String propNameWhileRepReference = Property.WhileRepReference.name();
+  private static final String propNameWhileRepReference = Property.WhileRepDataReference.name();
+  private static final String propNameWhileFuncReference =
+      Property.WhileRepWhileFuncReference.name();
+  private static final String propNamePrevWhileRef = Property.PreviousWhileIteration.name();
 
   private PropertyServiceDependency() {}
 
@@ -54,7 +57,16 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
      * Used to annotate an edge which shall be used as source when the edge is
      * replicated during a while transformation
      */
-    WhileRepReference
+    WhileRepDataReference,
+    /**
+     * The reference for the while function for whose transformation the data
+     * dependency modeled by the edge varies
+     */
+    WhileRepWhileFuncReference,
+    /**
+     * Annotation for edges which point to previous while itearations.
+     */
+    PreviousWhileIteration
   }
 
   /**
@@ -75,6 +87,30 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
   }
 
   /**
+   * Returns true iff the dependency points to data produced in the previous
+   * iteration.
+   * 
+   * @param dependency the given dependency
+   * @return true iff the dependency points to data produced in the previous
+   *         iteration
+   */
+  public static boolean doesPointToPreviousIteration(Dependency dependency) {
+    if (!isAttributeSet(dependency, propNamePrevWhileRef)) {
+      return false;
+    }
+    return (boolean) dependency.getAttribute(propNamePrevWhileRef);
+  }
+
+  /**
+   * Annotate that a dependency refers to a previous while iteration
+   * 
+   * @param dependency the given dependency
+   */
+  public static void annotatePreviousIterationDependency(Dependency dependency) {
+    dependency.setAttribute(propNamePrevWhileRef, true);
+  }
+
+  /**
    * Returns true iff the given edge is annotated with a replica source
    * 
    * @param dependency the edge to check
@@ -92,12 +128,45 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * @param data the node which shall be used as a src when the dependency is
    *        replicated
    */
-  public static void annotateWhileReplica(Dependency dependency, Task data) {
+  public static void annotateWhileReplica(Dependency dependency, Task data, String whileFuncName) {
     if (!TaskPropertyService.isCommunication(data)) {
       throw new IllegalArgumentException(
           "Only a data node can be a replica src, task " + data + " is not a data node.");
     }
+    if (isWhileAnnotated(dependency)) {
+      throw new IllegalArgumentException(
+          "Dependency edge " + dependency.getId() + " already while-annotated.");
+    }
     dependency.setAttribute(propNameWhileRepReference, data.getId());
+    dependency.setAttribute(propNameWhileFuncReference, whileFuncName);
+  }
+
+  /**
+   * Resets the while annotation for a given dependency.
+   * 
+   * @param dependency the given dependency
+   */
+  public static void resetWhileAnnotation(Dependency dependency) {
+    if (!isWhileAnnotated(dependency)) {
+      throw new IllegalArgumentException(
+          "Dependency edge " + dependency.getId() + " not while-annotated, so no reset.");
+    }
+    dependency.setAttribute(propNameWhileRepReference, null);
+    dependency.setAttribute(propNameWhileFuncReference, null);
+  }
+
+  /**
+   * Returns a reference to the function for whose transformation the while
+   * function is relevant.
+   * 
+   * @param dependency the annotated edge
+   * @return reference to a while function
+   */
+  public static String getReplicaWhileFuncRefernce(Dependency dependency) {
+    if (!isWhileAnnotated(dependency)) {
+      throw new IllegalArgumentException("Dependency " + dependency + " is not while annotated.");
+    }
+    return (String) getAttribute(dependency, propNameWhileFuncReference);
   }
 
   /**

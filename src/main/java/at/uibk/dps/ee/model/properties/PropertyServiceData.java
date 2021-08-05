@@ -18,6 +18,8 @@ import net.sf.opendse.model.properties.TaskPropertyService;
  */
 public final class PropertyServiceData extends AbstractPropertyService {
 
+  private static final String propNameOriginalWhileEnd = Property.OriginalWhileEnd.name();
+
   private PropertyServiceData() {}
 
   /**
@@ -55,6 +57,10 @@ public final class PropertyServiceData extends AbstractPropertyService {
      * The type of the data node
      */
     NodeType,
+    /**
+     * Original while end (used for result nodes of a while compound)
+     */
+    OriginalWhileEnd
   }
 
   public enum DataType {
@@ -93,6 +99,30 @@ public final class PropertyServiceData extends AbstractPropertyService {
      * Data node representing the loop counter of a while compound
      */
     WhileCounter
+  }
+
+  /**
+   * Annotates the given data out of a while compound with a reference to the
+   * original while end of the compound.
+   * 
+   * @param dataOutWhile the data out to annotate
+   * @param whileEndReference reference to the original while end
+   */
+  public static void annotateOriginalWhileEnd(Task dataOutWhile, String whileEndReference) {
+    checkTask(dataOutWhile);
+    dataOutWhile.setAttribute(propNameOriginalWhileEnd, whileEndReference);
+  }
+
+  /**
+   * Returns the reference to the original while end of the given data out of a while compound.
+   * 
+   * @param dataOutWhile the data out of the while compound
+   * @return the reference to the original while end of the given data out of a while compound
+   */
+  public static String getOriginalWhileEndReference(Task dataOutWhile) {
+    checkTask(dataOutWhile);
+    checkAttribute(dataOutWhile, propNameOriginalWhileEnd);
+    return (String) getAttribute(dataOutWhile, propNameOriginalWhileEnd);
   }
 
   /**
