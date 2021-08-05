@@ -111,7 +111,7 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
    * @param task the given function task
    * @return true iff the output is set for the given function task
    */
-  public static boolean isOutputSet(Task task) {
+  public static boolean isOutputSet(final Task task) {
     checkTask(task);
     return task.getAttribute(propNameOutput) != null;
   }

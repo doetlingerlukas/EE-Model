@@ -41,27 +41,27 @@ public class EnactmentGraph extends Application<Task, Dependency> {
   }
 
   @Override
-  public boolean addVertex(Task vertex) {
+  public boolean addVertex(final Task vertex) {
     vertices.put(vertex.getId(), vertex);
     return super.addVertex(vertex);
   }
 
   @Override
-  public boolean removeVertex(Task t) {
-    vertices.remove(t.getId(), t);
-    return super.removeVertex(t);
+  public boolean removeVertex(final Task vertex) {
+    vertices.remove(vertex.getId(), vertex);
+    return super.removeVertex(vertex);
   }
 
   /**
    * Thread-safe method to get a task for a given id.
    * 
-   * @param id the task id
+   * @param taskId the task id
    * @return the task with the required id
    */
-  public Task getTask(String id) {
-    if (!vertices.containsKey(id)) {
-      throw new IllegalStateException("Vertex " + id + " not in the enactment graph");
+  public Task getTask(final String taskId) {
+    if (!vertices.containsKey(taskId)) {
+      throw new IllegalStateException("Vertex " + taskId + " not in the enactment graph");
     }
-    return vertices.get(id);
+    return vertices.get(taskId);
   }
 }

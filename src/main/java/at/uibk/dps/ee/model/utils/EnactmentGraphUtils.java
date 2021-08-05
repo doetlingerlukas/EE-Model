@@ -22,7 +22,7 @@ public final class EnactmentGraphUtils {
    * @param graph the given graph.
    * @return the constant data nodes of the given graph
    */
-  public static Set<Task> getConstantDataNodes(EnactmentGraph graph) {
+  public static Set<Task> getConstantDataNodes(final EnactmentGraph graph) {
     // get the actually constant nodes (constant and while counters)
     Set<Task> result =
         graph.getVertices().stream().filter(task -> TaskPropertyService.isCommunication(task))
@@ -44,7 +44,7 @@ public final class EnactmentGraphUtils {
    * @param graph the given graph.
    * @return the non-constant root data nodes (inputs) of the given graph
    */
-  public static Set<Task> getNonConstRootNodes(EnactmentGraph graph) {
+  public static Set<Task> getNonConstRootNodes(final EnactmentGraph graph) {
     Set<Task> result = graph.getVertices().stream()
         .filter(node -> graph.getPredecessorCount(node) == 0).collect(Collectors.toSet());
     result.removeAll(getConstantDataNodes(graph));

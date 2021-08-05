@@ -81,7 +81,7 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
    * @param task the given aggregation task
    * @param finished true iff finished
    */
-  public static void setFinished(final Task task, boolean finished) {
+  public static void setFinished(final Task task, final boolean finished) {
     checkTask(task);
     if (!isAggregationNode(task)) {
       throw new IllegalArgumentException("Only applicable to aggregation tasks");
