@@ -94,7 +94,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * @return true iff the dependency points to data produced in the previous
    *         iteration
    */
-  public static boolean doesPointToPreviousIteration(Dependency dependency) {
+  public static boolean doesPointToPreviousIteration(final Dependency dependency) {
     if (!isAttributeSet(dependency, propNamePrevWhileRef)) {
       return false;
     }
@@ -116,7 +116,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * @param dependency the edge to check
    * @return true iff the given edge is annotated with a replica source
    */
-  public static boolean isWhileAnnotated(Dependency dependency) {
+  public static boolean isWhileAnnotated(final Dependency dependency) {
     return isAttributeSet(dependency, propNameWhileRepReference);
   }
 
@@ -128,7 +128,8 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * @param data the node which shall be used as a src when the dependency is
    *        replicated
    */
-  public static void annotateWhileReplica(Dependency dependency, Task data, String whileFuncName) {
+  public static void annotateWhileReplica(final Dependency dependency, final Task data,
+      final String whileFuncName) {
     if (!TaskPropertyService.isCommunication(data)) {
       throw new IllegalArgumentException(
           "Only a data node can be a replica src, task " + data + " is not a data node.");
@@ -146,7 +147,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * 
    * @param dependency the given dependency
    */
-  public static void resetWhileAnnotation(Dependency dependency) {
+  public static void resetWhileAnnotation(final Dependency dependency) {
     if (!isWhileAnnotated(dependency)) {
       throw new IllegalArgumentException(
           "Dependency edge " + dependency.getId() + " not while-annotated, so no reset.");
@@ -162,7 +163,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * @param dependency the annotated edge
    * @return reference to a while function
    */
-  public static String getReplicaWhileFuncReference(Dependency dependency) {
+  public static String getReplicaWhileFuncReference(final Dependency dependency) {
     if (!isWhileAnnotated(dependency)) {
       throw new IllegalArgumentException("Dependency " + dependency + " is not while annotated.");
     }
@@ -177,7 +178,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * @return the reference to the node which is used as source for the replicas of
    *         the given dependency
    */
-  public static String getReplicaSrcReference(Dependency dependency) {
+  public static String getReplicaSrcReference(final Dependency dependency) {
     if (!isWhileAnnotated(dependency)) {
       throw new IllegalArgumentException("Dependency " + dependency + " is not while annotated.");
     }

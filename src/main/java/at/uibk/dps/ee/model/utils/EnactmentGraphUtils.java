@@ -24,12 +24,12 @@ public final class EnactmentGraphUtils {
    */
   public static Set<Task> getConstantDataNodes(final EnactmentGraph graph) {
     // get the actually constant nodes (constant and while counters)
-    Set<Task> result =
+    final Set<Task> result =
         graph.getVertices().stream().filter(task -> TaskPropertyService.isCommunication(task))
             .filter(dataNode -> PropertyServiceData.isConstantNode(dataNode))
             .collect(Collectors.toSet());
     // add the while data nodes which are not nested
-    Set<Task> relevantWhileNodes = graph.getVertices().stream()
+    final Set<Task> relevantWhileNodes = graph.getVertices().stream()
         .filter(node -> TaskPropertyService.isCommunication(node))
         .filter(dataNode -> PropertyServiceData.getNodeType(dataNode).equals(NodeType.WhileStart))
         .filter(whileStart -> graph.getPredecessorCount(whileStart) == 0)
@@ -45,7 +45,7 @@ public final class EnactmentGraphUtils {
    * @return the non-constant root data nodes (inputs) of the given graph
    */
   public static Set<Task> getNonConstRootNodes(final EnactmentGraph graph) {
-    Set<Task> result = graph.getVertices().stream()
+    final Set<Task> result = graph.getVertices().stream()
         .filter(node -> graph.getPredecessorCount(node) == 0).collect(Collectors.toSet());
     result.removeAll(getConstantDataNodes(graph));
     if (result.stream().anyMatch(rootNode -> !PropertyServiceData.isRoot(rootNode))) {
