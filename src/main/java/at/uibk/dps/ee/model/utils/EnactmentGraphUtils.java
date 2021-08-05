@@ -48,6 +48,9 @@ public final class EnactmentGraphUtils {
     Set<Task> result = graph.getVertices().stream()
         .filter(node -> graph.getPredecessorCount(node) == 0).collect(Collectors.toSet());
     result.removeAll(getConstantDataNodes(graph));
+    if (result.stream().anyMatch(rootNode -> !PropertyServiceData.isRoot(rootNode))) {
+      throw new IllegalStateException("Non root nodes without in edges found.");
+    }
     return result;
   }
 

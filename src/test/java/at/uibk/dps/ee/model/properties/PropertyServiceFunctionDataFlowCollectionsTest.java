@@ -16,6 +16,24 @@ import net.sf.opendse.model.Task;
 public class PropertyServiceFunctionDataFlowCollectionsTest {
 
   @Test
+  void testFinishAnnotation() {
+    Task aggro = PropertyServiceFunctionDataFlowCollections.createCollectionDataFlowTask("task",
+        OperationType.Aggregation, "scope");
+    assertFalse(PropertyServiceFunctionDataFlowCollections.isFinished(aggro));
+    PropertyServiceFunctionDataFlowCollections.setFinished(aggro, true);
+    assertTrue(PropertyServiceFunctionDataFlowCollections.isFinished(aggro));
+
+    Task otherTask = PropertyServiceFunctionDataFlowCollections
+        .createCollectionDataFlowTask("taskOther", OperationType.Distribution, "scope");
+    assertThrows(IllegalArgumentException.class, () -> {
+      PropertyServiceFunctionDataFlowCollections.isFinished(otherTask);
+    });
+    assertThrows(IllegalArgumentException.class, () -> {
+      PropertyServiceFunctionDataFlowCollections.setFinished(otherTask, true);
+    });
+  }
+
+  @Test
   public void test() {
     String scope = "here";
     Task task = PropertyServiceFunctionDataFlowCollections.createCollectionDataFlowTask("t",

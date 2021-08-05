@@ -16,6 +16,15 @@ import net.sf.opendse.model.Task;
 public class PropertyServiceReproductionTest {
 
   @Test
+  void testOriginalWhileReference() {
+    Task task = new Task("task");
+    String reference = "reference";
+    assertFalse(PropertyServiceReproduction.isWhileReplica(task));
+    PropertyServiceReproduction.setOriginalWhileEndReference(task, reference);
+    assertEquals(reference, PropertyServiceReproduction.getOriginalWhileEndReference(task));
+  }
+
+  @Test
   public void testIsReproduced() {
     Task task = new Task("task");
     assertFalse(PropertyServiceReproduction.isReproduced(task));

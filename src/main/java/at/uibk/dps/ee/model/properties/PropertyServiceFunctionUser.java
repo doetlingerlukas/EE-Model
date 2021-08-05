@@ -54,9 +54,9 @@ public final class PropertyServiceFunctionUser extends AbstractPropertyService {
    * @param task the given task
    * @return the reference to the original task
    */
-  public static String getOriginalRef(Task task) {
+  public static String getWhileRef(Task task) {
     checkTask(task);
-    if (!isSeqReplica(task)) {
+    if (!isWhileReplica(task)) {
       throw new IllegalArgumentException("task " + task + " is not a sequential replica.");
     }
     return (String) getAttribute(task, propNameWhileRef);
@@ -68,7 +68,7 @@ public final class PropertyServiceFunctionUser extends AbstractPropertyService {
    * @param task the given task
    * @return true iff the given task is a sequential replica
    */
-  public static boolean isSeqReplica(Task task) {
+  public static boolean isWhileReplica(Task task) {
     checkTask(task);
     return isAttributeSet(task, propNameWhileRef);
   }

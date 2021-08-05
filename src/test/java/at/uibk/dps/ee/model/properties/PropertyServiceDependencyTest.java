@@ -17,6 +17,44 @@ import net.sf.opendse.model.Task;
 public class PropertyServiceDependencyTest {
 
   @Test
+  void testWhileReplicaAnnotation() {
+    Dependency dep = new Dependency("dep");
+    String whileName = "while";
+    Task data = new Communication("data");
+    Task task = new Task("task");
+
+    assertFalse(PropertyServiceDependency.isWhileAnnotated(dep));
+    assertThrows(IllegalArgumentException.class, () -> {
+      PropertyServiceDependency.getReplicaSrcReference(dep);
+    });
+    assertThrows(IllegalArgumentException.class, () -> {
+      PropertyServiceDependency.getReplicaWhileFuncReference(dep);
+    });
+    assertThrows(IllegalArgumentException.class, () -> {
+      PropertyServiceDependency.annotateWhileReplica(dep, task, whileName);
+    });
+    assertThrows(IllegalArgumentException.class, () -> {
+      PropertyServiceDependency.resetWhileAnnotation(dep);
+    });
+    PropertyServiceDependency.annotateWhileReplica(dep, data, whileName);
+    assertEquals(whileName, PropertyServiceDependency.getReplicaWhileFuncReference(dep));
+    assertEquals(data.getId(), PropertyServiceDependency.getReplicaSrcReference(dep));
+    assertThrows(IllegalArgumentException.class, () -> {
+      PropertyServiceDependency.annotateWhileReplica(dep, data, whileName);
+    });
+    PropertyServiceDependency.resetWhileAnnotation(dep);
+    assertFalse(PropertyServiceDependency.isWhileAnnotated(dep));
+  }
+
+  @Test
+  void testPreviousDependencyAnnotation() {
+    Dependency dep = new Dependency("dependency");
+    assertFalse(PropertyServiceDependency.doesPointToPreviousIteration(dep));
+    PropertyServiceDependency.annotatePreviousIterationDependency(dep);
+    assertTrue(PropertyServiceDependency.doesPointToPreviousIteration(dep));
+  }
+
+  @Test
   public void testExtractionDone() {
     Dependency dep = new Dependency("dep");
     assertFalse(PropertyServiceDependency.isExtractionDone(dep));

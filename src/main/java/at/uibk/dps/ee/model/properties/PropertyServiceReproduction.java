@@ -56,7 +56,7 @@ public final class PropertyServiceReproduction extends AbstractPropertyService {
    * @param task the given task
    * @return true if the given task node was created by the transformation operation of a while
    */
-  public static boolean isSequentialReplica(Task task) {
+  public static boolean isWhileReplica(Task task) {
     return isAttributeSet(task, propNameOriginalWhileEnd);
   }
   

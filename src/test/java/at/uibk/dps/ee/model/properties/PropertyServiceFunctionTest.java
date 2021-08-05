@@ -14,6 +14,25 @@ import net.sf.opendse.model.Task;
 
 public class PropertyServiceFunctionTest {
 
+
+  @Test
+  void testOutput() {
+    Task function = new Task("function");
+    assertFalse(PropertyServiceFunction.isOutputSet(function));
+    assertThrows(IllegalStateException.class, () -> {
+      PropertyServiceFunction.getOutput(function);
+    });
+    JsonObject output = new JsonObject();
+    PropertyServiceFunction.setOutput(function, output);
+    assertThrows(IllegalStateException.class, () -> {
+      PropertyServiceFunction.setOutput(function, output);
+    });
+    assertTrue(PropertyServiceFunction.isOutputSet(function));
+    assertEquals(output, PropertyServiceFunction.getOutput(function));
+    PropertyServiceFunction.resetOutput(function);
+    assertFalse(PropertyServiceFunction.isOutputSet(function));
+  }
+
   @Test
   public void testNotFunction() {
     assertThrows(IllegalArgumentException.class, () -> {
@@ -33,18 +52,16 @@ public class PropertyServiceFunctionTest {
   public void testSetInput() {
     Task task = new Task("task");
     assertFalse(PropertyServiceFunction.isInputSet(task));
-
+    assertThrows(IllegalStateException.class, () -> {
+      PropertyServiceFunction.getInput(task);
+    });
     JsonElement element = new JsonPrimitive(42);
     String key = "key";
     JsonObject input = new JsonObject();
     input.add(key, element);
-
     PropertyServiceFunction.setInput(task, input);
-
     assertTrue(PropertyServiceFunction.isInputSet(task));
-
     assertEquals(input, PropertyServiceFunction.getInput(task));
-
     PropertyServiceFunction.resetInput(task);
     assertFalse(PropertyServiceFunction.isInputSet(task));
   }

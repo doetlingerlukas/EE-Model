@@ -162,7 +162,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * @param dependency the annotated edge
    * @return reference to a while function
    */
-  public static String getReplicaWhileFuncRefernce(Dependency dependency) {
+  public static String getReplicaWhileFuncReference(Dependency dependency) {
     if (!isWhileAnnotated(dependency)) {
       throw new IllegalArgumentException("Dependency " + dependency + " is not while annotated.");
     }

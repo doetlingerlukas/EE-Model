@@ -21,12 +21,34 @@ import net.sf.opendse.model.Task;
 public class PropertyServiceDataTest {
 
   @Test
+  void testWhileEndAnnotation() {
+    Task data = new Communication("data");
+    assertFalse(PropertyServiceData.isWhileOutput(data));
+    String whileEndRef = "whileEndRef";
+    PropertyServiceData.annotateOriginalWhileEnd(data, whileEndRef);
+    assertEquals(whileEndRef, PropertyServiceData.getOriginalWhileEndReference(data));
+  }
+
+  @Test
+  void testWhileCounter() {
+    Task counter = PropertyServiceData.createWhileCounter("whileCounter");
+    assertEquals(NodeType.WhileCounter, PropertyServiceData.getNodeType(counter));
+    assertEquals(0, PropertyServiceData.getContent(counter).getAsInt());
+    PropertyServiceData.incrementWhileCounter(counter);
+    assertEquals(1, PropertyServiceData.getContent(counter).getAsInt());
+    Task data = new Communication("data");
+    assertThrows(IllegalArgumentException.class, () -> {
+      PropertyServiceData.incrementWhileCounter(data);
+    });
+  }
+
+  @Test
   void testCreateWhileStart() {
     String id = "while";
     Task result = PropertyServiceData.createWhileStart(id);
     assertTrue(result instanceof Communication);
     assertEquals(id, result.getId());
-    assertTrue(PropertyServiceData.isConstantNode(result));
+    assertFalse(PropertyServiceData.isConstantNode(result));
     assertTrue(PropertyServiceData.getContent(result).getAsBoolean());
   }
 
