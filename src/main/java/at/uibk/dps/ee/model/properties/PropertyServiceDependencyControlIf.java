@@ -46,7 +46,7 @@ public final class PropertyServiceDependencyControlIf extends AbstractPropertySe
    */
   public static Dependency addIfDependency(final Task src, final Task dst, final String jsonKey,
       final boolean activation, final EnactmentGraph graph) {
-    final Dependency toAdd = createControlIfDependency(src, dst, jsonKey, activation);
+    final Dependency toAdd = createControlIfDependency(src, dst, jsonKey, activation, graph);
     graph.addEdge(toAdd, src, dst, EdgeType.DIRECTED);
     return toAdd;
   }
@@ -62,8 +62,8 @@ public final class PropertyServiceDependencyControlIf extends AbstractPropertySe
    *         to the given dest and annotates it with the given activation
    */
   protected static Dependency createControlIfDependency(final Task src, final Task dest,
-      final String jsonKey, final boolean activation) {
-    final Dependency result = PropertyServiceDependency.createDependency(src, dest);
+      final String jsonKey, final boolean activation, final EnactmentGraph graph) {
+    final Dependency result = PropertyServiceDependency.createDependency(src, dest, graph);
     PropertyServiceDependency.setType(result, TypeDependency.ControlIf);
     PropertyServiceDependencyControlIf.setActivation(result, activation);
     PropertyServiceDependency.setJsonKey(result, jsonKey);

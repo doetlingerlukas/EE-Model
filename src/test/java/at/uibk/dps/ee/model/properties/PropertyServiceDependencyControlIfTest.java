@@ -36,7 +36,7 @@ public class PropertyServiceDependencyControlIfTest {
     boolean activation = false;
 
     Dependency result = PropertyServiceDependencyControlIf.createControlIfDependency(src, dest,
-        jsonKey, activation);
+        jsonKey, activation, new EnactmentGraph());
     assertEquals(jsonKey, PropertyServiceDependency.getJsonKey(result));
     assertEquals(TypeDependency.ControlIf, PropertyServiceDependency.getType(result));
     assertFalse(PropertyServiceDependencyControlIf.getActivation(result));

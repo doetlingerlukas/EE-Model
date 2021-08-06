@@ -306,8 +306,12 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * @param dest the edge destination
    * @return a dependency with a unique ID made from the IDs of its endpoints
    */
-  protected static Dependency createDependency(final Task src, final Task dest) {
-    final String dependencyId = src.getId() + ConstantsEEModel.KeywordSeparator1 + dest.getId();
+  protected static Dependency createDependency(final Task src, final Task dest,
+      final EnactmentGraph graph) {
+    String dependencyId = src.getId() + ConstantsEEModel.KeywordSeparator1 + dest.getId();
+    while (graph.getEdge(dependencyId) != null) {
+      dependencyId = dependencyId.concat(ConstantsEEModel.KeyWordEdgeUniqueness);
+    }
     return new Dependency(dependencyId);
   }
 
@@ -326,7 +330,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
   public static Dependency addDataDependency(final Task src, final Task dest, final String jsonKey,
       final EnactmentGraph graph) {
     checkDataDependencyEndPoints(src, dest);
-    final Dependency dependency = createDependency(src, dest);
+    final Dependency dependency = createDependency(src, dest, graph);
     setType(dependency, TypeDependency.Data);
     setJsonKey(dependency, jsonKey);
     graph.addEdge(dependency, src, dest, EdgeType.DIRECTED);
@@ -347,7 +351,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
         TaskPropertyService.isCommunication(src) || TaskPropertyService.isCommunication(dest);
     if (!(functionPresent && dataPresent)) {
       throw new IllegalArgumentException("Dependency end points " + src.getId() + " and "
-          + dest.getId() + "are not a function AND a data node.");
+          + dest.getId() + " are not a function AND a data node.");
     }
   }
 

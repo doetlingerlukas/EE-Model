@@ -4,6 +4,7 @@ package at.uibk.dps.ee.model.properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
@@ -69,7 +70,8 @@ public class PropertyServiceDependencyTest {
     assertThrows(IllegalStateException.class, () -> {
       Task task1 = new Task("task");
       Task task2 = new Task("othertask");
-      Dependency dep = PropertyServiceDependency.createDependency(task1, task2);
+      Dependency dep =
+          PropertyServiceDependency.createDependency(task1, task2, new EnactmentGraph());
       PropertyServiceDependency.setDataConsumed(dep);
     });
   }
@@ -78,7 +80,7 @@ public class PropertyServiceDependencyTest {
   public void testDataConsumptionOkay() {
     Task task1 = new Task("task");
     Task task2 = new Task("othertask");
-    Dependency dep = PropertyServiceDependency.createDependency(task1, task2);
+    Dependency dep = PropertyServiceDependency.createDependency(task1, task2, new EnactmentGraph());
     PropertyServiceDependency.annotateFinishedTransmission(dep);
     assertFalse(PropertyServiceDependency.isDataConsumed(dep));
     PropertyServiceDependency.setDataConsumed(dep);
@@ -92,7 +94,7 @@ public class PropertyServiceDependencyTest {
   public void testTransmissionAnnotation() {
     Task task1 = new Task("task");
     Task task2 = new Task("othertask");
-    Dependency dep = PropertyServiceDependency.createDependency(task1, task2);
+    Dependency dep = PropertyServiceDependency.createDependency(task1, task2, new EnactmentGraph());
     assertFalse(PropertyServiceDependency.isTransmissionDone(dep));
     PropertyServiceDependency.annotateFinishedTransmission(dep);
     assertTrue(PropertyServiceDependency.isTransmissionDone(dep));
@@ -145,8 +147,23 @@ public class PropertyServiceDependencyTest {
     Task src = new Task(srcString);
     Task dst = new Task(dstString);
     String expected = srcString + ConstantsEEModel.KeywordSeparator1 + dstString;
-    Dependency result = PropertyServiceDependency.createDependency(src, dst);
+    Dependency result = PropertyServiceDependency.createDependency(src, dst, new EnactmentGraph());
     assertEquals(expected, result.getId());
+  }
+
+  @Test
+  void testMultipleDependencies() {
+    String srcString = "src";
+    String dstString = "dest";
+    Task src = new Task(srcString);
+    Task dst = new Communication(dstString);
+    EnactmentGraph graph = new EnactmentGraph();
+    String expected = srcString + ConstantsEEModel.KeywordSeparator1 + dstString;
+    Dependency result = PropertyServiceDependency.addDataDependency(src, dst, "key1", graph);
+    assertEquals(expected, result.getId());
+    Dependency result2 = PropertyServiceDependency.addDataDependency(src, dst, "key2", graph);
+    assertNotEquals(result, result2);
+    assertEquals(2, graph.getEdgeCount());
   }
 
   @Test

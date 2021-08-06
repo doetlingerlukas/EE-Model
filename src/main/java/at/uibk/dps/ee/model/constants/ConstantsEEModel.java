@@ -12,6 +12,7 @@ public final class ConstantsEEModel {
   // General constants
   public static final String KeywordSeparator1 = "--";
   public static final String KeyWordSeparator2 = "__";
+  public static final String KeyWordEdgeUniqueness = "'";
 
   // Resource graph constants
   public static final String idLocalResource = "Enactment Engine (Local Machine)";
