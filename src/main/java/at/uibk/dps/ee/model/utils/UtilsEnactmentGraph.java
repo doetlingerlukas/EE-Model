@@ -14,7 +14,7 @@ import net.sf.opendse.model.properties.TaskPropertyService;
  * @author Fedor Smirnov
  *
  */
-public final class EnactmentGraphUtils {
+public final class UtilsEnactmentGraph {
 
   /**
    * Returns the constant data nodes of the given graph.
@@ -57,5 +57,5 @@ public final class EnactmentGraphUtils {
   /**
    * No constructor.
    */
-  private EnactmentGraphUtils() {}
+  private UtilsEnactmentGraph() {}
 }

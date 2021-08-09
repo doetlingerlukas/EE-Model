@@ -14,7 +14,7 @@ import at.uibk.dps.ee.model.properties.PropertyServiceDependency;
 import net.sf.opendse.model.Communication;
 import net.sf.opendse.model.Task;
 
-public class EnactmentGraphUtilsTest {
+public class UtilsEnactmentGraphTest {
 
   EnactmentGraph input;
 
@@ -52,21 +52,21 @@ public class EnactmentGraphUtilsTest {
   @Test
   void testGetRootDataNodesExc() {
     assertThrows(IllegalStateException.class, () -> {
-      EnactmentGraphUtils.getNonConstRootNodes(input);
+      UtilsEnactmentGraph.getNonConstRootNodes(input);
     });
   }
 
   @Test
   void testGetRootDataNodes() {
     PropertyServiceData.makeRoot(input1);
-    Set<Task> result = EnactmentGraphUtils.getNonConstRootNodes(input);
+    Set<Task> result = UtilsEnactmentGraph.getNonConstRootNodes(input);
     assertEquals(1, result.size());
     assertTrue(result.contains(input1));
   }
 
   @Test
   void testGetConstantNodes() {
-    Set<Task> result = EnactmentGraphUtils.getConstantDataNodes(input);
+    Set<Task> result = UtilsEnactmentGraph.getConstantDataNodes(input);
     assertEquals(2, result.size());
     assertTrue(result.contains(input2));
     assertTrue(result.contains(input3));
