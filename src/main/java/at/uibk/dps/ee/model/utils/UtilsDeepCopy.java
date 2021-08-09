@@ -1,7 +1,9 @@
 package at.uibk.dps.ee.model.utils;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import at.uibk.dps.ee.model.graph.EnactmentGraph;
 import at.uibk.dps.ee.model.graph.EnactmentSpecification;
 import at.uibk.dps.ee.model.graph.ResourceGraph;
@@ -28,6 +30,84 @@ public final class UtilsDeepCopy {
    * No constructor
    */
   private UtilsDeepCopy() {}
+
+  /**
+   * Restores the original state of an adjusted specification by copying the
+   * attribute values from the original specification.
+   * 
+   * @param originalSpec the original specification
+   * @param adjustedSpec the adjusted spec
+   */
+  public static void restoreSpecAttributes(final EnactmentSpecification originalSpec,
+      final EnactmentSpecification adjustedSpec) {
+    restoreEGraphAttributes(originalSpec.getEnactmentGraph(), adjustedSpec.getEnactmentGraph());
+    restoreRGraphAttributes(originalSpec.getResourceGraph(), adjustedSpec.getResourceGraph());
+    restoreMappingsAttributes(originalSpec.getMappings(), adjustedSpec.getMappings());
+  }
+
+  /**
+   * Restores all attributes in the given adjusted enactment graph
+   * 
+   * @param original the original enactment graph
+   * @param adjusted the adjusted enactment graph
+   */
+  protected static void restoreEGraphAttributes(final EnactmentGraph original,
+      final EnactmentGraph adjusted) {
+    original.getVertices().forEach(originalVertex -> restoreElementAttributes(originalVertex,
+        adjusted.getVertex(originalVertex.getId())));
+    original.getEdges().forEach(originalEdge -> restoreElementAttributes(originalEdge,
+        adjusted.getEdge(originalEdge.getId())));
+  }
+
+  /**
+   * Restores all attributes in the given adjusted resource graph
+   * 
+   * @param original the original resource graph
+   * @param adjusted the adjusted resource graph
+   */
+  protected static void restoreRGraphAttributes(final ResourceGraph original,
+      final ResourceGraph adjusted) {
+    original.getVertices().forEach(originalVertex -> restoreElementAttributes(originalVertex,
+        adjusted.getVertex(originalVertex.getId())));
+    original.getEdges().forEach(originalEdge -> restoreElementAttributes(originalEdge,
+        adjusted.getEdge(originalEdge.getId())));
+  }
+
+  /**
+   * Restores all attributes in the given adjusted mappings.
+   * 
+   * @param original the original mappings
+   * @param adjusted the adjusted mappings
+   */
+  protected static void restoreMappingsAttributes(final Mappings<Task, Resource> original,
+      final Mappings<Task, Resource> adjusted) {
+    final Map<String, Mapping<Task, Resource>> originalMappingMap =
+        original.getAll().stream().collect(Collectors.toMap(oMap -> oMap.getId(), oMap -> oMap));
+    final Map<String, Mapping<Task, Resource>> adjustedMappingMap =
+        adjusted.getAll().stream().collect(Collectors.toMap(aMap -> aMap.getId(), aMap -> aMap));
+    originalMappingMap.keySet()
+        .forEach(mappingKey -> restoreElementAttributes(originalMappingMap.get(mappingKey),
+            adjustedMappingMap.get(mappingKey)));
+  }
+
+  /**
+   * Restores the attributes of an adjusted element by setting it to the values
+   * found in the original.
+   * 
+   * @param original the original element
+   * @param adjusted the element with adjusted values
+   */
+  protected static void restoreElementAttributes(Element original, Element adjusted) {
+    // all attributes which were not in the original are set to null
+    adjusted.getAttributeNames().stream()
+        .filter(attrName -> !original.getAttributeNames().contains(attrName))
+        .forEach(notInOriginal -> adjusted.setAttribute(notInOriginal, null));
+    // all other attributes are set to the same value as in the original
+    original.getAttributeNames()
+        .forEach(attrName -> adjusted.setAttribute(attrName, original.getAttribute(attrName)));
+  }
+
+
 
   /**
    * Generates a deep copy of the provided spec (objects on all levels have
