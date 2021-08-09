@@ -142,16 +142,16 @@ public final class UtilsDeepCopy {
    */
   protected static <E extends Element> E deepCopyElement(final Class<E> clazz,
       final Element original) {
-    final String id = original.getId();
+    final String elementId = original.getId();
     try {
-      final E result = clazz.getDeclaredConstructor(String.class).newInstance(id);
+      final E result = clazz.getDeclaredConstructor(String.class).newInstance(elementId);
       original.getAttributeNames()
           .forEach(attrName -> result.setAttribute(attrName, original.getAttribute(attrName)));
       return result;
     } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
         | InvocationTargetException | NoSuchMethodException | SecurityException e) {
       throw new IllegalArgumentException(
-          "Error when trying to construct an element of type " + clazz.getCanonicalName());
+          "Error when trying to construct an element of type " + clazz.getCanonicalName(), e);
     }
   }
 
@@ -171,8 +171,7 @@ public final class UtilsDeepCopy {
     final Resource resCopy = Optional.of(copyRGraph.getVertex(original.getTarget().getId()))
         .orElseThrow(() -> new IllegalStateException(
             "Target of mapping " + original.getId() + " not in the copied r graph."));
-    final Mapping<Task, Resource> result =
-        new Mapping<Task, Resource>(original.getId(), taskCopy, resCopy);
+    final Mapping<Task, Resource> result = new Mapping<>(original.getId(), taskCopy, resCopy);
     original.getAttributeNames()
         .forEach(attrName -> result.setAttribute(attrName, original.getAttribute(attrName)));
     return result;
