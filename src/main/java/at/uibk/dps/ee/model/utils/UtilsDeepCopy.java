@@ -53,8 +53,14 @@ public final class UtilsDeepCopy {
    */
   protected static void restoreEGraphAttributes(final EnactmentGraph original,
       final EnactmentGraph adjusted) {
-    original.getVertices().forEach(originalVertex -> restoreElementAttributes(originalVertex,
-        adjusted.getVertex(originalVertex.getId())));
+    original.getVertices().forEach(originalVertex -> {
+      Task adjustedVertex = adjusted.getVertex(originalVertex.getId());
+      if (adjustedVertex == null) {
+        throw new IllegalStateException(
+            "Task " + originalVertex.getId() + " not present in the adjusted graph.");
+      }
+      restoreElementAttributes(originalVertex, adjustedVertex);
+    });
     original.getEdges().forEach(originalEdge -> restoreElementAttributes(originalEdge,
         adjusted.getEdge(originalEdge.getId())));
   }
@@ -258,6 +264,16 @@ public final class UtilsDeepCopy {
   }
 
   /**
+   * Returns a deep copy of the given dependency.
+   * 
+   * @param original the given dependency
+   * @return a deep copy of the given dependency
+   */
+  public static Dependency deepCopyDependency(final Dependency original) {
+    return deepCopyElement(Dependency.class, original);
+  }
+
+  /**
    * Creates a deep copy of the given dependency and adds it at the appropriate
    * position of the copied enactment graph.
    * 
@@ -269,7 +285,7 @@ public final class UtilsDeepCopy {
    */
   public static Dependency addDeepCopyDependency(final Dependency original,
       final EnactmentGraph originalGraph, final EnactmentGraph copyEGraph) {
-    final Dependency result = deepCopyElement(Dependency.class, original);
+    final Dependency result = deepCopyDependency(original);
     final Task srcTask =
         Optional.of(copyEGraph.getVertex(originalGraph.getSource(original).getId()))
             .orElseThrow(() -> new IllegalStateException(
