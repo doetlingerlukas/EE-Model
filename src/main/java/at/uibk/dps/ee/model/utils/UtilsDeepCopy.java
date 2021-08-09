@@ -36,10 +36,10 @@ public final class UtilsDeepCopy {
    * @param original the specification which is being copied
    * @return the deep copy of the specification
    */
-  public static EnactmentSpecification deepCopySpec(EnactmentSpecification original) {
-    EnactmentGraph deepCopyEGraph = deepCopyEGraph(original.getEnactmentGraph());
-    ResourceGraph deepCopyRGraph = deepCopyRGraph(original.getResourceGraph());
-    Mappings<Task, Resource> deepCopyMappings =
+  public static EnactmentSpecification deepCopySpec(final EnactmentSpecification original) {
+    final EnactmentGraph deepCopyEGraph = deepCopyEGraph(original.getEnactmentGraph());
+    final ResourceGraph deepCopyRGraph = deepCopyRGraph(original.getResourceGraph());
+    final Mappings<Task, Resource> deepCopyMappings =
         deepCopyMappings(original.getMappings(), deepCopyEGraph, deepCopyRGraph);
     return new EnactmentSpecification(deepCopyEGraph, deepCopyRGraph, deepCopyMappings);
   }
@@ -51,8 +51,8 @@ public final class UtilsDeepCopy {
    * @param original the enactment graph which is being copied
    * @return the deep copy of the enactment graph
    */
-  public static EnactmentGraph deepCopyEGraph(EnactmentGraph original) {
-    EnactmentGraph result = new EnactmentGraph();
+  public static EnactmentGraph deepCopyEGraph(final EnactmentGraph original) {
+    final EnactmentGraph result = new EnactmentGraph();
     original.getVertices()
         .forEach(originalNode -> result.addVertex(deepCopyEGraphNode(originalNode)));
     original.getEdges()
@@ -67,8 +67,8 @@ public final class UtilsDeepCopy {
    * @param original the resource graph which is being copied
    * @return the deep copy of the resource graph
    */
-  public static ResourceGraph deepCopyRGraph(ResourceGraph original) {
-    ResourceGraph result = new ResourceGraph();
+  public static ResourceGraph deepCopyRGraph(final ResourceGraph original) {
+    final ResourceGraph result = new ResourceGraph();
     original.getVertices().forEach(originalRes -> result.addVertex(deepCopyResource(originalRes)));
     original.getEdges().forEach(originalLink -> addDeepCopyLink(originalLink, original, result));
     return result;
@@ -83,9 +83,9 @@ public final class UtilsDeepCopy {
    * @param deepCopyRGraph a deep copy of the resource graph
    * @return a deep copy of the mappings
    */
-  public static Mappings<Task, Resource> deepCopyMappings(Mappings<Task, Resource> original,
-      EnactmentGraph deepCopyEGraph, ResourceGraph deepCopyRGraph) {
-    Mappings<Task, Resource> result = new Mappings<>();
+  public static Mappings<Task, Resource> deepCopyMappings(final Mappings<Task, Resource> original,
+      final EnactmentGraph deepCopyEGraph, final ResourceGraph deepCopyRGraph) {
+    final Mappings<Task, Resource> result = new Mappings<>();
     original.getAll().forEach(originalMapping -> result
         .add(deepCopyMapping(originalMapping, deepCopyEGraph, deepCopyRGraph)));
     return result;
@@ -97,7 +97,7 @@ public final class UtilsDeepCopy {
    * @param original the original egraph node
    * @return the deep copy
    */
-  public static Task deepCopyEGraphNode(Task original) {
+  public static Task deepCopyEGraphNode(final Task original) {
     return TaskPropertyService.isProcess(original) ? deepCopyTask(original)
         : deepCopyCommunication(original);
   }
@@ -108,7 +108,7 @@ public final class UtilsDeepCopy {
    * @param original the original task
    * @return the deep copy of the task
    */
-  public static Task deepCopyTask(Task original) {
+  public static Task deepCopyTask(final Task original) {
     return deepCopyElement(Task.class, original);
   }
 
@@ -118,7 +118,7 @@ public final class UtilsDeepCopy {
    * @param original the original communication
    * @return the deep copy of the communication
    */
-  public static Communication deepCopyCommunication(Task original) {
+  public static Communication deepCopyCommunication(final Task original) {
     return deepCopyElement(Communication.class, original);
   }
 
@@ -128,7 +128,7 @@ public final class UtilsDeepCopy {
    * @param original the original resource
    * @return a deep copy of the original resource
    */
-  public static Resource deepCopyResource(Resource original) {
+  public static Resource deepCopyResource(final Resource original) {
     return deepCopyElement(Resource.class, original);
   }
 
@@ -140,10 +140,11 @@ public final class UtilsDeepCopy {
    * @param original the original element (of type E)
    * @return a deep copy the provided element of the provided type
    */
-  protected static <E extends Element> E deepCopyElement(Class<E> clazz, Element original) {
-    String id = original.getId();
+  protected static <E extends Element> E deepCopyElement(final Class<E> clazz,
+      final Element original) {
+    final String id = original.getId();
     try {
-      E result = clazz.getDeclaredConstructor(String.class).newInstance(id);
+      final E result = clazz.getDeclaredConstructor(String.class).newInstance(id);
       original.getAttributeNames()
           .forEach(attrName -> result.setAttribute(attrName, original.getAttribute(attrName)));
       return result;
@@ -162,15 +163,15 @@ public final class UtilsDeepCopy {
    * @param copyRGraph copy of the resource graph
    * @return deep copy of the given mapping
    */
-  public static Mapping<Task, Resource> deepCopyMapping(Mapping<Task, Resource> original,
-      EnactmentGraph copyEGraph, ResourceGraph copyRGraph) {
-    Task taskCopy = Optional.of(copyEGraph.getVertex(original.getSource().getId()))
+  public static Mapping<Task, Resource> deepCopyMapping(final Mapping<Task, Resource> original,
+      final EnactmentGraph copyEGraph, final ResourceGraph copyRGraph) {
+    final Task taskCopy = Optional.of(copyEGraph.getVertex(original.getSource().getId()))
         .orElseThrow(() -> new IllegalStateException(
             "Src of mapping " + original.getId() + " not in the copied e graph."));
-    Resource resCopy = Optional.of(copyRGraph.getVertex(original.getTarget().getId()))
+    final Resource resCopy = Optional.of(copyRGraph.getVertex(original.getTarget().getId()))
         .orElseThrow(() -> new IllegalStateException(
             "Target of mapping " + original.getId() + " not in the copied r graph."));
-    Mapping<Task, Resource> result =
+    final Mapping<Task, Resource> result =
         new Mapping<Task, Resource>(original.getId(), taskCopy, resCopy);
     original.getAttributeNames()
         .forEach(attrName -> result.setAttribute(attrName, original.getAttribute(attrName)));
@@ -187,13 +188,14 @@ public final class UtilsDeepCopy {
    * @return the deep copy of the dependency (added to the copy graph by this
    *         method)
    */
-  public static Dependency addDeepCopyDependency(Dependency original, EnactmentGraph originalGraph,
-      EnactmentGraph copyEGraph) {
-    Dependency result = deepCopyElement(Dependency.class, original);
-    Task srcTask = Optional.of(copyEGraph.getVertex(originalGraph.getSource(original).getId()))
-        .orElseThrow(() -> new IllegalStateException(
-            "Src of edge " + original + " not in the copied e graph"));
-    Task dstTask = Optional.of(copyEGraph.getVertex(originalGraph.getDest(original).getId()))
+  public static Dependency addDeepCopyDependency(final Dependency original,
+      final EnactmentGraph originalGraph, final EnactmentGraph copyEGraph) {
+    final Dependency result = deepCopyElement(Dependency.class, original);
+    final Task srcTask =
+        Optional.of(copyEGraph.getVertex(originalGraph.getSource(original).getId()))
+            .orElseThrow(() -> new IllegalStateException(
+                "Src of edge " + original + " not in the copied e graph"));
+    final Task dstTask = Optional.of(copyEGraph.getVertex(originalGraph.getDest(original).getId()))
         .orElseThrow(() -> new IllegalStateException(
             "Dst of edge " + original + " not in the copied e graph"));
     copyEGraph.addEdge(result, srcTask, dstTask, EdgeType.DIRECTED);
@@ -209,14 +211,14 @@ public final class UtilsDeepCopy {
    * @param copyGraph the copied resource graph
    * @return the deep copy of the link (added to the copy graph by this method)
    */
-  public static Link addDeepCopyLink(Link original, ResourceGraph originalGraph,
-      ResourceGraph copyGraph) {
-    Link result = deepCopyElement(Link.class, original);
-    Resource srcRes =
+  public static Link addDeepCopyLink(final Link original, final ResourceGraph originalGraph,
+      final ResourceGraph copyGraph) {
+    final Link result = deepCopyElement(Link.class, original);
+    final Resource srcRes =
         Optional.of(copyGraph.getVertex(originalGraph.getEndpoints(original).getFirst().getId()))
             .orElseThrow(() -> new IllegalStateException(
                 "Src of link " + original + " not in the copied r graph"));
-    Resource dstRes =
+    final Resource dstRes =
         Optional.of(copyGraph.getVertex(originalGraph.getEndpoints(original).getSecond().getId()))
             .orElseThrow(() -> new IllegalStateException(
                 "Dst of link " + original + " not in the copied r graph"));
