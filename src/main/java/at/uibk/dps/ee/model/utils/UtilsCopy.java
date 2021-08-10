@@ -24,12 +24,12 @@ import net.sf.opendse.model.properties.TaskPropertyService;
  * 
  * @author Fedor Smirnov
  */
-public final class UtilsDeepCopy {
+public final class UtilsCopy {
 
   /**
    * No constructor
    */
-  private UtilsDeepCopy() {}
+  private UtilsCopy() {}
 
   /**
    * Restores the original state of an adjusted specification by copying the

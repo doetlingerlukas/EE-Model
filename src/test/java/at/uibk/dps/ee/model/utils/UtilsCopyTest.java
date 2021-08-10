@@ -18,7 +18,7 @@ import net.sf.opendse.model.Mappings;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 
-class UtilsDeepCopyTest {
+class UtilsCopyTest {
 
   EnactmentGraph eGraphOriginal;
 
@@ -33,14 +33,14 @@ class UtilsDeepCopyTest {
     Task task = new Task("task");
     Communication comm = new Communication("comm");
     assertThrows(IllegalArgumentException.class, () -> {
-      UtilsDeepCopy.copyAttributes(task, comm);
+      UtilsCopy.copyAttributes(task, comm);
     });
   }
 
   @Test
   void testRestoreSpec() {
     String attrName = "attr";
-    EnactmentSpecification specCopy = UtilsDeepCopy.deepCopySpec(specOriginal);
+    EnactmentSpecification specCopy = UtilsCopy.deepCopySpec(specOriginal);
     ResourceGraph graphCopy = specCopy.getResourceGraph();
     Resource res = graphCopy.getVertices().iterator().next();
     Link link = graphCopy.getEdges().iterator().next();
@@ -51,7 +51,7 @@ class UtilsDeepCopyTest {
     Dependency dep = eCopy.getEdges().iterator().next();
     task.setAttribute(attrName, 3);
     dep.setAttribute(attrName, 3);
-    UtilsDeepCopy.restoreSpecAttributes(specOriginal, specCopy);
+    UtilsCopy.restoreSpecAttributes(specOriginal, specCopy);
     assertNull(res.getAttribute(attrName));
     assertNull(link.getAttribute(attrName));
     assertNull(task.getAttribute(attrName));
@@ -60,13 +60,13 @@ class UtilsDeepCopyTest {
 
   @Test
   void testRestoreMappingAttributes() {
-    EnactmentGraph eGraphCopy = UtilsDeepCopy.deepCopyEGraph(eGraphOriginal);
-    ResourceGraph rGraphCopy = UtilsDeepCopy.deepCopyRGraph(rGraphOriginal);
+    EnactmentGraph eGraphCopy = UtilsCopy.deepCopyEGraph(eGraphOriginal);
+    ResourceGraph rGraphCopy = UtilsCopy.deepCopyRGraph(rGraphOriginal);
     Mappings<Task, Resource> mappingCopy =
-        UtilsDeepCopy.deepCopyMappings(mappingsOriginal, eGraphCopy, rGraphCopy);
+        UtilsCopy.deepCopyMappings(mappingsOriginal, eGraphCopy, rGraphCopy);
     Mapping<Task, Resource> copyMapping = mappingCopy.getAll().iterator().next();
     copyMapping.setAttribute("attr", 3);
-    UtilsDeepCopy.restoreMappingsAttributes(mappingsOriginal, mappingCopy);
+    UtilsCopy.restoreMappingsAttributes(mappingsOriginal, mappingCopy);
     assertNull(copyMapping.getAttribute("attr"));
   }
 
@@ -78,18 +78,18 @@ class UtilsDeepCopyTest {
     String attrName2 = "attr2";
     int value2 = 2;
     original.setAttribute(attrName1, value1);
-    Task copy = UtilsDeepCopy.deepCopyTask(original);
+    Task copy = UtilsCopy.deepCopyTask(original);
     copy.setAttribute(attrName2, value2);
     assertEquals(value1, (int) copy.getAttribute(attrName1));
     assertEquals(value2, (int) copy.getAttribute(attrName2));
-    UtilsDeepCopy.restoreElementAttributes(original, copy);
+    UtilsCopy.restoreElementAttributes(original, copy);
     assertEquals(value1, (int) copy.getAttribute(attrName1));
     assertNull(copy.getAttribute(attrName2));
   }
 
   @Test
   void testCopySpec() {
-    EnactmentSpecification specCopy = UtilsDeepCopy.deepCopySpec(specOriginal);
+    EnactmentSpecification specCopy = UtilsCopy.deepCopySpec(specOriginal);
     assertTrue(isCorrectEGraphCopy(eGraphOriginal, specCopy.getEnactmentGraph()));
     assertTrue(isCorrectRGraphCopy(rGraphOriginal, specCopy.getResourceGraph()));
     assertTrue(isCorrectMappingsCopy(mappingsOriginal, specCopy.getMappings(), eGraphOriginal,
@@ -98,23 +98,23 @@ class UtilsDeepCopyTest {
 
   @Test
   void testCopyMappings() {
-    EnactmentGraph copyE = UtilsDeepCopy.deepCopyEGraph(eGraphOriginal);
-    ResourceGraph copyR = UtilsDeepCopy.deepCopyRGraph(rGraphOriginal);
+    EnactmentGraph copyE = UtilsCopy.deepCopyEGraph(eGraphOriginal);
+    ResourceGraph copyR = UtilsCopy.deepCopyRGraph(rGraphOriginal);
     Mappings<Task, Resource> mappingsCopy =
-        UtilsDeepCopy.deepCopyMappings(mappingsOriginal, copyE, copyR);
+        UtilsCopy.deepCopyMappings(mappingsOriginal, copyE, copyR);
     assertTrue(isCorrectMappingsCopy(mappingsOriginal, mappingsCopy, eGraphOriginal, copyE,
         rGraphOriginal, copyR));
   }
 
   @Test
   void testCopyRGraph() {
-    ResourceGraph rCopy = UtilsDeepCopy.deepCopyRGraph(rGraphOriginal);
+    ResourceGraph rCopy = UtilsCopy.deepCopyRGraph(rGraphOriginal);
     assertTrue(isCorrectRGraphCopy(rGraphOriginal, rCopy));
   }
 
   @Test
   void testCopyEGraph() {
-    EnactmentGraph eCopy = UtilsDeepCopy.deepCopyEGraph(eGraphOriginal);
+    EnactmentGraph eCopy = UtilsCopy.deepCopyEGraph(eGraphOriginal);
     assertTrue(isCorrectEGraphCopy(eGraphOriginal, eCopy));
   }
 
