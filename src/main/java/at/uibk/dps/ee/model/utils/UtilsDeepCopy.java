@@ -231,14 +231,28 @@ public final class UtilsDeepCopy {
     final String elementId = original.getId();
     try {
       final E result = clazz.getDeclaredConstructor(String.class).newInstance(elementId);
-      original.getAttributeNames()
-          .forEach(attrName -> result.setAttribute(attrName, original.getAttribute(attrName)));
+      copyAttributes(original, result);
       return result;
     } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
         | InvocationTargetException | NoSuchMethodException | SecurityException e) {
       throw new IllegalArgumentException(
           "Error when trying to construct an element of type " + clazz.getCanonicalName(), e);
     }
+  }
+
+  /**
+   * Copies all attributes of a given original to a copy.
+   * 
+   * @param original the given original
+   * @param copy the given copy
+   */
+  public static void copyAttributes(final Element original, final Element copy) {
+    if (!original.getClass().equals(copy.getClass())) {
+      throw new IllegalArgumentException("Element " + original.getId() + " and element "
+          + copy.getId() + " are not of the same class.");
+    }
+    original.getAttributeNames()
+        .forEach(attrName -> copy.setAttribute(attrName, original.getAttribute(attrName)));
   }
 
   /**

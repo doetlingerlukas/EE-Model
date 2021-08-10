@@ -29,6 +29,15 @@ class UtilsDeepCopyTest {
   EnactmentSpecification specOriginal;
 
   @Test
+  void testCopyAttributesWrongClass() {
+    Task task = new Task("task");
+    Communication comm = new Communication("comm");
+    assertThrows(IllegalArgumentException.class, () -> {
+      UtilsDeepCopy.copyAttributes(task, comm);
+    });
+  }
+
+  @Test
   void testRestoreSpec() {
     String attrName = "attr";
     EnactmentSpecification specCopy = UtilsDeepCopy.deepCopySpec(specOriginal);
