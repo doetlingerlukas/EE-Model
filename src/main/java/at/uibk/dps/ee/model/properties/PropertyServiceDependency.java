@@ -309,7 +309,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
   protected static Dependency createDependency(final Task src, final Task dest,
       final EnactmentGraph graph) {
     String dependencyId = src.getId() + ConstantsEEModel.KeywordSeparator1 + dest.getId();
-    while (graph.containsEdgeWithId(dependencyId)) {
+    while (graph.containsEdge(dependencyId)) {
       dependencyId = dependencyId.concat(ConstantsEEModel.KeyWordEdgeUniqueness);
     }
     return new Dependency(dependencyId);

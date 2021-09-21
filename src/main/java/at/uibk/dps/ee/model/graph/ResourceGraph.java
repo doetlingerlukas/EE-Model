@@ -12,7 +12,7 @@ import net.sf.opendse.model.Resource;
  * @author Fedor Smirnov
  *
  */
-public class ResourceGraph extends Architecture<Resource, Link> {
+public class ResourceGraph extends AbstractConcurrentGraph<Resource, Link> {
 
   private static final long serialVersionUID = 1L;
   
