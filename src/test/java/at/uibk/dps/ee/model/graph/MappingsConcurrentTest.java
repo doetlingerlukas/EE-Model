@@ -27,17 +27,48 @@ class MappingsConcurrentTest {
   void testAddRemove() {
     assertFalse(tested.containsMapping(AOne));
     assertTrue(tested.addMapping(AOne));
-    assertThrows(IllegalStateException.class, () -> {
-      tested.addMapping(wrongAOne);
-    });
     assertFalse(tested.addMapping(AOne));
+    assertEquals(AOne, tested.iterator().next());
     assertTrue(tested.containsMapping(AOne));
-    assertThrows(IllegalStateException.class, () -> {
-      tested.containsMapping(wrongAOne);
-    });
     assertTrue(tested.removeMapping(AOne));
     assertFalse(tested.containsMapping(AOne));
     assertFalse(tested.removeMapping(AOne));
+  }
+
+  @Test
+  void testSourcesTargets() {
+    assertTrue(tested.getTargets(taskA).isEmpty());
+    assertTrue(tested.getSources(resOne).isEmpty());
+
+    tested.addMapping(AOne);
+    tested.addMapping(ATwo);
+
+    assertEquals(2, tested.getTargets(taskA).size());
+    assertTrue(tested.getTargets(taskA).contains(resOne));
+    assertTrue(tested.getTargets(taskA).contains(resTwo));
+
+    tested.addMapping(BOne);
+    assertEquals(2, tested.getMappings(taskA).size());
+    assertTrue(tested.getMappings(taskA).contains(AOne));
+    assertTrue(tested.getMappings(taskA).contains(ATwo));
+
+    assertEquals(2, tested.getMappings(resOne).size());
+    assertTrue(tested.getMappings(resOne).contains(AOne));
+    assertTrue(tested.getMappings(resOne).contains(BOne));
+
+    assertEquals(2, tested.getSources(resOne).size());
+    assertTrue(tested.getSources(resOne).contains(taskA));
+    assertTrue(tested.getSources(resOne).contains(taskB));
+
+    tested.removeMapping(ATwo);
+    assertEquals(1, tested.getTargets(taskA).size());
+    assertTrue(tested.getTargets(taskA).contains(resOne));
+
+    tested.removeMapping(BOne);
+    assertEquals(1, tested.getSources(resOne).size());
+    assertTrue(tested.getSources(resOne).contains(taskA));
+
+
   }
 
 

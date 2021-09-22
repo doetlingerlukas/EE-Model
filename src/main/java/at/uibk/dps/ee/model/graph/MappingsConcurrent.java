@@ -1,8 +1,10 @@
 package at.uibk.dps.ee.model.graph;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
@@ -22,11 +24,6 @@ public class MappingsConcurrent<T extends Task, R extends Resource>
       new ConcurrentHashMap<>();
   protected final ConcurrentHashMap<String, ConcurrentHashMap<String, Mapping<T, R>>> resourceMappings =
       new ConcurrentHashMap<>();
-  protected final ConcurrentHashMap<String, ConcurrentHashMap<String, R>> targets =
-      new ConcurrentHashMap<>();
-  protected final ConcurrentHashMap<String, ConcurrentHashMap<String, T>> sources =
-      new ConcurrentHashMap<>();
-
 
   @Override
   public Iterator<Mapping<T, R>> iterator() {
@@ -34,28 +31,23 @@ public class MappingsConcurrent<T extends Task, R extends Resource>
   }
 
   public boolean containsMapping(Mapping<T, R> mapping) {
-    if (mappings.containsKey(mapping.getId())) {
-      if (mapping.equals(mappings.get(mapping.getId()))) {
-        return true;
-      } else {
-        throw new IllegalStateException("Two different mappings with same id: " + mapping.getId());
-      }
-    } else {
-      return false;
-    }
+    return mappings.containsKey(mapping.getId());
   }
 
   public boolean addMapping(Mapping<T, R> mapping) {
     if (mappings.containsKey(mapping.getId())) {
-      // check whether same
-      Mapping<T, R> current = mappings.get(mapping.getId());
-      if (current.equals(mapping)) {
-        return false;
-      } else {
-        throw new IllegalStateException("Two different mappings with same id: " + mapping.getId());
-      }
+      return false;
     } else {
       mappings.put(mapping.getId(), mapping);
+      R tar = mapping.getTarget();
+      T src = mapping.getSource();
+      // housekeeping ...
+      // ... the task mappings,
+      taskMappings.putIfAbsent(src.getId(), new ConcurrentHashMap<>());
+      taskMappings.get(src.getId()).put(mapping.getId(), mapping);
+      // ... and the resource mappings
+      resourceMappings.putIfAbsent(tar.getId(), new ConcurrentHashMap<>());
+      resourceMappings.get(tar.getId()).put(mapping.getId(), mapping);
       return true;
     }
   }
@@ -65,23 +57,37 @@ public class MappingsConcurrent<T extends Task, R extends Resource>
       return false;
     } else {
       mappings.remove(mapping.getId());
+      R tar = mapping.getTarget();
+      T src = mapping.getSource();
+      taskMappings.get(src.getId()).remove(mapping.getId());
+      resourceMappings.get(tar.getId()).remove(mapping.getId());
       return true;
     }
   }
 
   public Set<T> getSources(R resource) {
-    return null;
+    if (resourceMappings.containsKey(resource.getId())) {
+      return resourceMappings.get(resource.getId()).values().stream()
+          .map(mapping -> mapping.getSource()).collect(Collectors.toSet());
+    } else {
+      return new HashSet<>();
+    }
   }
 
   public Set<R> getTargets(T task) {
-    return null;
+    if (taskMappings.containsKey(task.getId())) {
+      return taskMappings.get(task.getId()).values().stream().map(mapping -> mapping.getTarget())
+          .collect(Collectors.toSet());
+    } else {
+      return new HashSet<>();
+    }
   }
 
   public Set<Mapping<T, R>> getMappings(T task) {
-    return null;
+    return new HashSet<>(taskMappings.get(task.getId()).values());
   }
 
   public Set<Mapping<T, R>> getMappings(R resource) {
-    return null;
+    return new HashSet<>(resourceMappings.get(resource.getId()).values());
   }
 }
