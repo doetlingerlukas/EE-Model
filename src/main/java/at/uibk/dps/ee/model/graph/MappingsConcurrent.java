@@ -16,31 +16,31 @@ import net.sf.opendse.model.Task;
  * @author Fedor Smirnov
  *
  */
-public class MappingsConcurrent<T extends Task, R extends Resource>
-    implements Iterable<Mapping<T, R>> {
+public class MappingsConcurrent implements Iterable<Mapping<Task, Resource>> {
 
-  protected final ConcurrentHashMap<String, Mapping<T, R>> mappings = new ConcurrentHashMap<>();
-  protected final ConcurrentHashMap<String, ConcurrentHashMap<String, Mapping<T, R>>> taskMappings =
+  protected final ConcurrentHashMap<String, Mapping<Task, Resource>> mappings =
       new ConcurrentHashMap<>();
-  protected final ConcurrentHashMap<String, ConcurrentHashMap<String, Mapping<T, R>>> resourceMappings =
+  protected final ConcurrentHashMap<String, ConcurrentHashMap<String, Mapping<Task, Resource>>> taskMappings =
+      new ConcurrentHashMap<>();
+  protected final ConcurrentHashMap<String, ConcurrentHashMap<String, Mapping<Task, Resource>>> resourceMappings =
       new ConcurrentHashMap<>();
 
   @Override
-  public Iterator<Mapping<T, R>> iterator() {
+  public Iterator<Mapping<Task, Resource>> iterator() {
     return mappings.values().iterator();
   }
 
-  public boolean containsMapping(Mapping<T, R> mapping) {
+  public boolean containsMapping(Mapping<Task, Resource> mapping) {
     return mappings.containsKey(mapping.getId());
   }
 
-  public boolean addMapping(Mapping<T, R> mapping) {
+  public boolean addMapping(Mapping<Task, Resource> mapping) {
     if (mappings.containsKey(mapping.getId())) {
       return false;
     } else {
       mappings.put(mapping.getId(), mapping);
-      R tar = mapping.getTarget();
-      T src = mapping.getSource();
+      Resource tar = mapping.getTarget();
+      Task src = mapping.getSource();
       // housekeeping ...
       // ... the task mappings,
       taskMappings.putIfAbsent(src.getId(), new ConcurrentHashMap<>());
@@ -52,20 +52,20 @@ public class MappingsConcurrent<T extends Task, R extends Resource>
     }
   }
 
-  public boolean removeMapping(Mapping<T, R> mapping) {
+  public boolean removeMapping(Mapping<Task, Resource> mapping) {
     if (!containsMapping(mapping)) {
       return false;
     } else {
       mappings.remove(mapping.getId());
-      R tar = mapping.getTarget();
-      T src = mapping.getSource();
+      Resource tar = mapping.getTarget();
+      Task src = mapping.getSource();
       taskMappings.get(src.getId()).remove(mapping.getId());
       resourceMappings.get(tar.getId()).remove(mapping.getId());
       return true;
     }
   }
 
-  public Set<T> getSources(R resource) {
+  public Set<Task> getSources(Resource resource) {
     if (resourceMappings.containsKey(resource.getId())) {
       return resourceMappings.get(resource.getId()).values().stream()
           .map(mapping -> mapping.getSource()).collect(Collectors.toSet());
@@ -74,7 +74,7 @@ public class MappingsConcurrent<T extends Task, R extends Resource>
     }
   }
 
-  public Set<R> getTargets(T task) {
+  public Set<Resource> getTargets(Task task) {
     if (taskMappings.containsKey(task.getId())) {
       return taskMappings.get(task.getId()).values().stream().map(mapping -> mapping.getTarget())
           .collect(Collectors.toSet());
@@ -83,11 +83,11 @@ public class MappingsConcurrent<T extends Task, R extends Resource>
     }
   }
 
-  public Set<Mapping<T, R>> getMappings(T task) {
+  public Set<Mapping<Task, Resource>> getMappings(Task task) {
     return new HashSet<>(taskMappings.get(task.getId()).values());
   }
 
-  public Set<Mapping<T, R>> getMappings(R resource) {
+  public Set<Mapping<Task, Resource>> getMappings(Resource resource) {
     return new HashSet<>(resourceMappings.get(resource.getId()).values());
   }
 }

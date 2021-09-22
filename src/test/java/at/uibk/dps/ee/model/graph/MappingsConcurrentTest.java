@@ -21,7 +21,7 @@ class MappingsConcurrentTest {
   Mapping<Task, Resource> ATwo;
   Mapping<Task, Resource> BTwo;
 
-  MappingsConcurrent<Task, Resource> tested;
+  MappingsConcurrent tested;
 
   @Test
   void testAddRemove() {
@@ -83,7 +83,7 @@ class MappingsConcurrentTest {
     ATwo = new Mapping<Task, Resource>("Atwo", taskA, resTwo);
     BOne = new Mapping<Task, Resource>("Bone", taskB, resOne);
     BTwo = new Mapping<Task, Resource>("Btwo", taskB, resTwo);
-    tested = new MappingsConcurrent<>();
+    tested = new MappingsConcurrent();
   }
 
 }
