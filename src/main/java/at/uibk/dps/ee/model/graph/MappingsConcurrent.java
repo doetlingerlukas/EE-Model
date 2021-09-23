@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import net.sf.opendse.model.Mapping;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
@@ -28,6 +29,10 @@ public class MappingsConcurrent implements Iterable<Mapping<Task, Resource>> {
   @Override
   public Iterator<Mapping<Task, Resource>> iterator() {
     return mappings.values().iterator();
+  }
+  
+  public Stream<Mapping<Task, Resource>> mappingStream(){
+    return mappings.values().stream();
   }
 
   public boolean containsMapping(Mapping<Task, Resource> mapping) {

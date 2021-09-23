@@ -24,8 +24,8 @@ public class EnactmentSpecification extends Element {
    * @param mappings the mappings
    */
   public EnactmentSpecification(final EnactmentGraph enactmentGraph,
-      final ResourceGraph resourceGraph, final MappingsConcurrent mappings) {
-    super("specification");
+      final ResourceGraph resourceGraph, final MappingsConcurrent mappings, final String specId) {
+    super(specId);
     this.eGraph = enactmentGraph;
     this.rGraph = resourceGraph;
     this.mappings = mappings;

@@ -1,9 +1,5 @@
 package at.uibk.dps.ee.model.graph;
 
-import net.sf.opendse.model.Mappings;
-import net.sf.opendse.model.Resource;
-import net.sf.opendse.model.Task;
-
 /**
  * Interface for the classes offering access to the mappings.
  * 
@@ -17,5 +13,5 @@ public interface MappingProvider {
    * 
    * @return the mappings
    */
-  Mappings<Task, Resource> getMappings();
+  MappingsConcurrent getMappings();
 }

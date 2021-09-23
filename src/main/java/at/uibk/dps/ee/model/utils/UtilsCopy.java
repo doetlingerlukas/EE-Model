@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import at.uibk.dps.ee.model.graph.EnactmentGraph;
 import at.uibk.dps.ee.model.graph.EnactmentSpecification;
+import at.uibk.dps.ee.model.graph.MappingsConcurrent;
 import at.uibk.dps.ee.model.graph.ResourceGraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import net.sf.opendse.model.Communication;
@@ -13,7 +14,6 @@ import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Element;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Mapping;
-import net.sf.opendse.model.Mappings;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.TaskPropertyService;
@@ -85,12 +85,12 @@ public final class UtilsCopy {
    * @param original the original mappings
    * @param adjusted the adjusted mappings
    */
-  protected static void restoreMappingsAttributes(final Mappings<Task, Resource> original,
-      final Mappings<Task, Resource> adjusted) {
+  protected static void restoreMappingsAttributes(final MappingsConcurrent original,
+      final MappingsConcurrent adjusted) {
     final Map<String, Mapping<Task, Resource>> originalMappingMap =
-        original.getAll().stream().collect(Collectors.toMap(oMap -> oMap.getId(), oMap -> oMap));
+        original.mappingStream().collect(Collectors.toMap(oMap -> oMap.getId(), oMap -> oMap));
     final Map<String, Mapping<Task, Resource>> adjustedMappingMap =
-        adjusted.getAll().stream().collect(Collectors.toMap(aMap -> aMap.getId(), aMap -> aMap));
+        adjusted.mappingStream().collect(Collectors.toMap(aMap -> aMap.getId(), aMap -> aMap));
     originalMappingMap.keySet()
         .forEach(mappingKey -> restoreElementAttributes(originalMappingMap.get(mappingKey),
             adjustedMappingMap.get(mappingKey)));
@@ -113,21 +113,22 @@ public final class UtilsCopy {
         .forEach(attrName -> adjusted.setAttribute(attrName, original.getAttribute(attrName)));
   }
 
-
-
   /**
    * Generates a deep copy of the provided spec (objects on all levels have
    * different references, but identical attributes and relations).
    * 
    * @param original the specification which is being copied
+   * @param copySuffix the suffix added to the original id to create the copy id
    * @return the deep copy of the specification
    */
-  public static EnactmentSpecification deepCopySpec(final EnactmentSpecification original) {
+  public static EnactmentSpecification deepCopySpec(final EnactmentSpecification original,
+      String copySuffix) {
     final EnactmentGraph deepCopyEGraph = deepCopyEGraph(original.getEnactmentGraph());
     final ResourceGraph deepCopyRGraph = deepCopyRGraph(original.getResourceGraph());
-    final Mappings<Task, Resource> deepCopyMappings =
+    final MappingsConcurrent deepCopyMappings =
         deepCopyMappings(original.getMappings(), deepCopyEGraph, deepCopyRGraph);
-    return new EnactmentSpecification(deepCopyEGraph, deepCopyRGraph, deepCopyMappings);
+    return new EnactmentSpecification(deepCopyEGraph, deepCopyRGraph, deepCopyMappings,
+        original.getId() + copySuffix);
   }
 
   /**
@@ -169,11 +170,11 @@ public final class UtilsCopy {
    * @param deepCopyRGraph a deep copy of the resource graph
    * @return a deep copy of the mappings
    */
-  public static Mappings<Task, Resource> deepCopyMappings(final Mappings<Task, Resource> original,
+  public static MappingsConcurrent deepCopyMappings(final MappingsConcurrent original,
       final EnactmentGraph deepCopyEGraph, final ResourceGraph deepCopyRGraph) {
-    final Mappings<Task, Resource> result = new Mappings<>();
-    original.getAll().forEach(originalMapping -> result
-        .add(deepCopyMapping(originalMapping, deepCopyEGraph, deepCopyRGraph)));
+    final MappingsConcurrent result = new MappingsConcurrent();
+    original.forEach(originalMapping -> result
+        .addMapping(deepCopyMapping(originalMapping, deepCopyEGraph, deepCopyRGraph)));
     return result;
   }
 
