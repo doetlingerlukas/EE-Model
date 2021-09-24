@@ -30,14 +30,14 @@ public class EnactmentGraphTest {
 
     EnactmentGraph tested = new EnactmentGraph(original);
 
-    assertNotNull(tested.getVertex(t0));
-    assertNotNull(tested.getVertex(c0));
-    assertNotNull(tested.getVertex(t1));
+    assertNotNull(tested.getVertex(t0.getId()));
+    assertNotNull(tested.getVertex(c0.getId()));
+    assertNotNull(tested.getVertex(t1.getId()));
 
     assertEquals(d0, original.findEdge(t0, c0));
     assertEquals(d1, original.findEdge(c0, t1));
   }
-  
+
   @Test
   void testAddTwoEdges() {
     Task src = new Task("src");
@@ -46,79 +46,79 @@ public class EnactmentGraphTest {
     Dependency dep = new Dependency("dep");
     Dependency dep2 = new Dependency("dep2");
     EnactmentGraph eGraph = new EnactmentGraph();
-    
+
     eGraph.addEdge(dep, src, dst, EdgeType.DIRECTED);
     eGraph.addEdge(dep2, src2, dst, EdgeType.DIRECTED);
-    
-    assertTrue(eGraph.containsEdgeWithId(dep.getId()));
-    assertTrue(eGraph.containsEdgeWithId(dep2.getId()));
-    
+
+    assertTrue(eGraph.containsEdge(dep.getId()));
+    assertTrue(eGraph.containsEdge(dep2.getId()));
+
     assertTrue(eGraph.getInEdges(dst).contains(dep));
     assertTrue(eGraph.getInEdges(dst).contains(dep2));
-    
+
     assertTrue(eGraph.getOutEdges(src).contains(dep));
     assertTrue(eGraph.getOutEdges(src2).contains(dep2));
-    
+
     assertEquals(src, eGraph.getSource(dep));
     assertEquals(src2, eGraph.getSource(dep2));
     assertEquals(dst, eGraph.getDest(dep));
     assertEquals(dst, eGraph.getDest(dep2));
   }
-  
+
   @Test
   void testAddRemoveEdge() {
     Task src = new Task("src");
     Task dst = new Task("dst");
     Dependency dep = new Dependency("dep");
     EnactmentGraph eGraph = new EnactmentGraph();
-    
-    assertFalse(eGraph.containsEdgeWithId(dep.getId()));
-    assertFalse(eGraph.containsVertexWithId(src.getId()));
-    assertFalse(eGraph.containsVertexWithId(dst.getId()));
-    
+
+    assertFalse(eGraph.containsEdge(dep.getId()));
+    assertFalse(eGraph.containsVertex(src.getId()));
+    assertFalse(eGraph.containsVertex(dst.getId()));
+
     eGraph.addEdge(dep, src, dst, EdgeType.DIRECTED);
-    
-    assertTrue(eGraph.containsEdgeWithId(dep.getId()));
-    assertTrue(eGraph.containsVertexWithId(src.getId()));
-    assertTrue(eGraph.containsVertexWithId(dst.getId()));
-    
+
+    assertTrue(eGraph.containsEdge(dep.getId()));
+    assertTrue(eGraph.containsVertex(src.getId()));
+    assertTrue(eGraph.containsVertex(dst.getId()));
+
     assertEquals(src, eGraph.getSource(dep));
     assertEquals(dst, eGraph.getDest(dep));
-    
+
     assertTrue(eGraph.getInEdges(dst).size() == 1);
     assertTrue(eGraph.getOutEdges(src).size() == 1);
     assertEquals(dep, eGraph.getInEdges(dst).iterator().next());
     assertEquals(dep, eGraph.getOutEdges(src).iterator().next());
-    
+
     assertEquals(dep, eGraph.getEdge(dep.getId()));
-    
+
     eGraph.removeEdge(dep);
-    
+
     assertThrows(IllegalArgumentException.class, () -> {
       eGraph.getEdge(dep.getId());
     });
-    
-    assertFalse(eGraph.containsEdgeWithId(dep.getId()));
-    assertTrue(eGraph.containsVertexWithId(src.getId()));
-    assertTrue(eGraph.containsVertexWithId(dst.getId()));
-    
+
+    assertFalse(eGraph.containsEdge(dep.getId()));
+    assertTrue(eGraph.containsVertex(src.getId()));
+    assertTrue(eGraph.containsVertex(dst.getId()));
+
     assertTrue(eGraph.getInEdges(dst).isEmpty());
     assertTrue(eGraph.getOutEdges(src).isEmpty());
-    
+
     assertThrows(IllegalArgumentException.class, () -> {
       eGraph.getSource(dep);
     });
-    
+
     assertThrows(IllegalArgumentException.class, () -> {
       eGraph.getDest(dep);
     });
-    
+
   }
-  
+
   @Test
   void testIllegalMethods() {
     EnactmentGraph graph = new EnactmentGraph();
-    assertThrows(IllegalStateException.class, () -> {
+    assertThrows(IllegalAccessError.class, () -> {
       graph.getEdge(new Dependency("dep"));
     });
   }
@@ -131,33 +131,33 @@ public class EnactmentGraphTest {
     Task t3 = new Task("t3");
     Dependency dep = new Dependency("dep");
     assertThrows(IllegalStateException.class, () -> {
-      tested.getTask("t1");
+      tested.getVertex("t1");
     });
     assertThrows(IllegalStateException.class, () -> {
-      tested.getTask("t2");
+      tested.getVertex("t2");
     });
     assertThrows(IllegalStateException.class, () -> {
-      tested.getTask("t3");
+      tested.getVertex("t3");
     });
     tested.addVertex(t1);
-    assertEquals(t1, tested.getTask("t1"));
+    assertEquals(t1, tested.getVertex("t1"));
     tested.addEdge(dep, t2, t3, EdgeType.DIRECTED);
-    assertEquals(t2, tested.getTask("t2"));
-    assertEquals(t3, tested.getTask("t3"));
+    assertEquals(t2, tested.getVertex("t2"));
+    assertEquals(t3, tested.getVertex("t3"));
     tested.removeVertex(t1);
     assertThrows(IllegalStateException.class, () -> {
-      tested.getTask("t1");
+      tested.getVertex("t1");
     });
     tested.removeEdge(dep);
-    assertEquals(t2, tested.getTask("t2"));
-    assertEquals(t3, tested.getTask("t3"));
+    assertEquals(t2, tested.getVertex("t2"));
+    assertEquals(t3, tested.getVertex("t3"));
     tested.removeVertex(t2);
     assertThrows(IllegalStateException.class, () -> {
-      tested.getTask("t2");
+      tested.getVertex("t2");
     });
     tested.removeVertex(t3);
     assertThrows(IllegalStateException.class, () -> {
-      tested.getTask("t3");
+      tested.getVertex("t3");
     });
   }
 }

@@ -25,9 +25,9 @@ public class ResourceGraphTest {
 
     ResourceGraph tested = new ResourceGraph(original);
 
-    assertNotNull(tested.getVertex(res0));
-    assertNotNull(tested.getVertex(res1));
-    assertNotNull(tested.getVertex(res2));
+    assertNotNull(tested.getVertex(res0.getId()));
+    assertNotNull(tested.getVertex(res1.getId()));
+    assertNotNull(tested.getVertex(res2.getId()));
 
     assertEquals(l0, tested.findEdge(res0, res1));
     assertEquals(l1, tested.findEdge(res0, res2));

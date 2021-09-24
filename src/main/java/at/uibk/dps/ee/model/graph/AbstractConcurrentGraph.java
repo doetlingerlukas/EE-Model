@@ -2,6 +2,7 @@ package at.uibk.dps.ee.model.graph;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -36,6 +37,7 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
       new ConcurrentHashMap<>();
   protected final ConcurrentHashMap<String, ConcurrentHashMap<String, E>> outEdges =
       new ConcurrentHashMap<>();
+  protected final ConcurrentHashMap<E, EdgeType> edgeTypes = new ConcurrentHashMap<>();
 
   // adding/removing vertices
   @Override
@@ -83,15 +85,17 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
   // adding/removing edges
   @Override
   public boolean addEdge(E dependency, V src, V dst, EdgeType edgeType) {
-    if (!edgeType.equals(EdgeType.DIRECTED)) {
-      throw new IllegalStateException("Only handling directed edges at the moment");
-    }
     boolean result = super.addEdge(dependency, new Pair<V>(src, dst), edgeType);
     edges.put(dependency.getId(), dependency);
+    edgeTypes.put(dependency, edgeType);
     sources.put(dependency.getId(), src);
     dests.put(dependency.getId(), dst);
     addInEdge(dst, dependency);
     addOutEdge(src, dependency);
+    if (edgeType.equals(EdgeType.UNDIRECTED)) {
+      addInEdge(src, dependency);
+      addOutEdge(dst, dependency);
+    }
     return result;
   }
 
@@ -102,9 +106,19 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
     edges.remove(edge.getId());
     removeInEdge(dest, edge);
     removeOutEdge(source, edge);
+    if (edgeTypes.get(edge).equals(EdgeType.UNDIRECTED)) {
+      removeInEdge(source, edge);
+      removeOutEdge(dest, edge);
+    }
+    edgeTypes.remove(edge);
     sources.remove(edge.getId());
     dests.remove(edge.getId());
     return super.removeEdge(edge);
+  }
+
+  @Override
+  public EdgeType getEdgeType(E edge) {
+    return edgeTypes.get(edge);
   }
 
   public boolean containsEdge(String edgeId) {
@@ -123,7 +137,7 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
 
   @Override
   public E getEdge(String id) {
-    if (containsEdge(id)) {
+    if (!containsEdge(id)) {
       throw new IllegalArgumentException("Edge " + id + " is not in the graph.");
     }
     return edges.get(id);
@@ -168,6 +182,25 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
       throw new IllegalStateException("Dest of edge " + edge.getId() + " not in the graph");
     }
     return dests.get(edge.getId());
+  }
+
+  public boolean areNodesConnected(V first, V second) {
+    if (!containsVertex(first.getId()) || !containsVertex(second.getId())) {
+      throw new IllegalArgumentException("One of the requested end points not in the graph");
+    }
+    return getPredecessors(first).contains(second) || getPredecessors(second).contains(first);
+  }
+
+  @Override
+  public E findEdge(V v1, V v2) {
+    if (!areNodesConnected(v1, v2)) {
+      throw new IllegalArgumentException("The given end points are not connected");
+    }
+    Optional<E> optE = getInEdges(v1).stream().filter(edge -> getSource(edge).equals(v2)).findFirst();
+    if (optE.isEmpty()) {
+      optE = getOutEdges(v1).stream().filter(edge -> getDest(edge).equals(v2)).findFirst();
+    }
+    return optE.get();
   }
 
 

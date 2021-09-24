@@ -2,9 +2,6 @@ package at.uibk.dps.ee.model.graph;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
-import net.sf.opendse.model.Mappings;
-import net.sf.opendse.model.Resource;
-import net.sf.opendse.model.Task;
 
 public class EnactmentSpecificationTest {
 
@@ -13,9 +10,9 @@ public class EnactmentSpecificationTest {
 
     EnactmentGraph graph = new EnactmentGraph();
     ResourceGraph rGraph = new ResourceGraph();
-    Mappings<Task, Resource> mappings = new Mappings<>();
+    MappingsConcurrent mappings = new MappingsConcurrent();
 
-    EnactmentSpecification tested = new EnactmentSpecification(graph, rGraph, mappings);
+    EnactmentSpecification tested = new EnactmentSpecification(graph, rGraph, mappings, "bla");
 
     assertEquals(graph, tested.getEnactmentGraph());
     assertEquals(rGraph, tested.getResourceGraph());

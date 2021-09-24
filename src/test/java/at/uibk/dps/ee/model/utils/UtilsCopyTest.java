@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import at.uibk.dps.ee.model.graph.EnactmentGraph;
 import at.uibk.dps.ee.model.graph.EnactmentSpecification;
+import at.uibk.dps.ee.model.graph.MappingsConcurrent;
 import at.uibk.dps.ee.model.graph.ResourceGraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import net.sf.opendse.model.Communication;
@@ -14,7 +15,6 @@ import net.sf.opendse.model.Dependency;
 import net.sf.opendse.model.Element;
 import net.sf.opendse.model.Link;
 import net.sf.opendse.model.Mapping;
-import net.sf.opendse.model.Mappings;
 import net.sf.opendse.model.Resource;
 import net.sf.opendse.model.Task;
 
@@ -24,7 +24,7 @@ class UtilsCopyTest {
 
   ResourceGraph rGraphOriginal;
 
-  Mappings<Task, Resource> mappingsOriginal;
+  MappingsConcurrent mappingsOriginal;
 
   EnactmentSpecification specOriginal;
 
@@ -40,7 +40,7 @@ class UtilsCopyTest {
   @Test
   void testRestoreSpec() {
     String attrName = "attr";
-    EnactmentSpecification specCopy = UtilsCopy.deepCopySpec(specOriginal);
+    EnactmentSpecification specCopy = UtilsCopy.deepCopySpec(specOriginal, "");
     ResourceGraph graphCopy = specCopy.getResourceGraph();
     Resource res = graphCopy.getVertices().iterator().next();
     Link link = graphCopy.getEdges().iterator().next();
@@ -62,9 +62,9 @@ class UtilsCopyTest {
   void testRestoreMappingAttributes() {
     EnactmentGraph eGraphCopy = UtilsCopy.deepCopyEGraph(eGraphOriginal);
     ResourceGraph rGraphCopy = UtilsCopy.deepCopyRGraph(rGraphOriginal);
-    Mappings<Task, Resource> mappingCopy =
+    MappingsConcurrent mappingCopy =
         UtilsCopy.deepCopyMappings(mappingsOriginal, eGraphCopy, rGraphCopy);
-    Mapping<Task, Resource> copyMapping = mappingCopy.getAll().iterator().next();
+    Mapping<Task, Resource> copyMapping = mappingCopy.iterator().next();
     copyMapping.setAttribute("attr", 3);
     UtilsCopy.restoreMappingsAttributes(mappingsOriginal, mappingCopy);
     assertNull(copyMapping.getAttribute("attr"));
@@ -89,7 +89,7 @@ class UtilsCopyTest {
 
   @Test
   void testCopySpec() {
-    EnactmentSpecification specCopy = UtilsCopy.deepCopySpec(specOriginal);
+    EnactmentSpecification specCopy = UtilsCopy.deepCopySpec(specOriginal, "");
     assertTrue(isCorrectEGraphCopy(eGraphOriginal, specCopy.getEnactmentGraph()));
     assertTrue(isCorrectRGraphCopy(rGraphOriginal, specCopy.getResourceGraph()));
     assertTrue(isCorrectMappingsCopy(mappingsOriginal, specCopy.getMappings(), eGraphOriginal,
@@ -100,8 +100,7 @@ class UtilsCopyTest {
   void testCopyMappings() {
     EnactmentGraph copyE = UtilsCopy.deepCopyEGraph(eGraphOriginal);
     ResourceGraph copyR = UtilsCopy.deepCopyRGraph(rGraphOriginal);
-    Mappings<Task, Resource> mappingsCopy =
-        UtilsCopy.deepCopyMappings(mappingsOriginal, copyE, copyR);
+    MappingsConcurrent mappingsCopy = UtilsCopy.deepCopyMappings(mappingsOriginal, copyE, copyR);
     assertTrue(isCorrectMappingsCopy(mappingsOriginal, mappingsCopy, eGraphOriginal, copyE,
         rGraphOriginal, copyR));
   }
@@ -118,12 +117,11 @@ class UtilsCopyTest {
     assertTrue(isCorrectEGraphCopy(eGraphOriginal, eCopy));
   }
 
-  static boolean isCorrectMappingsCopy(Mappings<Task, Resource> original,
-      Mappings<Task, Resource> copy, EnactmentGraph eGraph, EnactmentGraph eCopy,
-      ResourceGraph rGraph, ResourceGraph rCopy) {
-    Map<String, Mapping<Task, Resource>> originalMap = original.getAll().stream()
+  static boolean isCorrectMappingsCopy(MappingsConcurrent original, MappingsConcurrent copy,
+      EnactmentGraph eGraph, EnactmentGraph eCopy, ResourceGraph rGraph, ResourceGraph rCopy) {
+    Map<String, Mapping<Task, Resource>> originalMap = original.mappingStream()
         .collect(Collectors.toMap(mapping -> mapping.getId(), mapping -> mapping));
-    Map<String, Mapping<Task, Resource>> copyMap = copy.getAll().stream()
+    Map<String, Mapping<Task, Resource>> copyMap = copy.mappingStream()
         .collect(Collectors.toMap(mapping -> mapping.getId(), mapping -> mapping));
     return originalMap.keySet().stream()
         .allMatch(key -> isMappingCorrectlyCopied(originalMap.get(key), copyMap.get(key), eGraph,
@@ -135,10 +133,10 @@ class UtilsCopyTest {
       ResourceGraph rGraph, ResourceGraph rCopy) {
     boolean result = true;
     result &= areAttributesCopied(mapping, copy);
-    result &= eGraph.getVertex(mapping.getSource()) != null;
-    result &= eCopy.getVertex(copy.getSource()) != null;
-    result &= rGraph.getVertex(mapping.getTarget()) != null;
-    result &= rCopy.getVertex(copy.getTarget()) != null;
+    result &= eGraph.getVertex(mapping.getSource().getId()) != null;
+    result &= eCopy.getVertex(copy.getSource().getId()) != null;
+    result &= rGraph.getVertex(mapping.getTarget().getId()) != null;
+    result &= rCopy.getVertex(copy.getTarget().getId()) != null;
     return result;
   }
 
@@ -158,10 +156,8 @@ class UtilsCopyTest {
       result &= (copyLink != null);
       result &= copyLink != link;
       result &= areAttributesCopied(link, copyLink);
-      result &= (originalR.getEndpoints(link).getFirst().getId()
-          .equals(copyR.getEndpoints(copyLink).getFirst().getId()));
-      result &= (originalR.getEndpoints(link).getSecond().getId()
-          .equals(copyR.getEndpoints(copyLink).getSecond().getId()));
+      result &= originalR.getSource(link).getId().equals(copyR.getSource(copyLink).getId());
+      result &= originalR.getDest(link).getId().equals(copyR.getDest(copyLink).getId());
     }
     return result;
   }
@@ -222,13 +218,14 @@ class UtilsCopyTest {
     map1.setAttribute("mapAttr", "attr");
     Mapping<Task, Resource> map2 = new Mapping<Task, Resource>("m2", root, res2);
     Mapping<Task, Resource> map3 = new Mapping<Task, Resource>("m3", task, res2);
-    mappingsOriginal = new Mappings<>();
-    mappingsOriginal.add(map1);
-    mappingsOriginal.add(map2);
-    mappingsOriginal.add(map3);
+    mappingsOriginal = new MappingsConcurrent();
+    mappingsOriginal.addMapping(map1);
+    mappingsOriginal.addMapping(map2);
+    mappingsOriginal.addMapping(map3);
 
     // the spec
-    specOriginal = new EnactmentSpecification(eGraphOriginal, rGraphOriginal, mappingsOriginal);
+    specOriginal =
+        new EnactmentSpecification(eGraphOriginal, rGraphOriginal, mappingsOriginal, "id");
   }
 
 }

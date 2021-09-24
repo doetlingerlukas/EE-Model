@@ -324,15 +324,14 @@ public final class UtilsCopy {
   public static Link addDeepCopyLink(final Link original, final ResourceGraph originalGraph,
       final ResourceGraph copyGraph) {
     final Link result = deepCopyElement(Link.class, original);
-    final Resource srcRes =
-        Optional.of(copyGraph.getVertex(originalGraph.getEndpoints(original).getFirst().getId()))
-            .orElseThrow(() -> new IllegalStateException(
-                "Src of link " + original + " not in the copied r graph"));
-    final Resource dstRes =
-        Optional.of(copyGraph.getVertex(originalGraph.getEndpoints(original).getSecond().getId()))
-            .orElseThrow(() -> new IllegalStateException(
-                "Dst of link " + original + " not in the copied r graph"));
-    copyGraph.addEdge(result, srcRes, dstRes, EdgeType.UNDIRECTED);
+    final Resource oSrc = originalGraph.getSource(result);
+    final Resource oDst = originalGraph.getDest(result);
+    if (!copyGraph.containsVertex(oSrc.getId()) || !copyGraph.containsVertex(oDst.getId())) {
+      throw new IllegalStateException("One of the endpoints of copied link not in the copy graph");
+    }
+    final Resource cSrc = copyGraph.getVertex(oSrc.getId());
+    final Resource cDst = copyGraph.getVertex(oDst.getId());
+    copyGraph.addEdge(result, cSrc, cDst, EdgeType.UNDIRECTED);
     return result;
   }
 }
