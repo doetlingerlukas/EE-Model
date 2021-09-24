@@ -14,6 +14,9 @@ public final class ConstantsEEModel {
   public static final String KeyWordSeparator2 = "__";
   public static final String KeyWordEdgeUniqueness = "'";
 
+  // Spec constraints
+  public static final String SpecIdDefault = "specification";
+  
   // Resource graph constants
   public static final String idLocalResource = "Enactment Engine (Local Machine)";
   public static final int defaultFaaSTimeoutSeconds = 30;

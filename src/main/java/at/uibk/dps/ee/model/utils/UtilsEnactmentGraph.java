@@ -46,7 +46,7 @@ public final class UtilsEnactmentGraph {
    */
   public static Set<Task> getNonConstRootNodes(final EnactmentGraph graph) {
     final Set<Task> result = graph.getVertices().stream()
-        .filter(node -> graph.getPredecessorCount(node) == 0).collect(Collectors.toSet());
+        .filter(node -> graph.getInEdges(node).size() == 0).collect(Collectors.toSet());
     result.removeAll(getConstantDataNodes(graph));
     if (result.stream().anyMatch(rootNode -> !PropertyServiceData.isRoot(rootNode))) {
       throw new IllegalStateException("Non root nodes without in edges found.");

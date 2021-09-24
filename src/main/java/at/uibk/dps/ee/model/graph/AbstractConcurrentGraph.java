@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.graph.util.Pair;
 import net.sf.opendse.model.Edge;
@@ -85,7 +86,7 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
     if (!edgeType.equals(EdgeType.DIRECTED)) {
       throw new IllegalStateException("Only handling directed edges at the moment");
     }
-    boolean result = super.addEdge(dependency, src, dst, edgeType);
+    boolean result = super.addEdge(dependency, new Pair<V>(src, dst), edgeType);
     edges.put(dependency.getId(), dependency);
     sources.put(dependency.getId(), src);
     dests.put(dependency.getId(), dst);
@@ -247,34 +248,39 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
   public Pair<V> getEndpoints(E edge) {
     throw new IllegalAccessError(excMessageWrongMethod);
   }
-  
+
   @Override
   public Collection<E> getIncidentEdges(V vertex) {
-    throw new IllegalAccessError(excMessageWrongMethod);
+    if (!containsVertex(vertex.getId())) {
+      throw new IllegalArgumentException("Vertex " + vertex.getId() + " is not in the graph.");
+    }
+    Set<E> result = new HashSet<>(getInEdges(vertex));
+    result.addAll(getOutEdges(vertex));
+    return result;
   }
-  
+
   @Override
   public Collection<V> getIncidentVertices(E edge) {
     throw new IllegalAccessError(excMessageWrongMethod);
   }
-  
+
   @Override
   public Collection<V> getNeighbors(V vertex) {
     throw new IllegalAccessError(excMessageWrongMethod);
   }
-  
+
   @Override
   public V getOpposite(V vertex, E edge) {
     throw new IllegalAccessError(excMessageWrongMethod);
   }
-  
+
   @Override
   public Collection<V> getPredecessors(V vertex) {
-    throw new IllegalAccessError(excMessageWrongMethod);
+    return getInEdges(vertex).stream().map(edge -> getSource(edge)).collect(Collectors.toSet());
   }
-  
-@Override
+
+  @Override
   public Collection<V> getSuccessors(V vertex) {
-  throw new IllegalAccessError(excMessageWrongMethod);
+    return getOutEdges(vertex).stream().map(edge -> getDest(edge)).collect(Collectors.toSet());
   }
 }
