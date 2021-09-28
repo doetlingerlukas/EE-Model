@@ -11,7 +11,7 @@ import net.sf.opendse.model.Task;
  * 
  * @author Fedor Smirnov
  */
-public class EnactmentGraphTransformer {
+public final class EnactmentGraphTransformer {
 
   /**
    * No constructor.
@@ -25,8 +25,8 @@ public class EnactmentGraphTransformer {
    * @param application application graph (OpenDSE's application representation)
    * @return enactment graph (Apollo's application representation)
    */
-  public static EnactmentGraph toApollo(Application<Task, Dependency> application) {
-    EnactmentGraph result = new EnactmentGraph();
+  public static EnactmentGraph toApollo(final Application<Task, Dependency> application) {
+    final EnactmentGraph result = new EnactmentGraph();
     application.forEach(task -> result.addVertex(task));
     application.getEdges().forEach(edge -> result.addEdge(edge, application.getSource(edge),
         application.getDest(edge), EdgeType.DIRECTED));
@@ -40,8 +40,8 @@ public class EnactmentGraphTransformer {
    * @param eGraph enactment graph (Apollo's application representation)
    * @return application graph (OpenDSE's application representation)
    */
-  public static Application<Task, Dependency> toOdse(EnactmentGraph eGraph) {
-    Application<Task, Dependency> appl = new Application<>();
+  public static Application<Task, Dependency> toOdse(final EnactmentGraph eGraph) {
+    final Application<Task, Dependency> appl = new Application<>();
     eGraph.getVertices().forEach(task -> appl.addVertex(task));
     eGraph.getEdges().forEach(edge -> appl.addEdge(edge, eGraph.getSource(edge),
         eGraph.getDest(edge), EdgeType.DIRECTED));

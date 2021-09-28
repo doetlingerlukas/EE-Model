@@ -82,16 +82,16 @@ public class MappingsConcurrent implements Iterable<Mapping<Task, Resource>> {
    * @param mapping the mapping to remove
    * @return true if the set was altered as the result of removing the mapping.
    */
-  public boolean removeMapping(Mapping<Task, Resource> mapping) {
-    if (!containsMapping(mapping)) {
-      return false;
-    } else {
+  public boolean removeMapping(final Mapping<Task, Resource> mapping) {
+    if (containsMapping(mapping)) {
       mappings.remove(mapping.getId());
       final Resource tar = mapping.getTarget();
       final Task src = mapping.getSource();
       taskMappings.get(src.getId()).remove(mapping.getId());
       resourceMappings.get(tar.getId()).remove(mapping.getId());
       return true;
+    } else {
+      return false;
     }
   }
 

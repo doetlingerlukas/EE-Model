@@ -20,7 +20,7 @@ import net.sf.opendse.model.Task;
  * @author Fedor Smirnov
  *
  */
-public class EnactmentSpecTransformer {
+public final class EnactmentSpecTransformer {
 
   /**
    * No constructor

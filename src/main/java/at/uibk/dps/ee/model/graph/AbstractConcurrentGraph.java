@@ -26,8 +26,10 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
 
   private static final long serialVersionUID = 1L;
 
-  protected final String excMessageWrongMethod =
+  protected static final String excMessageWrongMethod =
       "This method is not thread-safe. Use the appropriate method from the AbstractConcurrentGraph instead.";
+  protected static final String edgeString = "edge ";
+  protected static final String notInGraphString = " is not in the graph";
 
   protected final ConcurrentHashMap<String, V> vertices = new ConcurrentHashMap<>();
   protected final ConcurrentHashMap<String, E> edges = new ConcurrentHashMap<>();
@@ -62,10 +64,10 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
   @Override
   public boolean removeVertex(final V vertex) {
     vertices.remove(vertex.getId(), vertex);
-    if (getInEdges(vertex).size() > 0) {
+    if (!getInEdges(vertex).isEmpty()) {
       inEdges.get(vertex.getId()).values().forEach(dep -> removeEdge(dep));
     }
-    if (getOutEdges(vertex).size() > 0) {
+    if (!getOutEdges(vertex).isEmpty()) {
       outEdges.get(vertex.getId()).values().forEach(dep -> removeEdge(dep));
     }
     inEdges.remove(vertex.getId());
@@ -73,7 +75,13 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
     return super.removeVertex(vertex);
   }
 
-  public boolean containsVertex(String vertexId) {
+  /**
+   * Returns true if the graph contains a vertex with the given ID.
+   * 
+   * @param vertexId the given ID
+   * @return true if the graph contains a vertex with the given ID
+   */
+  public boolean containsVertex(final String vertexId) {
     return vertices.containsKey(vertexId);
   }
 
@@ -85,7 +93,7 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
   // adding/removing edges
   @Override
   public boolean addEdge(final E dependency, final V src, final V dst, final EdgeType edgeType) {
-    boolean result = super.addEdge(dependency, new Pair<V>(src, dst), edgeType);
+    final boolean result = super.addEdge(dependency, new Pair<V>(src, dst), edgeType);
     edges.put(dependency.getId(), dependency);
     edgeTypes.put(dependency, edgeType);
     sources.put(dependency.getId(), src);
@@ -101,8 +109,8 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
 
   @Override
   public boolean removeEdge(final E edge) {
-    V source = getSource(edge);
-    V dest = getDest(edge);
+    final V source = getSource(edge);
+    final V dest = getDest(edge);
     edges.remove(edge.getId());
     removeInEdge(dest, edge);
     removeOutEdge(source, edge);
@@ -144,7 +152,7 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
   @Override
   public E getEdge(final String edgeId) {
     if (!containsEdge(edgeId)) {
-      throw new IllegalArgumentException("Edge " + edgeId + " is not in the graph.");
+      throw new IllegalArgumentException(edgeString + edgeId + notInGraphString);
     }
     return edges.get(edgeId);
   }
@@ -171,10 +179,10 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
   @Override
   public V getSource(final E edge) {
     if (!containsEdge(edge.getId())) {
-      throw new IllegalArgumentException("Edge " + edge + " not in graph.");
+      throw new IllegalArgumentException(edgeString + edge + notInGraphString);
     }
     if (!sources.containsKey(edge.getId())) {
-      throw new IllegalStateException("Source of edge " + edge.getId() + " not in the graph");
+      throw new IllegalStateException("Source of " + edge.getId() + notInGraphString);
     }
     return sources.get(edge.getId());
   }
@@ -182,10 +190,10 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
   @Override
   public V getDest(final E edge) {
     if (!containsEdge(edge.getId())) {
-      throw new IllegalArgumentException("Edge " + edge + " not in graph.");
+      throw new IllegalArgumentException(edgeString + edge + notInGraphString);
     }
     if (!containsEdge(edge.getId())) {
-      throw new IllegalStateException("Dest of edge " + edge.getId() + " not in the graph");
+      throw new IllegalStateException("Dest of " + edge.getId() + notInGraphString);
     }
     return dests.get(edge.getId());
   }
@@ -197,7 +205,7 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
    * @param second the second node
    * @return true if the two given nodes of the graph are connected
    */
-  public boolean areNodesConnected(V first, V second) {
+  public boolean areNodesConnected(final V first, final V second) {
     if (!containsVertex(first.getId()) || !containsVertex(second.getId())) {
       throw new IllegalArgumentException("One of the requested end points not in the graph");
     }
@@ -249,13 +257,13 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
    * @param inEdge true iff unregistering an in edge
    */
   protected void removeIncidentEdge(final V vertex, final E edge, final boolean inEdge) {
-    ConcurrentHashMap<String, ConcurrentHashMap<String, E>> map = inEdge ? inEdges : outEdges;
+    final ConcurrentHashMap<String, ConcurrentHashMap<String, E>> map = inEdge ? inEdges : outEdges;
     if (!map.containsKey(vertex.getId())) {
       throw new IllegalArgumentException(
           "Task " + vertex + " has no " + (inEdge ? "inEdges" : "outEdges"));
     }
     if (!map.get(vertex.getId()).containsKey(edge.getId())) {
-      throw new IllegalArgumentException("Edge " + edge + " no incident to " + vertex);
+      throw new IllegalArgumentException(edgeString + edge + " no incident to " + vertex);
     }
     map.get(vertex.getId()).remove(edge.getId());
   }
@@ -340,7 +348,7 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
   @Override
   public Collection<E> getIncidentEdges(final V vertex) {
     if (!containsVertex(vertex.getId())) {
-      throw new IllegalArgumentException("Vertex " + vertex.getId() + " is not in the graph.");
+      throw new IllegalArgumentException("Vertex " + vertex.getId() + notInGraphString);
     }
     final Set<E> result = new HashSet<>(getInEdges(vertex));
     result.addAll(getOutEdges(vertex));

@@ -12,7 +12,7 @@ import net.sf.opendse.model.Specification;
  * @author Fedor Smirnov
  *
  */
-public class EnactmentSpecIo {
+public final class EnactmentSpecIo {
 
   /**
    * No constructor

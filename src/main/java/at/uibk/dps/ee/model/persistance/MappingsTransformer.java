@@ -11,7 +11,7 @@ import net.sf.opendse.model.Task;
  * @author Fedor Smirnov
  *
  */
-public class MappingsTransformer {
+public final class MappingsTransformer {
 
   /**
    * No constructor

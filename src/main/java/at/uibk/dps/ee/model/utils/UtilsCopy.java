@@ -103,7 +103,7 @@ public final class UtilsCopy {
    * @param original the original element
    * @param adjusted the element with adjusted values
    */
-  protected static void restoreElementAttributes(Element original, Element adjusted) {
+  protected static void restoreElementAttributes(final Element original, final Element adjusted) {
     // all attributes which were not in the original are set to null
     adjusted.getAttributeNames().stream()
         .filter(attrName -> !original.getAttributeNames().contains(attrName))
@@ -122,7 +122,7 @@ public final class UtilsCopy {
    * @return the deep copy of the specification
    */
   public static EnactmentSpecification deepCopySpec(final EnactmentSpecification original,
-      String copySuffix) {
+      final String copySuffix) {
     final EnactmentGraph deepCopyEGraph = deepCopyEGraph(original.getEnactmentGraph());
     final ResourceGraph deepCopyRGraph = deepCopyRGraph(original.getResourceGraph());
     final MappingsConcurrent deepCopyMappings =
