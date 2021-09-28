@@ -52,11 +52,11 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
   }
 
   @Override
-  public V getVertex(String id) {
-    if (!containsVertex(id)) {
-      throw new IllegalStateException("Vertex " + id + " not in the graph");
+  public V getVertex(final String vertexId) {
+    if (!containsVertex(vertexId)) {
+      throw new IllegalStateException("Vertex " + vertexId + " not in the graph");
     }
-    return vertices.get(id);
+    return vertices.get(vertexId);
   }
 
   @Override
@@ -78,13 +78,13 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
   }
 
   @Override
-  public boolean containsVertex(V vertex) {
+  public boolean containsVertex(final V vertex) {
     return containsVertex(vertex.getId());
   }
 
   // adding/removing edges
   @Override
-  public boolean addEdge(E dependency, V src, V dst, EdgeType edgeType) {
+  public boolean addEdge(final E dependency, final V src, final V dst, final EdgeType edgeType) {
     boolean result = super.addEdge(dependency, new Pair<V>(src, dst), edgeType);
     edges.put(dependency.getId(), dependency);
     edgeTypes.put(dependency, edgeType);
@@ -100,7 +100,7 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
   }
 
   @Override
-  public boolean removeEdge(E edge) {
+  public boolean removeEdge(final E edge) {
     V source = getSource(edge);
     V dest = getDest(edge);
     edges.remove(edge.getId());
@@ -117,16 +117,22 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
   }
 
   @Override
-  public EdgeType getEdgeType(E edge) {
+  public EdgeType getEdgeType(final E edge) {
     return edgeTypes.get(edge);
   }
 
-  public boolean containsEdge(String edgeId) {
+  /**
+   * Returns true iff the graph contains an edge with the specified ID.
+   * 
+   * @param edgeId the specified ID
+   * @return true iff the graph contains an edge with the specified ID
+   */
+  public boolean containsEdge(final String edgeId) {
     return edges.containsKey(edgeId);
   }
 
   @Override
-  public boolean containsEdge(E edge) {
+  public boolean containsEdge(final E edge) {
     return containsEdge(edge.getId());
   }
 
@@ -136,17 +142,17 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
   }
 
   @Override
-  public E getEdge(String id) {
-    if (!containsEdge(id)) {
-      throw new IllegalArgumentException("Edge " + id + " is not in the graph.");
+  public E getEdge(final String edgeId) {
+    if (!containsEdge(edgeId)) {
+      throw new IllegalArgumentException("Edge " + edgeId + " is not in the graph.");
     }
-    return edges.get(id);
+    return edges.get(edgeId);
   }
 
   // methods for node-edge relations
   @Override
-  public Collection<E> getOutEdges(V vertex) {
-    Set<E> result = new HashSet<>();
+  public Collection<E> getOutEdges(final V vertex) {
+    final Set<E> result = new HashSet<>();
     if (outEdges.containsKey(vertex.getId())) {
       result.addAll(outEdges.get(vertex.getId()).values());
     }
@@ -154,8 +160,8 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
   }
 
   @Override
-  public Collection<E> getInEdges(V vertex) {
-    Set<E> result = new HashSet<>();
+  public Collection<E> getInEdges(final V vertex) {
+    final Set<E> result = new HashSet<>();
     if (inEdges.containsKey(vertex.getId())) {
       result.addAll(inEdges.get(vertex.getId()).values());
     }
@@ -163,7 +169,7 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
   }
 
   @Override
-  public V getSource(E edge) {
+  public V getSource(final E edge) {
     if (!containsEdge(edge.getId())) {
       throw new IllegalArgumentException("Edge " + edge + " not in graph.");
     }
@@ -174,7 +180,7 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
   }
 
   @Override
-  public V getDest(E edge) {
+  public V getDest(final E edge) {
     if (!containsEdge(edge.getId())) {
       throw new IllegalArgumentException("Edge " + edge + " not in graph.");
     }
@@ -184,6 +190,13 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
     return dests.get(edge.getId());
   }
 
+  /**
+   * Returns true if the two given nodes of the graph are connected
+   * 
+   * @param first the first node
+   * @param second the second node
+   * @return true if the two given nodes of the graph are connected
+   */
   public boolean areNodesConnected(V first, V second) {
     if (!containsVertex(first.getId()) || !containsVertex(second.getId())) {
       throw new IllegalArgumentException("One of the requested end points not in the graph");
@@ -192,128 +205,170 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
   }
 
   @Override
-  public E findEdge(V v1, V v2) {
-    if (!areNodesConnected(v1, v2)) {
+  public E findEdge(final V firstNode, final V secondNode) {
+    if (!areNodesConnected(firstNode, secondNode)) {
       throw new IllegalArgumentException("The given end points are not connected");
     }
-    Optional<E> optE = getInEdges(v1).stream().filter(edge -> getSource(edge).equals(v2)).findFirst();
+    Optional<E> optE = getInEdges(firstNode).stream()
+        .filter(edge -> getSource(edge).equals(secondNode)).findFirst();
     if (optE.isEmpty()) {
-      optE = getOutEdges(v1).stream().filter(edge -> getDest(edge).equals(v2)).findFirst();
+      optE = getOutEdges(firstNode).stream().filter(edge -> getDest(edge).equals(secondNode))
+          .findFirst();
     }
     return optE.get();
   }
 
 
   // helper methods
-  protected void removeOutEdge(V task, E edge) {
-    removeIncidentEdge(task, edge, false);
+
+  /**
+   * Unregisters the given edge as the out edge of the given vertex
+   * 
+   * @param vertex the given vertex
+   * @param edge the given edge
+   */
+  protected void removeOutEdge(final V vertex, final E edge) {
+    removeIncidentEdge(vertex, edge, false);
   }
 
-  protected void removeInEdge(V task, E edge) {
-    removeIncidentEdge(task, edge, true);
+  /**
+   * Unregisters the given edge as the in edge of the given vertex
+   * 
+   * @param vertex the given vertex
+   * @param edge the given edge
+   */
+  protected void removeInEdge(final V vertex, final E edge) {
+    removeIncidentEdge(vertex, edge, true);
   }
 
-  protected void removeIncidentEdge(V task, E edge, boolean inEdge) {
+  /**
+   * Unregisters the given edge as the in/out edge of the given vertex
+   * 
+   * @param vertex the given vertex
+   * @param edge the given edge
+   * @param inEdge true iff unregistering an in edge
+   */
+  protected void removeIncidentEdge(final V vertex, final E edge, final boolean inEdge) {
     ConcurrentHashMap<String, ConcurrentHashMap<String, E>> map = inEdge ? inEdges : outEdges;
-    if (!map.containsKey(task.getId())) {
+    if (!map.containsKey(vertex.getId())) {
       throw new IllegalArgumentException(
-          "Task " + task + " has no " + (inEdge ? "inEdges" : "outEdges"));
+          "Task " + vertex + " has no " + (inEdge ? "inEdges" : "outEdges"));
     }
-    if (!map.get(task.getId()).containsKey(edge.getId())) {
-      throw new IllegalArgumentException("Edge " + edge + " no incident to " + task);
+    if (!map.get(vertex.getId()).containsKey(edge.getId())) {
+      throw new IllegalArgumentException("Edge " + edge + " no incident to " + vertex);
     }
-    map.get(task.getId()).remove(edge.getId());
+    map.get(vertex.getId()).remove(edge.getId());
   }
 
-  protected void addOutEdge(V task, E edge) {
-    addIncidentEdge(task, edge, false);
+  /**
+   * Registers the given edge as an out edge of the given vertex.
+   * 
+   * @param vertex the given vertex
+   * @param edge the given edge
+   */
+  protected void addOutEdge(final V vertex, final E edge) {
+    addIncidentEdge(vertex, edge, false);
   }
 
-  protected void addInEdge(V task, E edge) {
-    addIncidentEdge(task, edge, true);
+  /**
+   * Registers the given edge as an in edge of the given vertex.
+   * 
+   * @param vertex the given vertex
+   * @param edge the given edge
+   */
+  protected void addInEdge(final V vertex, final E edge) {
+    addIncidentEdge(vertex, edge, true);
   }
 
-  protected void addIncidentEdge(V task, E edge, boolean inEdge) {
+  /**
+   * Registers the given edge as an in/out edge of the given vertex.
+   * 
+   * @param vertex the given vertex
+   * @param edge the given edge
+   * @param inEdge true iff registering an in edge
+   */
+  protected void addIncidentEdge(final V vertex, final E edge, final boolean inEdge) {
     ConcurrentHashMap<String, ConcurrentHashMap<String, E>> map = inEdge ? inEdges : outEdges;
-    if (!map.containsKey(task.getId())) {
-      map.put(task.getId(), new ConcurrentHashMap<String, E>());
+    if (!map.containsKey(vertex.getId())) {
+      map.put(vertex.getId(), new ConcurrentHashMap<String, E>());
     }
-    map.get(task.getId()).put(edge.getId(), edge);
+    map.get(vertex.getId()).put(edge.getId(), edge);
   }
 
   // restricting access to unused methods exposed by the JUNG parent
   @Override
-  public V getVertex(V v) {
+  public V getVertex(final V vertex) {
     throw new IllegalAccessError(excMessageWrongMethod);
   }
 
   @Override
-  public E getEdge(E e) {
+  public E getEdge(final E edge) {
     throw new IllegalAccessError(excMessageWrongMethod);
   }
 
   @Override
-  public boolean addEdge(E e, V v1, V v2) {
+  public boolean addEdge(final E edge, final V vertex1, final V vertex2) {
     throw new IllegalAccessError(excMessageWrongMethod);
   }
 
   @Override
-  public boolean addEdge(E edge, Collection<? extends V> vertices) {
+  public boolean addEdge(final E edge, final Collection<? extends V> vertices) {
     throw new IllegalAccessError(excMessageWrongMethod);
   }
 
   @Override
-  public boolean addEdge(E edge, Collection<? extends V> vertices, EdgeType edgeType) {
+  public boolean addEdge(final E edge, final Collection<? extends V> vertices,
+      final EdgeType edgeType) {
     throw new IllegalAccessError(excMessageWrongMethod);
   }
 
   @Override
-  public boolean addEdge(E edge, Pair<? extends V> endpoints) {
+  public boolean addEdge(final E edge, final Pair<? extends V> endpoints) {
     throw new IllegalAccessError(excMessageWrongMethod);
   }
 
   @Override
-  public boolean addEdge(E edge, Pair<? extends V> endpoints, EdgeType edgeType) {
+  public boolean addEdge(final E edge, final Pair<? extends V> endpoints, final EdgeType edgeType) {
     throw new IllegalAccessError(excMessageWrongMethod);
   }
 
   @Override
-  public Pair<V> getEndpoints(E edge) {
+  public Pair<V> getEndpoints(final E edge) {
     throw new IllegalAccessError(excMessageWrongMethod);
   }
 
   @Override
-  public Collection<E> getIncidentEdges(V vertex) {
+  public Collection<E> getIncidentEdges(final V vertex) {
     if (!containsVertex(vertex.getId())) {
       throw new IllegalArgumentException("Vertex " + vertex.getId() + " is not in the graph.");
     }
-    Set<E> result = new HashSet<>(getInEdges(vertex));
+    final Set<E> result = new HashSet<>(getInEdges(vertex));
     result.addAll(getOutEdges(vertex));
     return result;
   }
 
   @Override
-  public Collection<V> getIncidentVertices(E edge) {
+  public Collection<V> getIncidentVertices(final E edge) {
     throw new IllegalAccessError(excMessageWrongMethod);
   }
 
   @Override
-  public Collection<V> getNeighbors(V vertex) {
+  public Collection<V> getNeighbors(final V vertex) {
     throw new IllegalAccessError(excMessageWrongMethod);
   }
 
   @Override
-  public V getOpposite(V vertex, E edge) {
+  public V getOpposite(final V vertex, final E edge) {
     throw new IllegalAccessError(excMessageWrongMethod);
   }
 
   @Override
-  public Collection<V> getPredecessors(V vertex) {
+  public Collection<V> getPredecessors(final V vertex) {
     return getInEdges(vertex).stream().map(edge -> getSource(edge)).collect(Collectors.toSet());
   }
 
   @Override
-  public Collection<V> getSuccessors(V vertex) {
+  public Collection<V> getSuccessors(final V vertex) {
     return getOutEdges(vertex).stream().map(edge -> getDest(edge)).collect(Collectors.toSet());
   }
 }
