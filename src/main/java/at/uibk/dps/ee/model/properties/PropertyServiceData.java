@@ -155,7 +155,7 @@ public final class PropertyServiceData extends AbstractPropertyService {
    * Returns the node type of the provided task
    * 
    * @param task the provided task
-   * @return
+   * @return node type of the provided task
    */
   public static NodeType getNodeType(final Task task) {
     checkTask(task);
@@ -280,7 +280,7 @@ public final class PropertyServiceData extends AbstractPropertyService {
    * output/input of the workflow.
    * 
    * @param task the task to annotate
-   * @param the key to use in the Json object
+   * @param jsonKey the key to use in the Json object
    */
   public static void setJsonKey(final Task task, final String jsonKey) {
     checkTask(task);
@@ -429,7 +429,7 @@ public final class PropertyServiceData extends AbstractPropertyService {
    * 
    * @param task the task to check
    */
-  protected static void checkTask(final Task task) {
+  static void checkTask(final Task task) {
     if (!TaskPropertyService.isCommunication(task)) {
       throw new IllegalArgumentException("Task " + task.getId() + " does not model data.");
     }

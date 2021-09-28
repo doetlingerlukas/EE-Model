@@ -105,7 +105,7 @@ public final class PropertyServiceFunctionUser extends AbstractPropertyService {
    * @param task the provided task
    * @param functionTypeString the function type string to set
    */
-  protected static void setTypeId(final Task task, final String functionTypeString) {
+  static void setTypeId(final Task task, final String functionTypeString) {
     checkTask(task);
     task.setAttribute(propNameFunctionType, functionTypeString);
   }
@@ -115,7 +115,7 @@ public final class PropertyServiceFunctionUser extends AbstractPropertyService {
    * 
    * @param task the provided task
    */
-  protected static void checkTask(final Task task) {
+  static void checkTask(final Task task) {
     PropertyServiceFunction.checkTask(task);
     if (!PropertyServiceFunction.getUsageType(task).equals(UsageType.User)) {
       throw new IllegalArgumentException("The task " + task.getId() + " is not a user task.");

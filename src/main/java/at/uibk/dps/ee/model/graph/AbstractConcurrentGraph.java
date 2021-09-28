@@ -31,8 +31,8 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
   protected static final String edgeString = "edge ";
   protected static final String notInGraphString = " is not in the graph";
 
-  protected final ConcurrentHashMap<String, V> vertices = new ConcurrentHashMap<>();
-  protected final ConcurrentHashMap<String, E> edges = new ConcurrentHashMap<>();
+  protected final ConcurrentHashMap<String, V> verticesConcurrent = new ConcurrentHashMap<>();
+  protected final ConcurrentHashMap<String, E> edgesConcurrent = new ConcurrentHashMap<>();
   protected final ConcurrentHashMap<String, V> sources = new ConcurrentHashMap<>();
   protected final ConcurrentHashMap<String, V> dests = new ConcurrentHashMap<>();
   protected final ConcurrentHashMap<String, ConcurrentHashMap<String, E>> inEdges =
@@ -44,13 +44,13 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
   // adding/removing vertices
   @Override
   public boolean addVertex(final V vertex) {
-    vertices.put(vertex.getId(), vertex);
+    verticesConcurrent.put(vertex.getId(), vertex);
     return super.addVertex(vertex);
   }
 
   @Override
   public Collection<V> getVertices() {
-    return vertices.values();
+    return verticesConcurrent.values();
   }
 
   @Override
@@ -58,12 +58,12 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
     if (!containsVertex(vertexId)) {
       throw new IllegalStateException("Vertex " + vertexId + " not in the graph");
     }
-    return vertices.get(vertexId);
+    return verticesConcurrent.get(vertexId);
   }
 
   @Override
   public boolean removeVertex(final V vertex) {
-    vertices.remove(vertex.getId(), vertex);
+    verticesConcurrent.remove(vertex.getId(), vertex);
     if (!getInEdges(vertex).isEmpty()) {
       inEdges.get(vertex.getId()).values().forEach(dep -> removeEdge(dep));
     }
@@ -82,7 +82,7 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
    * @return true if the graph contains a vertex with the given ID
    */
   public boolean containsVertex(final String vertexId) {
-    return vertices.containsKey(vertexId);
+    return verticesConcurrent.containsKey(vertexId);
   }
 
   @Override
@@ -94,7 +94,7 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
   @Override
   public boolean addEdge(final E dependency, final V src, final V dst, final EdgeType edgeType) {
     final boolean result = super.addEdge(dependency, new Pair<V>(src, dst), edgeType);
-    edges.put(dependency.getId(), dependency);
+    edgesConcurrent.put(dependency.getId(), dependency);
     edgeTypes.put(dependency, edgeType);
     sources.put(dependency.getId(), src);
     dests.put(dependency.getId(), dst);
@@ -111,7 +111,7 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
   public boolean removeEdge(final E edge) {
     final V source = getSource(edge);
     final V dest = getDest(edge);
-    edges.remove(edge.getId());
+    edgesConcurrent.remove(edge.getId());
     removeInEdge(dest, edge);
     removeOutEdge(source, edge);
     if (edgeTypes.get(edge).equals(EdgeType.UNDIRECTED)) {
@@ -136,7 +136,7 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
    * @return true iff the graph contains an edge with the specified ID
    */
   public boolean containsEdge(final String edgeId) {
-    return edges.containsKey(edgeId);
+    return edgesConcurrent.containsKey(edgeId);
   }
 
   @Override
@@ -146,7 +146,7 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
 
   @Override
   public Collection<E> getEdges() {
-    return edges.values();
+    return edgesConcurrent.values();
   }
 
   @Override
@@ -154,7 +154,7 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
     if (!containsEdge(edgeId)) {
       throw new IllegalArgumentException(edgeString + edgeId + notInGraphString);
     }
-    return edges.get(edgeId);
+    return edgesConcurrent.get(edgeId);
   }
 
   // methods for node-edge relations

@@ -55,7 +55,7 @@ public final class PropertyServiceMappingLocal extends AbstractPropertyService {
    * @param mapping the given mapping
    * @param imageName the image name
    */
-  protected static void setImageName(final Mapping<Task, Resource> mapping,
+  static void setImageName(final Mapping<Task, Resource> mapping,
       final String imageName) {
     checkMapping(mapping);
     mapping.setAttribute(propNameImage, imageName);
@@ -76,7 +76,7 @@ public final class PropertyServiceMappingLocal extends AbstractPropertyService {
    * 
    * @param mapping the provided mapping
    */
-  protected static void checkMapping(final Mapping<Task, Resource> mapping) {
+  static void checkMapping(final Mapping<Task, Resource> mapping) {
     if (!PropertyServiceMapping.getEnactmentMode(mapping).equals(EnactmentMode.Local)) {
       throw new IllegalArgumentException("The mapping " + mapping + " is not a local mapping.");
     }
@@ -87,7 +87,7 @@ public final class PropertyServiceMappingLocal extends AbstractPropertyService {
    * 
    * @return a string representation of Apollo's host machine
    */
-  protected static String getMacAddress() {
+  static String getMacAddress() {
     System.err.println("Need to implement a proper way to get the MAC address");
     // just for now
     return "myMachine";

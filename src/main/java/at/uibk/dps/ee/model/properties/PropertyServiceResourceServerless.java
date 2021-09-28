@@ -42,7 +42,6 @@ public final class PropertyServiceResourceServerless extends AbstractPropertySer
    * 
    * @param resId the provided ID
    * @param resourceLink the resource link
-   * @param implId the implementation id
    * @return a serverless resource with the provided resource link and ID
    */
   public static Resource createServerlessResource(final String resId, final String resourceLink) {
@@ -79,7 +78,7 @@ public final class PropertyServiceResourceServerless extends AbstractPropertySer
    * @param res the given resource
    * @param timeoutInSeconds the timeout in seconds to set
    */
-  protected static void setTimeoutInSeconds(final Resource res, final int timeoutInSeconds) {
+  static void setTimeoutInSeconds(final Resource res, final int timeoutInSeconds) {
     checkResource(res);
     res.setAttribute(propNameTimeout, timeoutInSeconds);
   }
@@ -101,7 +100,7 @@ public final class PropertyServiceResourceServerless extends AbstractPropertySer
    * @param res the provided resource
    * @param resourceLink the link to set
    */
-  protected static void setUri(final Resource res, final String resourceLink) {
+  static void setUri(final Resource res, final String resourceLink) {
     checkResource(res);
     res.setAttribute(propNameUri, resourceLink);
   }
@@ -111,7 +110,7 @@ public final class PropertyServiceResourceServerless extends AbstractPropertySer
    * 
    * @param res the provided resource.
    */
-  protected static void checkResource(final Resource res) {
+  static void checkResource(final Resource res) {
     // this could be probably dropped
   }
 }

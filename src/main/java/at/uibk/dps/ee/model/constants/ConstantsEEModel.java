@@ -16,14 +16,14 @@ public final class ConstantsEEModel {
 
   // Spec constraints
   public static final String SpecIdDefault = "specification";
-  
+
   // Resource graph constants
   public static final String idLocalResource = "Enactment Engine (Local Machine)";
   public static final int defaultFaaSTimeoutSeconds = 30;
-  
+
   // Mapping edge constants
   public static final String implIdLocalNative = "native";
-  
+
   public static final String ConstantNodeAffix = "Constant";
 
 
@@ -45,20 +45,20 @@ public final class ConstantsEEModel {
   public static final String JsonKeyIfResult = "IfResult";
 
   public static final String JsonKeySequentiality = "SeqKey";
-  
+
   public static final String JsonKeyWhileStart = "WhileKey";
   public static final String JsonKeyWhileCounter = "WhileCounter";
   public static final String JsonKeyWhileDecision = "WhileDecision";
-  
+
   // Function node name components
   public static final String FuncNameUtilityDistribution = "Distribution";
   public static final String JsonKeyConstantIterator = "ConstantIterator";
   public static final String FuncNameUtilityAggregation = "Aggregation";
   public static final String JsonKeyAggregation = "aggregateEntry";
   public static final String JsonKeyDistribution = "distributedEntry";
-  
+
   public static final String WhileConditionSuffix = "stopCondition";
-  public static final String WhileConditionBoolSuffix = "stopDecision";  
+  public static final String WhileConditionBoolSuffix = "stopDecision";
   public static final String WhileLoopCounterSuffix = "counter";
   public static final String WhileEndSuffix = "whileEnd";
   public static final String whileReplicaSuffix = "+";
@@ -92,7 +92,9 @@ public final class ConstantsEEModel {
    * @return the collection name
    */
   public static String getCollectionName(final String elementKey) {
-    return elementKey.split("\\" + CollectionIndexPrefix)[0];
+    final String result = elementKey.split("\\" + CollectionIndexPrefix)[0];
+    checkSplitResult(result, elementKey);
+    return result;
   }
 
   /**
@@ -103,7 +105,22 @@ public final class ConstantsEEModel {
    */
   public static int getArrayIndex(final String elementKey) {
     String intString = elementKey.split("\\" + CollectionIndexPrefix)[1];
-    intString = intString.split("\\" + CollectionIndexSuffix)[0];
-    return Integer.parseInt(intString);
+    checkSplitResult(intString, elementKey);
+    String splitIntString = intString.split("\\" + CollectionIndexSuffix)[0];
+    checkSplitResult(splitIntString, intString);
+    return Integer.parseInt(splitIntString);
+  }
+
+  /**
+   * Checks whether split result is empty
+   * 
+   * @param splitResult the split result
+   * @param originalString the original string
+   */
+  static void checkSplitResult(String splitResult, String originalString) {
+    if (splitResult.equals("")) {
+      throw new IllegalStateException(
+          "Could not get the collection name from original string " + originalString);
+    }
   }
 }

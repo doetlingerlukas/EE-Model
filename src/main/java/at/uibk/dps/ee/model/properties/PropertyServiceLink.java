@@ -37,7 +37,7 @@ public final class PropertyServiceLink extends AbstractPropertyService {
    * @param resourceB second end point
    * @return a unique ID to connect the given resources
    */
-  protected static String generateLinkID(final Resource resourceA, final Resource resourceB) {
+  static String generateLinkID(final Resource resourceA, final Resource resourceB) {
     return resourceA.getId() + ConstantsEEModel.KeywordSeparator1 + resourceB.getId();
   }
 }

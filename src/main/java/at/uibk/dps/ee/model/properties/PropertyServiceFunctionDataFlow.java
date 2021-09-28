@@ -106,7 +106,7 @@ public final class PropertyServiceFunctionDataFlow extends AbstractPropertyServi
    * 
    * @param task the task to check
    */
-  protected static void checkTask(final Task task) {
+  static void checkTask(final Task task) {
     PropertyServiceFunction.checkTask(task);
     if (!PropertyServiceFunction.getUsageType(task).equals(UsageType.DataFlow)) {
       throw new IllegalArgumentException("Task " + task.getId() + " is not a data flow task");

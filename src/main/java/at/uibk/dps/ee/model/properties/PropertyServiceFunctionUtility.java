@@ -57,7 +57,7 @@ public final class PropertyServiceFunctionUtility extends AbstractPropertyServic
    * @param dataFirst the first node
    * @param dataSecond the second node
    * @param graph the enactment graph
-   * @return
+   * @return the node which was added to the graph
    */
   public static Task addSequelizerNode(final Task dataFirst, final Task dataSecond,
       final EnactmentGraph graph) {
@@ -82,7 +82,7 @@ public final class PropertyServiceFunctionUtility extends AbstractPropertyServic
    * @param task the task to annotate
    * @param type the type of the task
    */
-  protected static void setUtilityType(final Task task, final UtilityType type) {
+  static void setUtilityType(final Task task, final UtilityType type) {
     checkTask(task);
     final String attrName = Property.UtilityType.name();
     task.setAttribute(attrName, type.name());
@@ -106,7 +106,7 @@ public final class PropertyServiceFunctionUtility extends AbstractPropertyServic
    * 
    * @param task the task to check
    */
-  protected static void checkTask(final Task task) {
+  static void checkTask(final Task task) {
     PropertyServiceFunction.checkTask(task);
     if (!PropertyServiceFunction.getUsageType(task).equals(UsageType.Utility)) {
       throw new IllegalArgumentException("Task " + task.getId() + " is not a utility function.");

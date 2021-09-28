@@ -39,7 +39,6 @@ public final class PropertyServiceFunctionUtilityCondition extends AbstractPrope
    * 
    * @param taskId the task id
    * @param conditions the set of conditions
-   * @param summary the way that the condition are evaluated
    * @return a function task representing the evaluation of a condition
    */
   public static Task createConditionEvaluation(final String taskId, final List<Condition> conditions) {
@@ -80,7 +79,7 @@ public final class PropertyServiceFunctionUtilityCondition extends AbstractPrope
    * 
    * @param task the task to check.
    */
-  protected static void checkTask(final Task task) {
+  static void checkTask(final Task task) {
     if (!PropertyServiceFunctionUtility.getUtilityType(task).equals(UtilityType.Condition)) {
       throw new IllegalArgumentException("Task " + task.getId() + " is not a condition node.");
     }

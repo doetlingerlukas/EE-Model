@@ -102,7 +102,7 @@ public final class PropertyServiceReproduction extends AbstractPropertyService {
    * Annotates the distribution node id of the given (original) task
    * 
    * @param task the task to annotate
-   * @param distributionNode the distribution node
+   * @param distributionNodeId the distribution node id
    */
   public static void annotateDistributionNode(final Task task, final String distributionNodeId) {
     final String attrName = Property.DistributionNode.name();
@@ -115,7 +115,7 @@ public final class PropertyServiceReproduction extends AbstractPropertyService {
    * @param element the given element
    * @param scopeString the provided scope string
    */
-  protected static void setReproductionScope(final Element element, final String scopeString) {
+  static void setReproductionScope(final Element element, final String scopeString) {
     if (!isReproduced(element)) {
       throw new IllegalArgumentException(
           "The element " + element.getId() + " was not created by reproduction.");
@@ -158,7 +158,7 @@ public final class PropertyServiceReproduction extends AbstractPropertyService {
    * 
    * @param element the given element
    */
-  protected static void makeReproduced(final Element element) {
+  static void makeReproduced(final Element element) {
     final String attrName = Property.IsReproduced.name();
     element.setAttribute(attrName, true);
   }

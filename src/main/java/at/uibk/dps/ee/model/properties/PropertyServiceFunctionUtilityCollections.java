@@ -46,10 +46,11 @@ public final class PropertyServiceFunctionUtilityCollections extends AbstractPro
 
   /**
    * Creates a function node modeling the element index operation (described by
-   * the given subcollection) applied to the data node with the given id.
+   * the given subcollection string) applied to the data node with the given id.
    * 
    * @param dataId the given data id
-   * @param subCollections the subcollections to annotate
+   * @param subCollectionsString the string from the afcl file
+   * @param collectionOperation the operation annotated at the corresponding task
    * @return a function node modeling the element index operation (described by
    *         the given subcollection) applied to the data node with the given id.
    */
@@ -83,8 +84,7 @@ public final class PropertyServiceFunctionUtilityCollections extends AbstractPro
    * @param task the given task
    * @param operation the operation to set
    */
-  protected static void setCollectionOperation(final Task task,
-      final CollectionOperation operation) {
+  static void setCollectionOperation(final Task task, final CollectionOperation operation) {
     checkTask(task);
     final String attrName = Property.CollectionOperation.name();
     task.setAttribute(attrName, operation.name());
@@ -94,10 +94,9 @@ public final class PropertyServiceFunctionUtilityCollections extends AbstractPro
    * Annotates the given subcollections onto the given node.
    * 
    * @param task the given task
-   * @param subCollections the subcollections to annotate
+   * @param subCollectionsString the subcollection string to annotate
    */
-  protected static void setSubCollectionsString(final Task task,
-      final String subCollectionsString) {
+  static void setSubCollectionsString(final Task task, final String subCollectionsString) {
     checkTask(task);
     final String attrName = Property.SubCollectionString.name();
     task.setAttribute(attrName, subCollectionsString);
@@ -120,7 +119,7 @@ public final class PropertyServiceFunctionUtilityCollections extends AbstractPro
    * 
    * @param task the given task
    */
-  protected static void checkTask(final Task task) {
+  static void checkTask(final Task task) {
     PropertyServiceFunctionUtility.checkTask(task);
     if (!PropertyServiceFunctionUtility.getUtilityType(task)
         .equals(UtilityType.CollectionOperation)) {

@@ -88,7 +88,7 @@ public final class PropertyServiceMapping extends AbstractPropertyService {
    * @param mapping the given mapping
    * @param implId the impl id to set
    */
-  protected static void setImplementationId(final Mapping<Task, Resource> mapping,
+  static void setImplementationId(final Mapping<Task, Resource> mapping,
       final String implId) {
     mapping.setAttribute(propNameImplId, implId);
   }
@@ -99,7 +99,7 @@ public final class PropertyServiceMapping extends AbstractPropertyService {
    * @param mapping the given mapping
    * @param enactmentMode the enactment mode to set
    */
-  protected static void setEnactmentMode(final Mapping<Task, Resource> mapping,
+  static void setEnactmentMode(final Mapping<Task, Resource> mapping,
       final EnactmentMode enactmentMode) {
     mapping.setAttribute(propNameEnactmentMode, enactmentMode.name());
   }
@@ -128,7 +128,7 @@ public final class PropertyServiceMapping extends AbstractPropertyService {
    * @param mappingId the id that the created mapping will have
    * @return a mapping edge from the given src task to the given dst resource
    */
-  protected static Mapping<Task, Resource> createMapping(final Task src, final Resource dst,
+  static Mapping<Task, Resource> createMapping(final Task src, final Resource dst,
       final EnactmentMode enactmentMode, final String implId, final String mappingId) {
     final Mapping<Task, Resource> result = new Mapping<>(mappingId, src, dst);
     setEnactmentMode(result, enactmentMode);
@@ -145,7 +145,7 @@ public final class PropertyServiceMapping extends AbstractPropertyService {
    * @return the id string of a mapping from the given src task to the given
    *         destination
    */
-  protected static String getMappingId(final Task src, final Resource dst, final String implId) {
+  static String getMappingId(final Task src, final Resource dst, final String implId) {
     return src.getId() + ConstantsEEModel.KeywordSeparator1 + dst.getId()
         + ConstantsEEModel.KeywordSeparator1 + implId;
   }

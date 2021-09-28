@@ -51,7 +51,7 @@ public final class UtilsCopy {
    * @param original the original enactment graph
    * @param adjusted the adjusted enactment graph
    */
-  protected static void restoreEGraphAttributes(final EnactmentGraph original,
+  static void restoreEGraphAttributes(final EnactmentGraph original,
       final EnactmentGraph adjusted) {
     original.getVertices().forEach(originalVertex -> {
       final Task adjustedVertex = adjusted.getVertex(originalVertex.getId());
@@ -71,7 +71,7 @@ public final class UtilsCopy {
    * @param original the original resource graph
    * @param adjusted the adjusted resource graph
    */
-  protected static void restoreRGraphAttributes(final ResourceGraph original,
+  static void restoreRGraphAttributes(final ResourceGraph original,
       final ResourceGraph adjusted) {
     original.getVertices().forEach(originalVertex -> restoreElementAttributes(originalVertex,
         adjusted.getVertex(originalVertex.getId())));
@@ -85,7 +85,7 @@ public final class UtilsCopy {
    * @param original the original mappings
    * @param adjusted the adjusted mappings
    */
-  protected static void restoreMappingsAttributes(final MappingsConcurrent original,
+  static void restoreMappingsAttributes(final MappingsConcurrent original,
       final MappingsConcurrent adjusted) {
     final Map<String, Mapping<Task, Resource>> originalMappingMap =
         original.mappingStream().collect(Collectors.toMap(oMap -> oMap.getId(), oMap -> oMap));
@@ -103,7 +103,7 @@ public final class UtilsCopy {
    * @param original the original element
    * @param adjusted the element with adjusted values
    */
-  protected static void restoreElementAttributes(final Element original, final Element adjusted) {
+  static void restoreElementAttributes(final Element original, final Element adjusted) {
     // all attributes which were not in the original are set to null
     adjusted.getAttributeNames().stream()
         .filter(attrName -> !original.getAttributeNames().contains(attrName))
@@ -227,7 +227,7 @@ public final class UtilsCopy {
    * @param original the original element (of type E)
    * @return a deep copy the provided element of the provided type
    */
-  protected static <E extends Element> E deepCopyElement(final Class<E> clazz,
+  static <E extends Element> E deepCopyElement(final Class<E> clazz,
       final Element original) {
     final String elementId = original.getId();
     try {
@@ -266,10 +266,10 @@ public final class UtilsCopy {
    */
   public static Mapping<Task, Resource> deepCopyMapping(final Mapping<Task, Resource> original,
       final EnactmentGraph copyEGraph, final ResourceGraph copyRGraph) {
-    final Task taskCopy = Optional.of(copyEGraph.getVertex(original.getSource().getId()))
+    final Task taskCopy = Optional.ofNullable(copyEGraph.getVertex(original.getSource().getId()))
         .orElseThrow(() -> new IllegalStateException(
             "Src of mapping " + original.getId() + " not in the copied e graph."));
-    final Resource resCopy = Optional.of(copyRGraph.getVertex(original.getTarget().getId()))
+    final Resource resCopy = Optional.ofNullable(copyRGraph.getVertex(original.getTarget().getId()))
         .orElseThrow(() -> new IllegalStateException(
             "Target of mapping " + original.getId() + " not in the copied r graph."));
     final Mapping<Task, Resource> result = new Mapping<>(original.getId(), taskCopy, resCopy);
@@ -302,12 +302,13 @@ public final class UtilsCopy {
       final EnactmentGraph originalGraph, final EnactmentGraph copyEGraph) {
     final Dependency result = deepCopyDependency(original);
     final Task srcTask =
-        Optional.of(copyEGraph.getVertex(originalGraph.getSource(original).getId()))
+        Optional.ofNullable(copyEGraph.getVertex(originalGraph.getSource(original).getId()))
             .orElseThrow(() -> new IllegalStateException(
                 "Src of edge " + original + " not in the copied e graph"));
-    final Task dstTask = Optional.of(copyEGraph.getVertex(originalGraph.getDest(original).getId()))
-        .orElseThrow(() -> new IllegalStateException(
-            "Dst of edge " + original + " not in the copied e graph"));
+    final Task dstTask =
+        Optional.ofNullable(copyEGraph.getVertex(originalGraph.getDest(original).getId()))
+            .orElseThrow(() -> new IllegalStateException(
+                "Dst of edge " + original + " not in the copied e graph"));
     copyEGraph.addEdge(result, srcTask, dstTask, EdgeType.DIRECTED);
     return result;
   }

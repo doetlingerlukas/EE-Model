@@ -157,8 +157,8 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
   /**
    * Returns true if at least one of the keys of the input is set.
    * 
-   * @param task
-   * @return
+   * @param task the task to check
+   * @return true if at least one of the keys of the input is set.
    */
   public static boolean isInputSet(final Task task) {
     checkTask(task);
@@ -169,7 +169,7 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
    * Sets the function type for the provided function.
    * 
    * @param functionType the type to set
-   * @param the task to annotate
+   * @param task the task to annotate
    */
   public static void setUsageType(final UsageType functionType, final Task task) {
     checkTask(task);
@@ -192,7 +192,7 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
    * 
    * @param task the task to check
    */
-  protected static void checkTask(final Task task) {
+  static void checkTask(final Task task) {
     if (!TaskPropertyService.isProcess(task)) {
       throw new IllegalArgumentException("Node " + task.getId() + " is not a function node.");
     }

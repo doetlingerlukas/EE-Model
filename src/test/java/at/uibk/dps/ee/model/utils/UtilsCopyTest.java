@@ -178,8 +178,8 @@ class UtilsCopyTest {
       result &= (copyDep != null);
       result &= copyDep != dep;
       result &= areAttributesCopied(dep, copyDep);
-      result &= (originalE.getSource(dep).getId().equals(copyE.getSource(copyDep).getId()));
-      result &= (originalE.getDest(dep).getId().equals(copyE.getDest(copyDep).getId()));
+      result &= originalE.getSource(dep).getId().equals(copyE.getSource(copyDep).getId());
+      result &= originalE.getDest(dep).getId().equals(copyE.getDest(copyDep).getId());
     }
     return result;
   }
