@@ -22,24 +22,40 @@ import net.sf.opendse.model.Task;
  */
 public class EnactmentSpecTransformer {
 
+  /**
+   * No constructor
+   */
   private EnactmentSpecTransformer() {}
 
-  public static Specification toOdse(EnactmentSpecification eSpec) {
-    Architecture<Resource, Link> arch = ResourceGraphTransformer.toOdse(eSpec.getResourceGraph());
-    Application<Task, Dependency> appl =
+  /**
+   * Transforms an Apollo spec to an Odse spec
+   * 
+   * @param eSpec the Apollo spec
+   * @return the Odse spec
+   */
+  public static Specification toOdse(final EnactmentSpecification eSpec) {
+    final Architecture<Resource, Link> arch =
+        ResourceGraphTransformer.toOdse(eSpec.getResourceGraph());
+    final Application<Task, Dependency> appl =
         EnactmentGraphTransformer.toOdse(eSpec.getEnactmentGraph());
-    Mappings<Task, Resource> mappings = MappingsTransformer.toOdse(eSpec.getMappings());
-    Specification result = new Specification(appl, arch, mappings);
+    final Mappings<Task, Resource> mappings = MappingsTransformer.toOdse(eSpec.getMappings());
+    final Specification result = new Specification(appl, arch, mappings);
     eSpec.getAttributeNames()
         .forEach(attrName -> result.setAttribute(attrName, eSpec.getAttribute(attrName)));
     return result;
   }
 
+  /**
+   * Transforms an Odse spec to an Apollo spec.
+   * 
+   * @param spec the odse spec
+   * @return the apollo spec
+   */
   public static EnactmentSpecification toApollo(Specification spec) {
-    EnactmentGraph eGraph = EnactmentGraphTransformer.toApollo(spec.getApplication());
-    ResourceGraph rGraph = ResourceGraphTransformer.toApollo(spec.getArchitecture());
-    MappingsConcurrent mappings = MappingsTransformer.toApollo(spec.getMappings());
-    EnactmentSpecification result =
+    final EnactmentGraph eGraph = EnactmentGraphTransformer.toApollo(spec.getApplication());
+    final ResourceGraph rGraph = ResourceGraphTransformer.toApollo(spec.getArchitecture());
+    final MappingsConcurrent mappings = MappingsTransformer.toApollo(spec.getMappings());
+    final EnactmentSpecification result =
         new EnactmentSpecification(eGraph, rGraph, mappings, ConstantsEEModel.SpecIdDefault);
     spec.getAttributeNames()
         .forEach(attrName -> result.setAttribute(attrName, spec.getAttribute(attrName)));

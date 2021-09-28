@@ -54,7 +54,7 @@ public final class UtilsCopy {
   protected static void restoreEGraphAttributes(final EnactmentGraph original,
       final EnactmentGraph adjusted) {
     original.getVertices().forEach(originalVertex -> {
-      Task adjustedVertex = adjusted.getVertex(originalVertex.getId());
+      final Task adjustedVertex = adjusted.getVertex(originalVertex.getId());
       if (adjustedVertex == null) {
         throw new IllegalStateException(
             "Task " + originalVertex.getId() + " not present in the adjusted graph.");

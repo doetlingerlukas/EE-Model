@@ -13,8 +13,18 @@ import net.sf.opendse.model.Task;
  */
 public class EnactmentGraphTransformer {
 
+  /**
+   * No constructor.
+   */
   private EnactmentGraphTransformer() {}
 
+  /**
+   * Transforms the application representation used by OpenDSE to the one used by
+   * Apollo.
+   * 
+   * @param application application graph (OpenDSE's application representation)
+   * @return enactment graph (Apollo's application representation)
+   */
   public static EnactmentGraph toApollo(Application<Task, Dependency> application) {
     EnactmentGraph result = new EnactmentGraph();
     application.forEach(task -> result.addVertex(task));
@@ -23,6 +33,13 @@ public class EnactmentGraphTransformer {
     return result;
   }
 
+  /**
+   * Transforms the application representation used by Apollo to the one used by
+   * OpenDSE.
+   * 
+   * @param eGraph enactment graph (Apollo's application representation)
+   * @return application graph (OpenDSE's application representation)
+   */
   public static Application<Task, Dependency> toOdse(EnactmentGraph eGraph) {
     Application<Task, Dependency> appl = new Application<>();
     eGraph.getVertices().forEach(task -> appl.addVertex(task));
