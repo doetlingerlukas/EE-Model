@@ -296,7 +296,7 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
    * @param inEdge true iff registering an in edge
    */
   protected void addIncidentEdge(final V vertex, final E edge, final boolean inEdge) {
-    ConcurrentHashMap<String, ConcurrentHashMap<String, E>> map = inEdge ? inEdges : outEdges;
+    final ConcurrentHashMap<String, ConcurrentHashMap<String, E>> map = inEdge ? inEdges : outEdges;
     if (!map.containsKey(vertex.getId())) {
       map.put(vertex.getId(), new ConcurrentHashMap<String, E>());
     }

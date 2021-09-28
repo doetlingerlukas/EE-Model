@@ -51,7 +51,7 @@ public final class EnactmentSpecTransformer {
    * @param spec the odse spec
    * @return the apollo spec
    */
-  public static EnactmentSpecification toApollo(Specification spec) {
+  public static EnactmentSpecification toApollo(final Specification spec) {
     final EnactmentGraph eGraph = EnactmentGraphTransformer.toApollo(spec.getApplication());
     final ResourceGraph rGraph = ResourceGraphTransformer.toApollo(spec.getArchitecture());
     final MappingsConcurrent mappings = MappingsTransformer.toApollo(spec.getMappings());
