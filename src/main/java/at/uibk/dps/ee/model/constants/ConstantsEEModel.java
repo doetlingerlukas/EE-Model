@@ -118,7 +118,7 @@ public final class ConstantsEEModel {
    * @param originalString the original string
    */
   static void checkSplitResult(final String splitResult, final String originalString) {
-    if (splitResult.equals("")) {
+    if ("".equals(splitResult)) {
       throw new IllegalStateException(
           "Could not get the collection name from original string " + originalString);
     }
