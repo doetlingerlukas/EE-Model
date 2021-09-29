@@ -94,6 +94,12 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
   @Override
   public boolean addEdge(final E dependency, final V src, final V dst, final EdgeType edgeType) {
     final boolean result = super.addEdge(dependency, new Pair<V>(src, dst), edgeType);
+    if (!containsVertex(src.getId())) {
+      addVertex(src);
+    }
+    if (!containsVertex(dst.getId())) {
+      addVertex(dst);
+    }
     edgesConcurrent.put(dependency.getId(), dependency);
     edgeTypes.put(dependency, edgeType);
     sources.put(dependency.getId(), src);
@@ -122,6 +128,16 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
     sources.remove(edge.getId());
     dests.remove(edge.getId());
     return super.removeEdge(edge);
+  }
+
+  @Override
+  public int getEdgeCount() {
+    return edgesConcurrent.keySet().size();
+  }
+
+  @Override
+  public int getVertexCount() {
+    return verticesConcurrent.keySet().size();
   }
 
   @Override
