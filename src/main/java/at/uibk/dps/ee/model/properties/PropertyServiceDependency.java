@@ -273,7 +273,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * 
    * @param dependency the given dependency
    */
-  protected static void resetTransmissionAnnotation(final Dependency dependency) {
+  static void resetTransmissionAnnotation(final Dependency dependency) {
     setTransmissionDone(dependency, false);
   }
 
@@ -294,7 +294,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * @param done true: the transmission is done, false: the transmission is not
    *        done
    */
-  protected static void setTransmissionDone(final Dependency dependency, final boolean done) {
+  static void setTransmissionDone(final Dependency dependency, final boolean done) {
     final String attrName = Property.TransmissionDone.name();
     dependency.setAttribute(attrName, done);
   }
@@ -306,8 +306,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * @param dest the edge destination
    * @return a dependency with a unique ID made from the IDs of its endpoints
    */
-  protected static Dependency createDependency(final Task src, final Task dest,
-      final EnactmentGraph graph) {
+  static Dependency createDependency(final Task src, final Task dest, final EnactmentGraph graph) {
     String dependencyId = src.getId() + ConstantsEEModel.KeywordSeparator1 + dest.getId();
     while (graph.containsEdge(dependencyId)) {
       dependencyId = dependencyId.concat(ConstantsEEModel.KeyWordEdgeUniqueness);
@@ -344,7 +343,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * @param src the src node
    * @param dest the dest node
    */
-  protected static void checkDataDependencyEndPoints(final Task src, final Task dest) {
+  static void checkDataDependencyEndPoints(final Task src, final Task dest) {
     final boolean functionPresent =
         TaskPropertyService.isProcess(src) || TaskPropertyService.isProcess(dest);
     final boolean dataPresent =

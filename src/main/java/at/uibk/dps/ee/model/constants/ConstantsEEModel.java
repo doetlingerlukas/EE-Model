@@ -104,9 +104,9 @@ public final class ConstantsEEModel {
    * @return the index of the element within the array
    */
   public static int getArrayIndex(final String elementKey) {
-    String intString = elementKey.split("\\" + CollectionIndexPrefix)[1];
+    final String intString = elementKey.split("\\" + CollectionIndexPrefix)[1];
     checkSplitResult(intString, elementKey);
-    String splitIntString = intString.split("\\" + CollectionIndexSuffix)[0];
+    final String splitIntString = intString.split("\\" + CollectionIndexSuffix)[0];
     checkSplitResult(splitIntString, intString);
     return Integer.parseInt(splitIntString);
   }
@@ -117,7 +117,7 @@ public final class ConstantsEEModel {
    * @param splitResult the split result
    * @param originalString the original string
    */
-  static void checkSplitResult(String splitResult, String originalString) {
+  static void checkSplitResult(final String splitResult, final String originalString) {
     if (splitResult.equals("")) {
       throw new IllegalStateException(
           "Could not get the collection name from original string " + originalString);

@@ -169,7 +169,7 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
    * @param task the given task
    * @param operationType the given operation type
    */
-  protected static void setOperationType(final Task task, final OperationType operationType) {
+  static void setOperationType(final Task task, final OperationType operationType) {
     checkTask(task);
     final String attrName = Property.OperationType.name();
     task.setAttribute(attrName, operationType.name());
@@ -216,7 +216,7 @@ public final class PropertyServiceFunctionDataFlowCollections extends AbstractPr
    * 
    * @param task the given task
    */
-  protected static void checkTask(final Task task) {
+  static void checkTask(final Task task) {
     PropertyServiceFunctionDataFlow.checkTask(task);
     if (!PropertyServiceFunctionDataFlow.getDataFlowType(task).equals(DataFlowType.Collections)) {
       throw new IllegalArgumentException(

@@ -61,8 +61,8 @@ public final class PropertyServiceDependencyControlIf extends AbstractPropertySe
    * @return a control if dependency which will be used to connect the given src
    *         to the given dest and annotates it with the given activation
    */
-  protected static Dependency createControlIfDependency(final Task src, final Task dest,
-      final String jsonKey, final boolean activation, final EnactmentGraph graph) {
+  static Dependency createControlIfDependency(final Task src, final Task dest, final String jsonKey,
+      final boolean activation, final EnactmentGraph graph) {
     final Dependency result = PropertyServiceDependency.createDependency(src, dest, graph);
     PropertyServiceDependency.setType(result, TypeDependency.ControlIf);
     PropertyServiceDependencyControlIf.setActivation(result, activation);
@@ -100,7 +100,7 @@ public final class PropertyServiceDependencyControlIf extends AbstractPropertySe
    * 
    * @param dependency the dependency to check.
    */
-  protected static void checkDependency(final Dependency dependency) {
+  static void checkDependency(final Dependency dependency) {
     if (!PropertyServiceDependency.getType(dependency).equals(TypeDependency.ControlIf)) {
       throw new IllegalArgumentException(
           "The dependency " + dependency.getId() + " does not model a control if implication.");
