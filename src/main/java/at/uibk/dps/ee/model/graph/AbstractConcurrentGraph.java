@@ -358,7 +358,7 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
 
   @Override
   public Pair<V> getEndpoints(final E edge) {
-    throw new IllegalAccessError(excMessageWrongMethod);
+    return super.getEndpoints(edge);
   }
 
   @Override
