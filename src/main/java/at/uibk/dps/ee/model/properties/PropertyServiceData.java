@@ -153,7 +153,7 @@ public final class PropertyServiceData extends AbstractPropertyService {
     if (isWhileStart(node)) {
       return false;
     }
-    return type.equals(NodeType.Constant) || isWhileCounter(node);
+    return type.equals(NodeType.Constant) || (isWhileCounter(node) && !getNodeType(node).equals(NodeType.Sequentiality));
   }
 
   /**
