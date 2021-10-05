@@ -149,11 +149,12 @@ public final class PropertyServiceData extends AbstractPropertyService {
    */
   public static boolean isConstantNode(final Task node) {
     checkTask(node);
-    final NodeType type = getNodeType(node);
     if (isWhileStart(node)) {
       return false;
     }
-    return type.equals(NodeType.Constant) || (isWhileCounter(node) && !getNodeType(node).equals(NodeType.Sequentiality));
+    final boolean reproducedWhileCounter =
+        isWhileCounter(node) && !getNodeType(node).equals(NodeType.Sequentiality);
+    return getNodeType(node).equals(NodeType.Constant) || reproducedWhileCounter;
   }
 
   /**
@@ -235,12 +236,12 @@ public final class PropertyServiceData extends AbstractPropertyService {
    * @param data the given data node
    * @return true iff the given node is a while counter
    */
-  public static boolean isWhileCounter(Task data) {
+  public static boolean isWhileCounter(final Task data) {
     checkTask(data);
-    if (!isAttributeSet(data, propNameWhileCounter)) {
-      return false;
-    } else {
+    if (isAttributeSet(data, propNameWhileCounter)) {
       return (boolean) getAttribute(data, propNameWhileCounter);
+    } else {
+      return false;
     }
   }
 
@@ -274,7 +275,7 @@ public final class PropertyServiceData extends AbstractPropertyService {
    * 
    * @param data the given data task
    */
-  static void makeWhileStart(Task data) {
+  static void makeWhileStart(final Task data) {
     checkTask(data);
     data.setAttribute(propNameWhileStart, true);
   }

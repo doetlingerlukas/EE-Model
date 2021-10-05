@@ -88,7 +88,8 @@ public final class PropertyServiceFunctionUtility extends AbstractPropertyServic
    * @param graph the enactment graph
    * @return dependency enforcing sequentiality between the given nodes
    */
-  static Dependency addSequelizerEdge(Task predecessor, Task successor, EnactmentGraph graph) {
+  static Dependency addSequelizerEdge(final Task predecessor, final Task successor,
+      final EnactmentGraph graph) {
     PropertyServiceData.setNodeType(successor, NodeType.Sequentiality);
     return PropertyServiceDependency.addDataDependency(predecessor, successor,
         ConstantsEEModel.JsonKeySequentiality, graph);
@@ -101,8 +102,8 @@ public final class PropertyServiceFunctionUtility extends AbstractPropertyServic
    * @param successor the task which has to come second
    * @param graph the enactment graph
    */
-  public static Element enforceSequentiality(Task predecessor, Task successor,
-      EnactmentGraph graph) {
+  public static Element enforceSequentiality(final Task predecessor, final Task successor,
+      final EnactmentGraph graph) {
     if (TaskPropertyService.isCommunication(successor)) {
       if (TaskPropertyService.isCommunication(predecessor)) {
         // seq between two data nodes
