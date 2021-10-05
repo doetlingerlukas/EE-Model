@@ -250,7 +250,7 @@ public final class PropertyServiceData extends AbstractPropertyService {
    * 
    * @param data the given node
    */
-  static void makeWhileCounter(Task data) {
+  static void makeWhileCounter(final Task data) {
     checkTask(data);
     data.setAttribute(propNameWhileCounter, true);
   }
@@ -261,12 +261,12 @@ public final class PropertyServiceData extends AbstractPropertyService {
    * @param data the given node
    * @return true iff the given node is a while start
    */
-  public static boolean isWhileStart(Task data) {
+  public static boolean isWhileStart(final Task data) {
     checkTask(data);
-    if (!isAttributeSet(data, propNameWhileStart)) {
-      return false;
-    } else {
+    if (isAttributeSet(data, propNameWhileStart)) {
       return (boolean) data.getAttribute(propNameWhileStart);
+    } else {
+      return false;
     }
   }
 
