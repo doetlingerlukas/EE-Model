@@ -15,8 +15,8 @@ import net.sf.opendse.model.properties.TaskPropertyService;
  */
 public final class PropertyServiceFunctionUtilityWhile extends AbstractPropertyService {
 
-  private final static String propNameWhileStart = Properties.WhileStart.name();
-  private final static String propNameWhileCounter = Properties.WhileCounter.name();
+  private final static String propNameWhileStart = Properties.WhileStartRef.name();
+  private final static String propNameWhileCounter = Properties.WhileCounterRef.name();
 
   /**
    * No constructor.
@@ -28,15 +28,15 @@ public final class PropertyServiceFunctionUtilityWhile extends AbstractPropertyS
    * 
    * @author Fedor Smirnov
    */
-  protected enum Properties {
+  public enum Properties {
     /**
      * Reference to the data node modeling the start of the while body
      */
-    WhileStart,
+    WhileStartRef,
     /**
      * Reference to the data node containing the loop count
      */
-    WhileCounter
+    WhileCounterRef
   }
 
 

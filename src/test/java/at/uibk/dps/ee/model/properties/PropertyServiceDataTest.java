@@ -32,7 +32,7 @@ public class PropertyServiceDataTest {
   @Test
   void testWhileCounter() {
     Task counter = PropertyServiceData.createWhileCounter("whileCounter");
-    assertEquals(NodeType.WhileCounter, PropertyServiceData.getNodeType(counter));
+    assertTrue(PropertyServiceData.isWhileCounter(counter));
     assertEquals(0, PropertyServiceData.getContent(counter).getAsInt());
     PropertyServiceData.incrementWhileCounter(counter);
     assertEquals(1, PropertyServiceData.getContent(counter).getAsInt());

@@ -2,7 +2,10 @@ package at.uibk.dps.ee.model.properties;
 
 import at.uibk.dps.ee.model.constants.ConstantsEEModel;
 import at.uibk.dps.ee.model.graph.EnactmentGraph;
+import at.uibk.dps.ee.model.properties.PropertyServiceData.NodeType;
 import at.uibk.dps.ee.model.properties.PropertyServiceFunction.UsageType;
+import net.sf.opendse.model.Dependency;
+import net.sf.opendse.model.Element;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.AbstractPropertyService;
 import net.sf.opendse.model.properties.TaskPropertyService;
@@ -59,7 +62,7 @@ public final class PropertyServiceFunctionUtility extends AbstractPropertyServic
    * @param graph the enactment graph
    * @return the node which was added to the graph
    */
-  public static Task addSequelizerNode(final Task dataFirst, final Task dataSecond,
+  static Task addSequelizerNode(final Task dataFirst, final Task dataSecond,
       final EnactmentGraph graph) {
     if (!(TaskPropertyService.isCommunication(dataFirst)
         && TaskPropertyService.isCommunication(dataSecond))) {
@@ -74,6 +77,44 @@ public final class PropertyServiceFunctionUtility extends AbstractPropertyServic
     PropertyServiceDependency.addDataDependency(result, dataSecond,
         ConstantsEEModel.JsonKeySequentiality, graph);
     return result;
+  }
+
+  /**
+   * Adds and returns a dependency enforcing sequentiality between the given
+   * nodes.
+   * 
+   * @param predecessor the predecessor (function)
+   * @param successor the successor (data)
+   * @param graph the enactment graph
+   * @return dependency enforcing sequentiality between the given nodes
+   */
+  static Dependency addSequelizerEdge(Task predecessor, Task successor, EnactmentGraph graph) {
+    PropertyServiceData.setNodeType(successor, NodeType.Sequentiality);
+    return PropertyServiceDependency.addDataDependency(predecessor, successor,
+        ConstantsEEModel.JsonKeySequentiality, graph);
+  }
+
+  /**
+   * Adds the elements necessary to enforce sequentiality between the given tasks
+   * 
+   * @param predecessor the task which has to come first
+   * @param successor the task which has to come second
+   * @param graph the enactment graph
+   */
+  public static Element enforceSequentiality(Task predecessor, Task successor,
+      EnactmentGraph graph) {
+    if (TaskPropertyService.isCommunication(successor)) {
+      if (TaskPropertyService.isCommunication(predecessor)) {
+        // seq between two data nodes
+        return addSequelizerNode(predecessor, successor, graph);
+      } else {
+        // seq between a function and data
+        return addSequelizerEdge(predecessor, successor, graph);
+      }
+    } else {
+      throw new IllegalArgumentException(
+          "Seq enforcement: successor " + successor + " is not a data node.");
+    }
   }
 
   /**

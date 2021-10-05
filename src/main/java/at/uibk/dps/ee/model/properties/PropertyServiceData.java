@@ -19,6 +19,8 @@ import net.sf.opendse.model.properties.TaskPropertyService;
 public final class PropertyServiceData extends AbstractPropertyService {
 
   private static final String propNameOriginalWhileEnd = Property.OriginalWhileEnd.name();
+  private static final String propNameWhileStart = Property.WhileStart.name();
+  private static final String propNameWhileCounter = Property.WhileCounter.name();
 
   private PropertyServiceData() {}
 
@@ -60,7 +62,15 @@ public final class PropertyServiceData extends AbstractPropertyService {
     /**
      * Original while end (used for result nodes of a while compound)
      */
-    OriginalWhileEnd
+    OriginalWhileEnd,
+    /**
+     * Data node representing the start of a while compound
+     */
+    WhileStart,
+    /**
+     * Data node representing the loop counter of a while compound
+     */
+    WhileCounter
   }
 
   public enum DataType {
@@ -90,15 +100,7 @@ public final class PropertyServiceData extends AbstractPropertyService {
     /**
      * Data nodes used to model sequentiality without data exchange
      */
-    Sequentiality,
-    /**
-     * Data node representing the start of a while compound
-     */
-    WhileStart,
-    /**
-     * Data node representing the loop counter of a while compound
-     */
-    WhileCounter
+    Sequentiality
   }
 
   /**
@@ -148,7 +150,10 @@ public final class PropertyServiceData extends AbstractPropertyService {
   public static boolean isConstantNode(final Task node) {
     checkTask(node);
     final NodeType type = getNodeType(node);
-    return type.equals(NodeType.Constant) || type.equals(NodeType.WhileCounter);
+    if (isWhileStart(node)) {
+      return false;
+    }
+    return type.equals(NodeType.Constant) || isWhileCounter(node);
   }
 
   /**
@@ -207,7 +212,7 @@ public final class PropertyServiceData extends AbstractPropertyService {
    */
   public static Task createWhileStart(final String nodeId) {
     final Task result = createConstantNode(nodeId, DataType.Boolean, new JsonPrimitive(true));
-    setNodeType(result, NodeType.WhileStart);
+    makeWhileStart(result);
     return result;
   }
 
@@ -220,8 +225,58 @@ public final class PropertyServiceData extends AbstractPropertyService {
    */
   public static Task createWhileCounter(final String nodeId) {
     final Task result = createConstantNode(nodeId, DataType.Number, new JsonPrimitive(0));
-    setNodeType(result, NodeType.WhileCounter);
+    makeWhileCounter(result);
     return result;
+  }
+
+  /**
+   * Returns true iff the given node is a while counter.
+   * 
+   * @param data the given data node
+   * @return true iff the given node is a while counter
+   */
+  public static boolean isWhileCounter(Task data) {
+    checkTask(data);
+    if (!isAttributeSet(data, propNameWhileCounter)) {
+      return false;
+    } else {
+      return (boolean) getAttribute(data, propNameWhileCounter);
+    }
+  }
+
+  /**
+   * Annotates the given node as a while counter.
+   * 
+   * @param data the given node
+   */
+  static void makeWhileCounter(Task data) {
+    checkTask(data);
+    data.setAttribute(propNameWhileCounter, true);
+  }
+
+  /**
+   * Returns true iff the given node is a while start.
+   * 
+   * @param data the given node
+   * @return true iff the given node is a while start
+   */
+  public static boolean isWhileStart(Task data) {
+    checkTask(data);
+    if (!isAttributeSet(data, propNameWhileStart)) {
+      return false;
+    } else {
+      return (boolean) data.getAttribute(propNameWhileStart);
+    }
+  }
+
+  /**
+   * Annotates the given task as a while start
+   * 
+   * @param data the given data task
+   */
+  static void makeWhileStart(Task data) {
+    checkTask(data);
+    data.setAttribute(propNameWhileStart, true);
   }
 
   /**
@@ -231,7 +286,7 @@ public final class PropertyServiceData extends AbstractPropertyService {
    */
   public static void incrementWhileCounter(final Task whileCounter) {
     checkTask(whileCounter);
-    if (!getNodeType(whileCounter).equals(NodeType.WhileCounter)) {
+    if (!isWhileCounter(whileCounter)) {
       throw new IllegalArgumentException("Data node " + whileCounter + " is not a while counter.");
     }
     final int curCount = getContent(whileCounter).getAsInt();
@@ -368,7 +423,8 @@ public final class PropertyServiceData extends AbstractPropertyService {
    */
   public static void setContent(final Task task, final JsonElement content) {
     checkTask(task);
-    if (getNodeType(task).equals(NodeType.Constant)) {
+    if (getNodeType(task).equals(NodeType.Constant)
+        && !(isWhileCounter(task) || isWhileStart(task))) {
       throw new IllegalArgumentException("The content of a constant data node must not be set.");
     }
     final String attrNameContent = Property.Content.name();
@@ -414,7 +470,7 @@ public final class PropertyServiceData extends AbstractPropertyService {
    */
   public static void resetContent(final Task task) {
     checkTask(task);
-    if (getNodeType(task).equals(NodeType.Constant)) {
+    if (getNodeType(task).equals(NodeType.Constant) && !isWhileStart(task)) {
       throw new IllegalArgumentException("The content of a constant data node must not be set.");
     }
     final String attrName = Property.DataAvailable.name();

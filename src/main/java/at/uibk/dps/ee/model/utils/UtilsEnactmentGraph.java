@@ -4,7 +4,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import at.uibk.dps.ee.model.graph.EnactmentGraph;
 import at.uibk.dps.ee.model.properties.PropertyServiceData;
-import at.uibk.dps.ee.model.properties.PropertyServiceData.NodeType;
 import net.sf.opendse.model.Task;
 import net.sf.opendse.model.properties.TaskPropertyService;
 
@@ -29,11 +28,11 @@ public final class UtilsEnactmentGraph {
             .filter(dataNode -> PropertyServiceData.isConstantNode(dataNode))
             .collect(Collectors.toSet());
     // add the while data nodes which are not nested
-    final Set<Task> relevantWhileNodes = graph.getVertices().stream()
-        .filter(node -> TaskPropertyService.isCommunication(node))
-        .filter(dataNode -> PropertyServiceData.getNodeType(dataNode).equals(NodeType.WhileStart))
-        .filter(whileStart -> graph.getPredecessorCount(whileStart) == 0)
-        .collect(Collectors.toSet());
+    final Set<Task> relevantWhileNodes =
+        graph.getVertices().stream().filter(node -> TaskPropertyService.isCommunication(node))
+            .filter(dataNode -> PropertyServiceData.isWhileStart(dataNode))
+            .filter(whileStart -> graph.getPredecessorCount(whileStart) == 0)
+            .collect(Collectors.toSet());
     result.addAll(relevantWhileNodes);
     return result;
   }
