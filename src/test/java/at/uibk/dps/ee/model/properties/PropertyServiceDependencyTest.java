@@ -20,31 +20,47 @@ public class PropertyServiceDependencyTest {
   @Test
   void testWhileReplicaAnnotation() {
     Dependency dep = new Dependency("dep");
-    String whileName = "while";
-    Task data = new Communication("data");
-    Task task = new Task("task");
+
+    String whileNameFirst = "while";
+    String whileNameSecond = "whileSecond";
+
+    String dataNameFirst = "data";
+    String dataNameSecond = "dataSecond";
 
     assertFalse(PropertyServiceDependency.isWhileAnnotated(dep));
-    assertThrows(IllegalArgumentException.class, () -> {
-      PropertyServiceDependency.getReplicaSrcReference(dep);
-    });
-    assertThrows(IllegalArgumentException.class, () -> {
-      PropertyServiceDependency.getReplicaWhileFuncReference(dep);
-    });
-    assertThrows(IllegalArgumentException.class, () -> {
-      PropertyServiceDependency.annotateWhileReplica(dep, task, whileName);
-    });
+    
     assertThrows(IllegalArgumentException.class, () -> {
       PropertyServiceDependency.resetWhileAnnotation(dep);
     });
-    PropertyServiceDependency.annotateWhileReplica(dep, data, whileName);
-    assertEquals(whileName, PropertyServiceDependency.getReplicaWhileFuncReference(dep));
-    assertEquals(data.getId(), PropertyServiceDependency.getReplicaSrcReference(dep));
+    
     assertThrows(IllegalArgumentException.class, () -> {
-      PropertyServiceDependency.annotateWhileReplica(dep, data, whileName);
+      PropertyServiceDependency.getWhileDataReferences(dep);
     });
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      PropertyServiceDependency.getWhileFuncReferences(dep);
+    });
+    
+    assertThrows(IllegalArgumentException.class, () -> {
+      PropertyServiceDependency.getDataRefForWhile(dep, whileNameFirst);
+    });
+    
+    PropertyServiceDependency.addWhileDataReference(dep, dataNameFirst, whileNameFirst);
+    PropertyServiceDependency.addWhileDataReference(dep, dataNameSecond, whileNameSecond);
+    assertTrue(PropertyServiceDependency.isWhileAnnotated(dep));
+    
+    assertEquals(dataNameSecond,
+        PropertyServiceDependency.getDataRefForWhile(dep, whileNameSecond));
+    
+    assertThrows(IllegalStateException.class, () -> {
+      PropertyServiceDependency.getDataRefForWhile(dep, "otherWhile");
+    });
+
     PropertyServiceDependency.resetWhileAnnotation(dep);
     assertFalse(PropertyServiceDependency.isWhileAnnotated(dep));
+    
+    
+
   }
 
   @Test

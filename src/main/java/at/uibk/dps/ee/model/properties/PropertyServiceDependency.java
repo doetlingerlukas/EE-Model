@@ -1,5 +1,7 @@
 package at.uibk.dps.ee.model.properties;
 
+import java.util.ArrayList;
+import java.util.List;
 import at.uibk.dps.ee.model.constants.ConstantsEEModel;
 import at.uibk.dps.ee.model.graph.EnactmentGraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
@@ -18,9 +20,10 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
 
   private static final String propNameExtractionDone = Property.ExtractionDone.name();
   private static final String propNameDataConsumed = Property.DataConsumed.name();
-  private static final String propNameWhileRepReference = Property.WhileRepDataReference.name();
-  private static final String propNameWhileFuncReference =
-      Property.WhileRepWhileFuncReference.name();
+  private static final String propNameWhileRepDataRefList =
+      Property.WhileRepDataReferenceList.name();
+  private static final String propNameWhileRepFuncRefList =
+      Property.WhileRepFunctionReferenceList.name();
   private static final String propNamePrevWhileRef = Property.PreviousWhileIteration.name();
 
   private PropertyServiceDependency() {}
@@ -54,15 +57,16 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
      */
     ExtractionDone,
     /**
-     * Used to annotate an edge which shall be used as source when the edge is
-     * replicated during a while transformation
+     * Used to annotate the edge with the data node which shall be used as source
+     * when the edge is replicated during the while transformation indicated in the
+     * whileRepFunctionList (on the same list index)
      */
-    WhileRepDataReference,
+    WhileRepDataReferenceList,
     /**
-     * The reference for the while function for whose transformation the data
-     * dependency modeled by the edge varies
+     * Used to annotate the edge with the while functions which necessitate a
+     * reconnection of the edge to a different source node
      */
-    WhileRepWhileFuncReference,
+    WhileRepFunctionReferenceList,
     /**
      * Annotation for edges which point to previous while itearations.
      */
@@ -116,30 +120,114 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * @param dependency the edge to check
    * @return true iff the given edge is annotated with a replica source
    */
+  @SuppressWarnings("unchecked")
   public static boolean isWhileAnnotated(final Dependency dependency) {
-    return isAttributeSet(dependency, propNameWhileRepReference);
+    if (isAttributeSet(dependency, propNameWhileRepDataRefList)) {
+      List<String> whileDataRefs =
+          (List<String>) getAttribute(dependency, propNameWhileRepDataRefList);
+      return !whileDataRefs.isEmpty();
+    } else {
+      return false;
+    }
   }
 
   /**
-   * Annotates that the given node shall be used as a source of the replica of the
-   * given edge
+   * Returns the list of the while data references for the given dependency.
    * 
-   * @param dependency the given edge
-   * @param data the node which shall be used as a src when the dependency is
-   *        replicated
+   * @param dep the given dependency
+   * @return the list of the data references for the given dependency
    */
-  public static void annotateWhileReplica(final Dependency dependency, final Task data,
-      final String whileFuncName) {
-    if (!TaskPropertyService.isCommunication(data)) {
-      throw new IllegalArgumentException(
-          "Only a data node can be a replica src, task " + data + " is not a data node.");
+  @SuppressWarnings("unchecked")
+  static List<String> getWhileDataReferences(Dependency dep) {
+    if (isAttributeSet(dep, propNameWhileRepDataRefList)) {
+      return (List<String>) getAttribute(dep, propNameWhileRepDataRefList);
+    } else {
+      throw new IllegalArgumentException("No data references annotated for dependency " + dep);
     }
-    if (isWhileAnnotated(dependency)) {
+  }
+
+  /**
+   * Returns the list of the while function references for the given dependency.
+   * 
+   * @param dependency the given dependency
+   * @return the list of the data references for the given dependency
+   */
+  @SuppressWarnings("unchecked")
+  static List<String> getWhileFuncReferences(Dependency dependency) {
+    if (isAttributeSet(dependency, propNameWhileRepFuncRefList)) {
+      return (List<String>) getAttribute(dependency, propNameWhileRepFuncRefList);
+    } else {
       throw new IllegalArgumentException(
-          "Dependency edge " + dependency.getId() + " already while-annotated.");
+          "No functions references annotated for dependency " + dependency);
     }
-    dependency.setAttribute(propNameWhileRepReference, data.getId());
-    dependency.setAttribute(propNameWhileFuncReference, whileFuncName);
+  }
+
+  /**
+   * Returns the reference to the data node to which to transfer the node during
+   * the transformation by the given while node.
+   * 
+   * @param dependency the given dependency
+   * @param whileRef the while function triggering the transformation
+   * @return the reference to the data node to which to transfer the node during
+   *         the transformation by the given while node
+   */
+  public static String getDataRefForWhile(Dependency dependency, String whileRef) {
+    if (!isWhileAnnotated(dependency)) {
+      throw new IllegalArgumentException("Dependency " + dependency + " is not while annotated.");
+    }
+    List<String> whileRefs = getWhileFuncReferences(dependency);
+    List<String> dataRefs = getWhileDataReferences(dependency);
+    if (whileRefs.contains(whileRef)) {
+      return dataRefs.get(whileRefs.indexOf(whileRef));
+    } else {
+      throw new IllegalStateException("The dependency " + dependency
+          + " does not have a reference to the while func " + whileRef);
+    }
+  }
+
+  /**
+   * Adds an annotation specifying a srs node to which this dependency is
+   * transferred during the while transformation triggered by the given function.
+   * 
+   * @param dependency the dependency to annotate
+   * @param whileDataRef the reference to the data src node
+   * @param whileFuncRef the reference to the while function triggering the
+   *        transformation
+   */
+  public static void addWhileDataReference(Dependency dependency, String whileDataRef,
+      String whileFuncRef) {
+    addWhileDataReference(dependency, whileDataRef);
+    addWhileFuncReference(dependency, whileFuncRef);
+  }
+
+  /**
+   * Adds a while data ref to the list of the given dependency
+   * 
+   * @param dependency the given dependency
+   * @param whileDataRef the reference to add
+   */
+  static void addWhileDataReference(Dependency dependency, String whileDataRef) {
+    if (!isAttributeSet(dependency, propNameWhileRepDataRefList)) {
+      dependency.setAttribute(propNameWhileRepDataRefList, new ArrayList<>());
+    }
+    List<String> refList = getWhileDataReferences(dependency);
+    refList.add(whileDataRef);
+    dependency.setAttribute(propNameWhileRepDataRefList, refList);
+  }
+
+  /**
+   * Adds a while data func to the list of the given dependency
+   * 
+   * @param dependency the given dependency
+   * @param whileFuncRef the reference to add
+   */
+  static void addWhileFuncReference(Dependency dependency, String whileFuncRef) {
+    if (!isAttributeSet(dependency, propNameWhileRepFuncRefList)) {
+      dependency.setAttribute(propNameWhileRepFuncRefList, new ArrayList<>());
+    }
+    List<String> refList = getWhileFuncReferences(dependency);
+    refList.add(whileFuncRef);
+    dependency.setAttribute(propNameWhileRepFuncRefList, refList);
   }
 
   /**
@@ -152,37 +240,8 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
       throw new IllegalArgumentException(
           "Dependency edge " + dependency.getId() + " not while-annotated, so no reset.");
     }
-    dependency.setAttribute(propNameWhileRepReference, null);
-    dependency.setAttribute(propNameWhileFuncReference, null);
-  }
-
-  /**
-   * Returns a reference to the function for whose transformation the while
-   * function is relevant.
-   * 
-   * @param dependency the annotated edge
-   * @return reference to a while function
-   */
-  public static String getReplicaWhileFuncReference(final Dependency dependency) {
-    if (!isWhileAnnotated(dependency)) {
-      throw new IllegalArgumentException("Dependency " + dependency + " is not while annotated.");
-    }
-    return (String) getAttribute(dependency, propNameWhileFuncReference);
-  }
-
-  /**
-   * Returns the reference to the node which is used as source for the replicas of
-   * the given dependency.
-   * 
-   * @param dependency the given dependency
-   * @return the reference to the node which is used as source for the replicas of
-   *         the given dependency
-   */
-  public static String getReplicaSrcReference(final Dependency dependency) {
-    if (!isWhileAnnotated(dependency)) {
-      throw new IllegalArgumentException("Dependency " + dependency + " is not while annotated.");
-    }
-    return (String) getAttribute(dependency, propNameWhileRepReference);
+    dependency.setAttribute(propNameWhileRepDataRefList, new ArrayList<>());
+    dependency.setAttribute(propNameWhileRepFuncRefList, new ArrayList<>());
   }
 
   /**
