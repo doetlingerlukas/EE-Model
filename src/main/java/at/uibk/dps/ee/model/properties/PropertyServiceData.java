@@ -19,6 +19,7 @@ import net.sf.opendse.model.properties.TaskPropertyService;
 public final class PropertyServiceData extends AbstractPropertyService {
 
   private static final String propNameOriginalWhileEnd = Property.OriginalWhileEnd.name();
+  private static final String propNameOriginalWhileStart = Property.OriginalWhileStart.name();
   private static final String propNameWhileStart = Property.WhileStart.name();
   private static final String propNameWhileCounter = Property.WhileCounter.name();
 
@@ -63,6 +64,10 @@ public final class PropertyServiceData extends AbstractPropertyService {
      * Original while end (used for result nodes of a while compound)
      */
     OriginalWhileEnd,
+    /**
+     * Original while start
+     */
+    OriginalWhileStart,
     /**
      * Data node representing the start of a while compound
      */
@@ -114,6 +119,27 @@ public final class PropertyServiceData extends AbstractPropertyService {
       final String whileEndReference) {
     checkTask(dataOutWhile);
     dataOutWhile.setAttribute(propNameOriginalWhileEnd, whileEndReference);
+  }
+
+  /**
+   * Sets the reference to the original while start node.
+   * 
+   * @param dataWhileStart the node to annotate with the reference
+   * @param whileStartReference the reference to annotate
+   */
+  public static void setOriginalWhileStartAnnotation(Task dataWhileStart,
+      String whileStartReference) {
+    checkTask(dataWhileStart);
+    dataWhileStart.setAttribute(propNameOriginalWhileStart, whileStartReference);
+  }
+
+  public static String getOriginalWhileStartAnnotation(Task dataWhileStart) {
+    checkTask(dataWhileStart);
+    if (!isWhileStart(dataWhileStart)
+        || !isAttributeSet(dataWhileStart, propNameOriginalWhileStart)) {
+      throw new IllegalArgumentException("Node " + dataWhileStart + " is not a while start.");
+    }
+    return (String) getAttribute(dataWhileStart, propNameOriginalWhileStart);
   }
 
   /**
@@ -278,6 +304,7 @@ public final class PropertyServiceData extends AbstractPropertyService {
   static void makeWhileStart(final Task data) {
     checkTask(data);
     data.setAttribute(propNameWhileStart, true);
+    setOriginalWhileStartAnnotation(data, data.getId());
   }
 
   /**

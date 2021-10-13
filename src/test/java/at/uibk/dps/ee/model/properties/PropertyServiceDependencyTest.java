@@ -45,8 +45,8 @@ public class PropertyServiceDependencyTest {
       PropertyServiceDependency.getDataRefForWhile(dep, whileNameFirst);
     });
     
-    PropertyServiceDependency.addWhileDataReference(dep, dataNameFirst, whileNameFirst);
-    PropertyServiceDependency.addWhileDataReference(dep, dataNameSecond, whileNameSecond);
+    PropertyServiceDependency.addWhileInputReference(dep, dataNameFirst, whileNameFirst);
+    PropertyServiceDependency.addWhileInputReference(dep, dataNameSecond, whileNameSecond);
     assertTrue(PropertyServiceDependency.isWhileAnnotated(dep));
     
     assertEquals(dataNameSecond,
