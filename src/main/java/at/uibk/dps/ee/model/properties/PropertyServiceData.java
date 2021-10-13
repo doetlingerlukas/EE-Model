@@ -23,6 +23,8 @@ public final class PropertyServiceData extends AbstractPropertyService {
   private static final String propNameWhileStart = Property.WhileStart.name();
   private static final String propNameWhileCounter = Property.WhileCounter.name();
 
+  private static final int initialWhileCounterValue = 1;
+
   private PropertyServiceData() {}
 
   /**
@@ -251,9 +253,18 @@ public final class PropertyServiceData extends AbstractPropertyService {
    * @return a node representing the loop count of a while loop
    */
   public static Task createWhileCounter(final String nodeId) {
-    final Task result = createConstantNode(nodeId, DataType.Number, new JsonPrimitive(0));
+    final Task result =
+        createConstantNode(nodeId, DataType.Number, new JsonPrimitive(initialWhileCounterValue));
     makeWhileCounter(result);
     return result;
+  }
+
+  public static void resetWhileCounter(final Task whileCounterNode) {
+    if (!isWhileCounter(whileCounterNode)) {
+      throw new IllegalArgumentException(
+          "The node " + whileCounterNode + " is not a while counter.");
+    }
+    setContent(whileCounterNode, new JsonPrimitive(initialWhileCounterValue));
   }
 
   /**
