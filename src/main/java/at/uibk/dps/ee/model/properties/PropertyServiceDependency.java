@@ -123,7 +123,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
   @SuppressWarnings("unchecked")
   public static boolean isWhileAnnotated(final Dependency dependency) {
     if (isAttributeSet(dependency, propNameWhileRepDataRefList)) {
-      List<String> whileDataRefs =
+      final List<String> whileDataRefs =
           (List<String>) getAttribute(dependency, propNameWhileRepDataRefList);
       return !whileDataRefs.isEmpty();
     } else {
@@ -138,7 +138,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * @return the list of the data references for the given dependency
    */
   @SuppressWarnings("unchecked")
-  public static List<String> getWhileDataReferences(Dependency dep) {
+  public static List<String> getWhileDataReferences(final Dependency dep) {
     if (isAttributeSet(dep, propNameWhileRepDataRefList)) {
       return (List<String>) getAttribute(dep, propNameWhileRepDataRefList);
     } else {
@@ -171,7 +171,8 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * @return true iff the given dependency has an annotation for the given while
    *         reference
    */
-  public static boolean isAnnotatedForGivenWhile(Dependency dependency, String whileRef) {
+  public static boolean isAnnotatedForGivenWhile(final Dependency dependency,
+      final String whileRef) {
     return isWhileAnnotated(dependency) && getWhileFuncReferences(dependency).contains(whileRef);
   }
 
@@ -189,8 +190,8 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
       throw new IllegalArgumentException(
           "Dependency " + dependency + " is not while annotated for while " + whileRef);
     }
-    List<String> whileRefs = getWhileFuncReferences(dependency);
-    List<String> dataRefs = getWhileDataReferences(dependency);
+    final List<String> whileRefs = getWhileFuncReferences(dependency);
+    final List<String> dataRefs = getWhileDataReferences(dependency);
     return dataRefs.get(whileRefs.indexOf(whileRef));
   }
 
@@ -203,8 +204,8 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * @param whileFuncRef the reference to the while function triggering the
    *        transformation
    */
-  public static void addWhileInputReference(Dependency dependency, String whileDataRef,
-      String whileFuncRef) {
+  public static void addWhileInputReference(final Dependency dependency, final String whileDataRef,
+      final String whileFuncRef) {
     addWhileDataReference(dependency, whileDataRef);
     addWhileFuncReference(dependency, whileFuncRef);
   }
@@ -216,17 +217,18 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * @param dependency the given dependency
    * @param whileFuncRef the while function whose reference is being removed
    */
-  public static void removeWhileInputReference(Dependency dependency, String whileFuncRef) {
+  public static void removeWhileInputReference(final Dependency dependency,
+      final String whileFuncRef) {
     if (!isAnnotatedForGivenWhile(dependency, whileFuncRef)) {
       throw new IllegalArgumentException("Dependency " + dependency
           + " not annotated with reference for given while " + whileFuncRef);
     }
-    List<String> refFuncListOriginal = getWhileFuncReferences(dependency);
-    List<String> refDataListOriginal = getWhileDataReferences(dependency);
+    final List<String> refFuncListOriginal = getWhileFuncReferences(dependency);
+    final List<String> refDataListOriginal = getWhileDataReferences(dependency);
 
-    List<String> refFuncList = new ArrayList<>(refFuncListOriginal);
-    List<String> refDataList = new ArrayList<>(refDataListOriginal);
-    int idx = refFuncList.indexOf(whileFuncRef);
+    final List<String> refFuncList = new ArrayList<>(refFuncListOriginal);
+    final List<String> refDataList = new ArrayList<>(refDataListOriginal);
+    final int idx = refFuncList.indexOf(whileFuncRef);
     refFuncList.remove(idx);
     refDataList.remove(idx);
     dependency.setAttribute(propNameWhileRepDataRefList, refDataList);
@@ -239,11 +241,11 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * @param dependency the given dependency
    * @param whileDataRef the reference to add
    */
-  static void addWhileDataReference(Dependency dependency, String whileDataRef) {
+  static void addWhileDataReference(final Dependency dependency, final String whileDataRef) {
     if (!isAttributeSet(dependency, propNameWhileRepDataRefList)) {
       dependency.setAttribute(propNameWhileRepDataRefList, new ArrayList<>());
     }
-    List<String> refList = getWhileDataReferences(dependency);
+    final List<String> refList = getWhileDataReferences(dependency);
     refList.add(whileDataRef);
     dependency.setAttribute(propNameWhileRepDataRefList, refList);
   }
@@ -254,11 +256,11 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * @param dependency the given dependency
    * @param whileFuncRef the reference to add
    */
-  static void addWhileFuncReference(Dependency dependency, String whileFuncRef) {
+  static void addWhileFuncReference(final Dependency dependency, final String whileFuncRef) {
     if (!isAttributeSet(dependency, propNameWhileRepFuncRefList)) {
       dependency.setAttribute(propNameWhileRepFuncRefList, new ArrayList<>());
     }
-    List<String> refList = getWhileFuncReferences(dependency);
+    final List<String> refList = getWhileFuncReferences(dependency);
     refList.add(whileFuncRef);
     dependency.setAttribute(propNameWhileRepFuncRefList, refList);
   }

@@ -129,12 +129,18 @@ public final class PropertyServiceData extends AbstractPropertyService {
    * @param dataWhileStart the node to annotate with the reference
    * @param whileStartReference the reference to annotate
    */
-  public static void setOriginalWhileStartAnnotation(Task dataWhileStart,
-      String whileStartReference) {
+  public static void setOriginalWhileStartAnnotation(final Task dataWhileStart,
+      final String whileStartReference) {
     checkTask(dataWhileStart);
     dataWhileStart.setAttribute(propNameOriginalWhileStart, whileStartReference);
   }
 
+  /**
+   * Returns the reference to the original while data node in the initial graph.
+   * 
+   * @param dataWhileStart the while data node (possibly a replica)
+   * @return the reference to the original while data node in the initial graph
+   */
   public static String getOriginalWhileStartAnnotation(Task dataWhileStart) {
     checkTask(dataWhileStart);
     if (!isWhileStart(dataWhileStart)
@@ -259,6 +265,11 @@ public final class PropertyServiceData extends AbstractPropertyService {
     return result;
   }
 
+  /**
+   * Resets the content of the given while counter to the provided init value.
+   * 
+   * @param whileCounterNode the provided while counter node
+   */
   public static void resetWhileCounter(final Task whileCounterNode) {
     if (!isWhileCounter(whileCounterNode)) {
       throw new IllegalArgumentException(
