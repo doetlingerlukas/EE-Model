@@ -219,7 +219,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
   public static void removeWhileInputReference(Dependency dependency, String whileFuncRef) {
     if (!isAnnotatedForGivenWhile(dependency, whileFuncRef)) {
       throw new IllegalArgumentException("Dependency " + dependency
-          + "Not annotated with reference for given while " + whileFuncRef);
+          + " not annotated with reference for given while " + whileFuncRef);
     }
     List<String> refFuncListOriginal = getWhileFuncReferences(dependency);
     List<String> refDataListOriginal = getWhileDataReferences(dependency);

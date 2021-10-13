@@ -21,6 +21,15 @@ import net.sf.opendse.model.Task;
 public class PropertyServiceDataTest {
 
   @Test
+  void testOriginalWhileStartAnnotation() {
+    Task data = new Communication("data");
+    assertFalse(PropertyServiceData.isWhileStart(data));
+    PropertyServiceData.makeWhileStart(data);
+    assertTrue(PropertyServiceData.isWhileStart(data));
+    assertEquals(data.getId(), PropertyServiceData.getOriginalWhileStartAnnotation(data));
+  }
+
+  @Test
   void testWhileEndAnnotation() {
     Task data = new Communication("data");
     assertFalse(PropertyServiceData.isWhileOutput(data));
@@ -33,9 +42,11 @@ public class PropertyServiceDataTest {
   void testWhileCounter() {
     Task counter = PropertyServiceData.createWhileCounter("whileCounter");
     assertTrue(PropertyServiceData.isWhileCounter(counter));
-    assertEquals(0, PropertyServiceData.getContent(counter).getAsInt());
+    assertEquals(PropertyServiceData.initialWhileCounterValue,
+        PropertyServiceData.getContent(counter).getAsInt());
     PropertyServiceData.incrementWhileCounter(counter);
-    assertEquals(1, PropertyServiceData.getContent(counter).getAsInt());
+    assertEquals(PropertyServiceData.initialWhileCounterValue + 1,
+        PropertyServiceData.getContent(counter).getAsInt());
     Task data = new Communication("data");
     assertThrows(IllegalArgumentException.class, () -> {
       PropertyServiceData.incrementWhileCounter(data);

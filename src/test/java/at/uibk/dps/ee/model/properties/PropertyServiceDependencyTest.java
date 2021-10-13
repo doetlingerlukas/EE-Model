@@ -52,14 +52,17 @@ public class PropertyServiceDependencyTest {
     assertEquals(dataNameSecond,
         PropertyServiceDependency.getDataRefForWhile(dep, whileNameSecond));
     
-    assertThrows(IllegalStateException.class, () -> {
+    assertThrows(IllegalArgumentException.class, () -> {
       PropertyServiceDependency.getDataRefForWhile(dep, "otherWhile");
     });
+    
+    PropertyServiceDependency.removeWhileInputReference(dep, whileNameFirst);
+    
+    assertTrue(PropertyServiceDependency.isAnnotatedForGivenWhile(dep, whileNameSecond));
+    assertFalse(PropertyServiceDependency.isAnnotatedForGivenWhile(dep, whileNameFirst));
 
     PropertyServiceDependency.resetWhileAnnotation(dep);
     assertFalse(PropertyServiceDependency.isWhileAnnotated(dep));
-    
-    
 
   }
 

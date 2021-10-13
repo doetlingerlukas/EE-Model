@@ -23,7 +23,7 @@ public final class PropertyServiceData extends AbstractPropertyService {
   private static final String propNameWhileStart = Property.WhileStart.name();
   private static final String propNameWhileCounter = Property.WhileCounter.name();
 
-  private static final int initialWhileCounterValue = 1;
+  static final int initialWhileCounterValue = 1;
 
   private PropertyServiceData() {}
 
