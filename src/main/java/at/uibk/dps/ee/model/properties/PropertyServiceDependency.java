@@ -153,7 +153,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * @return the list of the data references for the given dependency
    */
   @SuppressWarnings("unchecked")
-  public static List<String> getWhileFuncReferences(Dependency dependency) {
+  public static List<String> getWhileFuncReferences(final Dependency dependency) {
     if (isAttributeSet(dependency, propNameWhileRepFuncRefList)) {
       return (List<String>) getAttribute(dependency, propNameWhileRepFuncRefList);
     } else {
@@ -185,7 +185,7 @@ public final class PropertyServiceDependency extends AbstractPropertyService {
    * @return the reference to the data node to which to transfer the node during
    *         the transformation by the given while node
    */
-  public static String getDataRefForWhile(Dependency dependency, String whileRef) {
+  public static String getDataRefForWhile(final Dependency dependency, final String whileRef) {
     if (!isAnnotatedForGivenWhile(dependency, whileRef)) {
       throw new IllegalArgumentException(
           "Dependency " + dependency + " is not while annotated for while " + whileRef);

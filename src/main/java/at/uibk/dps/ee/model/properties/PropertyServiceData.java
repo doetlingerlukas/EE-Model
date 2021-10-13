@@ -141,7 +141,7 @@ public final class PropertyServiceData extends AbstractPropertyService {
    * @param dataWhileStart the while data node (possibly a replica)
    * @return the reference to the original while data node in the initial graph
    */
-  public static String getOriginalWhileStartAnnotation(Task dataWhileStart) {
+  public static String getOriginalWhileStartAnnotation(final Task dataWhileStart) {
     checkTask(dataWhileStart);
     if (!isWhileStart(dataWhileStart)
         || !isAttributeSet(dataWhileStart, propNameOriginalWhileStart)) {
