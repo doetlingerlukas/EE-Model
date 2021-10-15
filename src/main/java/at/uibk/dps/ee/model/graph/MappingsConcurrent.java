@@ -106,7 +106,7 @@ public class MappingsConcurrent implements Iterable<Mapping<Task, Resource>> {
   public Set<Task> getSources(final Resource resource) {
     if (resourceMappings.containsKey(resource.getId())) {
       return resourceMappings.get(resource.getId()).values().stream()
-          .map(mapping -> mapping.getSource()).collect(Collectors.toSet());
+          .map(Mapping::getSource).collect(Collectors.toSet());
     } else {
       return new HashSet<>();
     }
@@ -122,7 +122,7 @@ public class MappingsConcurrent implements Iterable<Mapping<Task, Resource>> {
    */
   public Set<Resource> getTargets(final Task task) {
     if (taskMappings.containsKey(task.getId())) {
-      return taskMappings.get(task.getId()).values().stream().map(mapping -> mapping.getTarget())
+      return taskMappings.get(task.getId()).values().stream().map(Mapping::getTarget)
           .collect(Collectors.toSet());
     } else {
       return new HashSet<>();
