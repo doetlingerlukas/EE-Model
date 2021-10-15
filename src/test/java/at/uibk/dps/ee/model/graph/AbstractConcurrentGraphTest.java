@@ -21,33 +21,61 @@ class AbstractConcurrentGraphTest {
   void setup() {
     tested = new MockGraph();
   }
-  
+
   @Test
   void testRemoveEdgeWithVertex() {
-    
+
     Task t1 = new Task("t1");
     Task t2 = new Task("t2");
     Link link = new Link("link");
-    
+
     tested.addEdge(link, t1, t2, EdgeType.DIRECTED);
     assertTrue(tested.containsEdge(link.getId()));
     tested.removeVertex(t1);
     assertFalse(tested.containsEdge(link.getId()));
   }
-  
+
   @Test
   void testRemoveEdgeWithOtherVertex() {
-    
+
     Task t1 = new Task("t1");
     Task t2 = new Task("t2");
     Link link = new Link("link");
-    
+
     tested.addEdge(link, t1, t2, EdgeType.UNDIRECTED);
     assertTrue(tested.containsEdge(link.getId()));
     tested.removeVertex(t2);
     assertFalse(tested.containsEdge(link.getId()));
   }
 
+  @Test
+  void testGetEndpointsDirected() {
+    // directed case
+    Task task1 = new Task("task1");
+    Task task2 = new Task("task2");
+    Link dep = new Link("dep");
+    tested.addEdge(dep, task1, task2, EdgeType.DIRECTED);
+    assertEquals(task1, tested.getEndpoints(dep).getFirst());
+    assertEquals(task2, tested.getEndpoints(dep).getSecond());
+  }
+
+  @Test
+  void testGetEndpointsUndirected() {
+    // directed case
+    Task task1 = new Task("task1");
+    Task task2 = new Task("task2");
+    Link dep = new Link("dep");
+    tested.addEdge(dep, task2, task1, EdgeType.UNDIRECTED);
+    assertEquals(task2, tested.getEndpoints(dep).getFirst());
+    assertEquals(task1, tested.getEndpoints(dep).getSecond());
+  }
+
+  @Test
+  void testGetEndpointsUndirectedExc() {
+    assertThrows(IllegalArgumentException.class, () -> {
+      tested.getEndpoints(new Link("link"));
+    });
+  }
 
   @Test
   void testForbiddenMethods() {
@@ -82,9 +110,6 @@ class AbstractConcurrentGraphTest {
     });
     assertThrows(IllegalAccessError.class, () -> {
       tested.getOpposite(new Task("t"), new Link("l"));
-    });
-    assertThrows(IllegalAccessError.class, () -> {
-      tested.getEndpoints(new Link("link"));
     });
   }
 }

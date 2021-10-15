@@ -358,7 +358,12 @@ public class AbstractConcurrentGraph<V extends Node, E extends Edge> extends Gra
 
   @Override
   public Pair<V> getEndpoints(final E edge) {
-    return super.getEndpoints(edge);
+    if (!containsEdge(edge.getId())) {
+      throw new IllegalArgumentException("Edge " + edge + notInGraphString);
+    }
+    final V first = getSource(edge);
+    final V second = getDest(edge);
+    return new Pair<V>(first, second);
   }
 
   @Override
