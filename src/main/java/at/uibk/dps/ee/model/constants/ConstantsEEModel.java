@@ -1,5 +1,8 @@
 package at.uibk.dps.ee.model.constants;
 
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
+
 /**
  * Container class for the constants used by the classes building and
  * maintaining the enactment model.
@@ -92,7 +95,7 @@ public final class ConstantsEEModel {
    * @return the collection name
    */
   public static String getCollectionName(final String elementKey) {
-    final String result = elementKey.split("\\" + CollectionIndexPrefix)[0];
+    final String result = Iterables.get(Splitter.onPattern("\\" + CollectionIndexPrefix).split(elementKey), 0);
     checkSplitResult(result, elementKey);
     return result;
   }
@@ -104,9 +107,9 @@ public final class ConstantsEEModel {
    * @return the index of the element within the array
    */
   public static int getArrayIndex(final String elementKey) {
-    final String intString = elementKey.split("\\" + CollectionIndexPrefix)[1];
+    final String intString = Iterables.get(Splitter.onPattern("\\" + CollectionIndexPrefix).split(elementKey), 1);
     checkSplitResult(intString, elementKey);
-    final String splitIntString = intString.split("\\" + CollectionIndexSuffix)[0];
+    final String splitIntString = Iterables.get(Splitter.onPattern("\\" + CollectionIndexSuffix).split(intString), 0);
     checkSplitResult(splitIntString, intString);
     return Integer.parseInt(splitIntString);
   }

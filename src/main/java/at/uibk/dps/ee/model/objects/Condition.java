@@ -64,7 +64,9 @@ public final class Condition implements Serializable {
    * 
    * @param deserialized the deserialized string
    */
+  @SuppressWarnings("StringSplitter")
   public Condition(final String deserialized) {
+    //TODO: don't use string splitter
     final String[] subStrings = deserialized.split("\\s+");
     // check for negation
     int idx = 0;
