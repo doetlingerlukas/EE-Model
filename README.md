@@ -17,7 +17,7 @@ Repository implementing Apollo's graph-based system model (application, resource
 
 ### Repository less relevant if
 
-+ You want to use Apollo for application orchestration ([EE-Demo](https://github.com/Apollo-Core/EE-Demo) is probably a good place to start; the readme of [EE-IO](https://github.com/Apollo-Core/EE-Demo) contains a description of the format of the input files required by Apollo)
++ You want to use Apollo for application orchestration ([EE-Demo](https://github.com/Apollo-Core/EE-Demo) is probably a good place to start; the readme of [EE-IO](https://github.com/Apollo-Core/EE-IO) contains a description of the format of the input files required by Apollo)
 + You want implement a particular type of component, such as a scheduler (see [SC-Core](https://github.com/Apollo-Core/SC-Core)) or a new way of enacting functions
 
 ## Relations to other parts of Apollo-Core
