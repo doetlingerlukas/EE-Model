@@ -36,11 +36,11 @@ dependencies {
   if (project.hasProperty("local")) {
     implementation project (':EE-Core')
   }else {
-    implementation 'com.github.Apollo-Core:EE-Core:v1.0.0'
+    implementation 'com.github.Apollo-Core:EE-Core:master-SNAPSHOT'
   }
   
-  // dependency to opendse
-  implementation 'com.github.FedorSmirnov89:opendse:71af193eda'
+  // dependency to opendse  
+  implementation 'com.github.FedorSmirnov89:opendse:-SNAPSHOT'
 
   // gson to define the format of the exchanged messages
   implementation 'com.google.code.gson:gson:2.8.6'
