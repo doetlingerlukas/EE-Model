@@ -99,7 +99,7 @@ public final class PropertyServiceMapping extends AbstractPropertyService {
    * @param mapping the given mapping
    * @param enactmentMode the enactment mode to set
    */
-  static void setEnactmentMode(final Mapping<Task, Resource> mapping,
+  public static void setEnactmentMode(final Mapping<Task, Resource> mapping,
       final EnactmentMode enactmentMode) {
     mapping.setAttribute(propNameEnactmentMode, enactmentMode.name());
   }
