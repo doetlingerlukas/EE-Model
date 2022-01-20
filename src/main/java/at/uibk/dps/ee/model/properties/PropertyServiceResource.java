@@ -66,7 +66,7 @@ public final class PropertyServiceResource extends AbstractPropertyService {
    * @param res the given resource
    * @return true if the resource has a limited capacity
    */
-  public static boolean hasLimitedCapacity(Resource res) {
+  public static boolean hasLimitedCapacity(final Resource res) {
     if (!isAttributeSet(res, propNameLimitedCap)) {
       return true;
     }
@@ -78,7 +78,7 @@ public final class PropertyServiceResource extends AbstractPropertyService {
    * 
    * @param res the resource to annotate
    */
-  public static void annotateUnlimitedCapacity(Resource res) {
+  public static void annotateUnlimitedCapacity(final Resource res) {
     res.setAttribute(propNameLimitedCap, false);
   }
 

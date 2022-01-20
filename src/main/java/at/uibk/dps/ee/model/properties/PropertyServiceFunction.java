@@ -81,7 +81,7 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
    * @return true iff the given task introduces a neglectable workload onto the
    *         resource where it is mapped
    */
-  public static boolean hasNegligibleWorkload(Task task) {
+  public static boolean hasNegligibleWorkload(final Task task) {
     if (!isAttributeSet(task, propNameNegligibleWorkload)) {
       return true;
     }
@@ -93,7 +93,7 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
    * 
    * @param task the given task
    */
-  public static void annotateNonNegligibleWorkload(Task task) {
+  public static void annotateNonNegligibleWorkload(final Task task) {
     task.setAttribute(propNameNegligibleWorkload, false);
   }
 
