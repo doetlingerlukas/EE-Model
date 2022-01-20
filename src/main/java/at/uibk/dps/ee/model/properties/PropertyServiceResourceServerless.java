@@ -46,6 +46,7 @@ public final class PropertyServiceResourceServerless extends AbstractPropertySer
    */
   public static Resource createServerlessResource(final String resId, final String resourceLink) {
     final Resource result = PropertyServiceResource.createResource(resId);
+    PropertyServiceResource.annotateUnlimitedCapacity(result);
     setUri(result, resourceLink);
     return result;
   }

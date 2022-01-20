@@ -85,6 +85,7 @@ public final class PropertyServiceFunctionUser extends AbstractPropertyService {
   public static Task createUserTask(final String taskId, final String functionTypeString) {
     final Task result = new Task(taskId);
     PropertyServiceFunction.setUsageType(UsageType.User, result);
+    PropertyServiceFunction.annotateNonNegligibleWorkload(result);
     setTypeId(result, functionTypeString);
     return result;
   }

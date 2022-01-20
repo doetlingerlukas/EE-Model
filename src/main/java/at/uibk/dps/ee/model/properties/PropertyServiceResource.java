@@ -16,6 +16,7 @@ public final class PropertyServiceResource extends AbstractPropertyService {
 
   private static final String propNameState = Property.State.name();
   private static final String propNameUsedBy = Property.UsedBy.name();
+  private static final String propNameLimitedCap = Property.LimitedCapacity.name();
 
   /**
    * No constructor.
@@ -35,7 +36,11 @@ public final class PropertyServiceResource extends AbstractPropertyService {
     /**
      * The set of tasks currently using the resource
      */
-    UsedBy
+    UsedBy,
+    /**
+     * Boolean to note whether the resource is limited in its processing capacity
+     */
+    LimitedCapacity
   }
 
   /**
@@ -53,6 +58,28 @@ public final class PropertyServiceResource extends AbstractPropertyService {
      * The resource is idle
      */
     Idle
+  }
+
+  /**
+   * Returns true if the resource has a limited capacity
+   * 
+   * @param res the given resource
+   * @return true if the resource has a limited capacity
+   */
+  public static boolean hasLimitedCapacity(Resource res) {
+    if (!isAttributeSet(res, propNameLimitedCap)) {
+      return true;
+    }
+    return (boolean) getAttribute(res, propNameLimitedCap);
+  }
+
+  /**
+   * Annotates that the given resource has limited capacity
+   * 
+   * @param res the resource to annotate
+   */
+  public static void annotateUnlimitedCapacity(Resource res) {
+    res.setAttribute(propNameLimitedCap, false);
   }
 
   /**

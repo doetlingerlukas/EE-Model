@@ -19,6 +19,14 @@ public class PropertyServiceResourceTest {
   }
 
   @Test
+  public void testGetSetCapLimit() {
+    Resource res = new Resource("res");
+    assertTrue(PropertyServiceResource.hasLimitedCapacity(res));
+    PropertyServiceResource.annotateUnlimitedCapacity(res);
+    assertFalse(PropertyServiceResource.hasLimitedCapacity(res));
+  }
+
+  @Test
   public void testState() {
     String id = "resId";
     Resource result = PropertyServiceResource.createResource(id);

@@ -101,6 +101,8 @@ public final class PropertyServiceFunctionUtility extends AbstractPropertyServic
    * @param predecessor the task which has to come first
    * @param successor the task which has to come second
    * @param graph the enactment graph
+   * @return the added node if connecting data nodes, the added edge when
+   *         connecting function to data
    */
   public static Element enforceSequentiality(final Task predecessor, final Task successor,
       final EnactmentGraph graph) {

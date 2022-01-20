@@ -17,6 +17,7 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
   private static final String propNameUsageType = Property.UsageType.name();
   private static final String propNameInput = Property.Input.name();
   private static final String propNameOutput = Property.Output.name();
+  private static final String propNameNegligibleWorkload = Property.NegligibleWorkload.name();
 
   /**
    * No constructor
@@ -42,6 +43,11 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
      * The output of the function
      */
     Output,
+    /**
+     * True if the task introduces a negligible resource on the resource onto which
+     * it is mapped
+     */
+    NegligibleWorkload
   }
 
   /**
@@ -65,6 +71,30 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
      * Functions which do not result in computation, but only detail the data flow
      */
     DataFlow
+  }
+
+  /**
+   * Returns true iff the given task introduces a neglectable workload onto the
+   * resource where it is mapped
+   * 
+   * @param task the given task
+   * @return true iff the given task introduces a neglectable workload onto the
+   *         resource where it is mapped
+   */
+  public static boolean hasNegligibleWorkload(Task task) {
+    if (!isAttributeSet(task, propNameNegligibleWorkload)) {
+      return true;
+    }
+    return (boolean) getAttribute(task, propNameNegligibleWorkload);
+  }
+
+  /**
+   * Annotates that the workload of the given task is not neglectable
+   * 
+   * @param task the given task
+   */
+  public static void annotateNonNegligibleWorkload(Task task) {
+    task.setAttribute(propNameNegligibleWorkload, false);
   }
 
   /**

@@ -4,9 +4,6 @@ buildscript {
   }
 }
 
-plugins {
-  id("net.ltgt.errorprone") version "2.0.2"
-}
 
 apply plugin: 'java'
 apply plugin: 'application'
@@ -41,6 +38,8 @@ dependencies {
   
   // dependency to opendse  
   implementation 'com.github.FedorSmirnov89:opendse:-SNAPSHOT'
+  // as an example: dependency to Opt4J
+  implementation 'com.github.FedorSmirnov89:opt4j:-SNAPSHOT'
 
   // gson to define the format of the exchanged messages
   implementation 'com.google.code.gson:gson:2.8.6'
@@ -51,8 +50,6 @@ dependencies {
   // JUnit 5 
   testImplementation(platform('org.junit:junit-bom:5.7.2'))
   testImplementation('org.junit.jupiter:junit-jupiter')
-  
-  errorprone("com.google.errorprone:error_prone_core:2.9.0")
 }
 
 jacocoTestReport {

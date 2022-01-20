@@ -14,6 +14,13 @@ import net.sf.opendse.model.Task;
 
 public class PropertyServiceFunctionTest {
 
+  @Test
+  void testGetSetNeglectableWorkload() {
+    Task task = new Task("task");
+    assertTrue(PropertyServiceFunction.hasNegligibleWorkload(task));
+    PropertyServiceFunction.annotateNonNegligibleWorkload(task);
+    assertFalse(PropertyServiceFunction.hasNegligibleWorkload(task));
+  }
 
   @Test
   void testOutput() {
