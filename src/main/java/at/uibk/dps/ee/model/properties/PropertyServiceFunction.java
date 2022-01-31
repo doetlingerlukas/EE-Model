@@ -44,7 +44,7 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
      */
     Output,
     /**
-     * True if the task introduces a negligible resource on the resource onto which
+     * True if the task introduces a negligible workload on the resource onto which
      * it is mapped
      */
     NegligibleWorkload
@@ -74,11 +74,11 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
   }
 
   /**
-   * Returns true iff the given task introduces a neglectable workload onto the
+   * Returns true iff the given task introduces a negligible workload onto the
    * resource where it is mapped
    * 
    * @param task the given task
-   * @return true iff the given task introduces a neglectable workload onto the
+   * @return true iff the given task introduces a negligible workload onto the
    *         resource where it is mapped
    */
   public static boolean hasNegligibleWorkload(final Task task) {
@@ -89,7 +89,7 @@ public final class PropertyServiceFunction extends AbstractPropertyService {
   }
 
   /**
-   * Annotates that the workload of the given task is not neglectable
+   * Annotates that the workload of the given task is not negligible
    * 
    * @param task the given task
    */

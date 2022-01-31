@@ -74,7 +74,7 @@ public final class PropertyServiceResource extends AbstractPropertyService {
   }
 
   /**
-   * Annotates that the given resource has limited capacity
+   * Annotates that the given resource has unlimited capacity
    * 
    * @param res the resource to annotate
    */
