@@ -136,8 +136,14 @@ public class MappingsConcurrent implements Iterable<Mapping<Task, Resource>> {
    * @return all mappings mapping the given task
    */
   public Set<Mapping<Task, Resource>> getMappings(final Task task) {
-    return new HashSet<>(taskMappings.get(task.getId()).values());
+    if (task.getParent() == null) {
+      return new HashSet<>(taskMappings.get(task.getId()).values());
+    }else {
+      return getMappings((Task) task.getParent());
+    }
   }
+  
+  
 
   /**
    * Returns all mappings mapping onto the given resource.
