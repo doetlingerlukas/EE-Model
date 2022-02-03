@@ -14,6 +14,7 @@ class MappingsConcurrentTest {
 
   Task taskA;
   Task taskB;
+  Task taskChildA;
 
   Mapping<Task, Resource> AOne;
   Mapping<Task, Resource> wrongAOne;
@@ -33,6 +34,17 @@ class MappingsConcurrentTest {
     assertTrue(tested.removeMapping(AOne));
     assertFalse(tested.containsMapping(AOne));
     assertFalse(tested.removeMapping(AOne));
+  }
+
+  @Test
+  void getMappings() {
+    assertTrue(tested.getMappings(taskA).isEmpty());
+    assertTrue(tested.getMappings(taskChildA).isEmpty());
+
+    tested.addMapping(AOne);
+
+    assertEquals(AOne, tested.getMappings(taskA).iterator().next());
+    assertEquals(AOne, tested.getMappings(taskChildA).iterator().next());
   }
 
   @Test
@@ -78,6 +90,8 @@ class MappingsConcurrentTest {
     resTwo = new Resource("resTwo");
     taskA = new Task("taskA");
     taskB = new Task("taskB");
+    taskChildA = new Task("child");
+    taskChildA.setParent(taskA);
     AOne = new Mapping<Task, Resource>("Aone", taskA, resOne);
     wrongAOne = new Mapping<Task, Resource>("Aone", taskB, resOne);
     ATwo = new Mapping<Task, Resource>("Atwo", taskA, resTwo);
