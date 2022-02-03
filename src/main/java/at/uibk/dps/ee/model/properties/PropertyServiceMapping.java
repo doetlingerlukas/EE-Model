@@ -63,6 +63,18 @@ public final class PropertyServiceMapping extends AbstractPropertyService {
   }
 
   /**
+   * Returns true iff the given mapping is relevant for resource capacity
+   * 
+   * @param mapping the given mapping
+   * @return true iff the given mapping is relevant for resource capacity
+   */
+  public static boolean isCapacityRelevant(final Mapping<Task, Resource> mapping) {
+    boolean relevantTask = !PropertyServiceFunction.hasNegligibleWorkload(mapping.getSource());
+    boolean relevantResource = PropertyServiceResource.hasLimitedCapacity(mapping.getTarget());
+    return relevantResource && relevantTask;
+  }
+
+  /**
    * Returns the implementation ID of the requested mapping.
    * 
    * @param mapping the requested mapping.
@@ -88,8 +100,7 @@ public final class PropertyServiceMapping extends AbstractPropertyService {
    * @param mapping the given mapping
    * @param implId the impl id to set
    */
-  static void setImplementationId(final Mapping<Task, Resource> mapping,
-      final String implId) {
+  static void setImplementationId(final Mapping<Task, Resource> mapping, final String implId) {
     mapping.setAttribute(propNameImplId, implId);
   }
 
