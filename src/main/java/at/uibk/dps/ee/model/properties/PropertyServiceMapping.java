@@ -69,8 +69,10 @@ public final class PropertyServiceMapping extends AbstractPropertyService {
    * @return true iff the given mapping is relevant for resource capacity
    */
   public static boolean isCapacityRelevant(final Mapping<Task, Resource> mapping) {
-    boolean relevantTask = !PropertyServiceFunction.hasNegligibleWorkload(mapping.getSource());
-    boolean relevantResource = PropertyServiceResource.hasLimitedCapacity(mapping.getTarget());
+    final boolean relevantTask =
+        !PropertyServiceFunction.hasNegligibleWorkload(mapping.getSource());
+    final boolean relevantResource =
+        PropertyServiceResource.hasLimitedCapacity(mapping.getTarget());
     return relevantResource && relevantTask;
   }
 
