@@ -1,9 +1,3 @@
-buildscript {
-  repositories {
-    jcenter()
-  }
-}
-
 
 apply plugin: 'java'
 apply plugin: 'application'
@@ -35,16 +29,16 @@ dependencies {
   }
   
   // dependency to opendse  
-  implementation 'com.github.FedorSmirnov89:opendse:-SNAPSHOT'
+  implementation 'com.github.FedorSmirnov89:opendse:master-SNAPSHOT'
   // as an example: dependency to Opt4J
-  implementation 'com.github.FedorSmirnov89:opt4j:-SNAPSHOT'
+  implementation 'com.github.FedorSmirnov89:opt4j:master-SNAPSHOT'
 
   // gson to define the format of the exchanged messages
   implementation 'com.google.code.gson:gson:2.8.6'
 
   // test dependencies
   // mockito
-  testCompile group: 'org.mockito',     name: 'mockito-core',     version: '3.4.4'
+  testImplementation group: 'org.mockito',     name: 'mockito-core',     version: '3.4.4'
   // JUnit 5 
   testImplementation(platform('org.junit:junit-bom:5.7.2'))
   testImplementation('org.junit.jupiter:junit-jupiter')
