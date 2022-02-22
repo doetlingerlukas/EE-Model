@@ -59,7 +59,11 @@ public final class PropertyServiceMapping extends AbstractPropertyService {
     /**
      * Natively implemented functions, used for demo purposes
      */
-    Demo
+    Demo,
+    /**
+     * Some other enactment mode
+     */
+    Other
   }
 
   /**
